@@ -379,7 +379,7 @@
                 <label id="uiStaffAccountLabel" class="block text-[10.5px] font-extrabold text-cyan-300 mb-1">
                     <i class="fa-solid fa-id-badge text-amber-400 ml-1"></i>رقم المستخدم (يسلّمه لك مدير الإدارة):
                 </label>
-                <input id="staffAccountSelect" type="text" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" dir="ltr" placeholder="رقم المستخدم" class="w-full bg-slate-950/95 border border-slate-700 focus:border-cyan-400 rounded-xl px-3 py-2.5 text-sm font-extrabold text-white text-center tracking-widest focus:outline-none">
+                <input id="staffAccountSelect" type="text" inputmode="numeric" maxlength="40" oninput="this.value=normDigits(this.value)" autocomplete="off" autocapitalize="off" spellcheck="false" dir="ltr" placeholder="رقم المستخدم" class="w-full bg-slate-950/95 border border-slate-700 focus:border-cyan-400 rounded-xl px-3 py-2.5 text-sm font-extrabold text-white text-center tracking-widest focus:outline-none">
             </div>
 
             <!-- PIN Display Box -->
@@ -1218,6 +1218,7 @@
                     <button type="button" id="nuCreateBtn" onclick="createNewUser()" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black cursor-pointer">إنشاء المستخدم</button>
                     <div id="nuResult" class="hidden rounded-xl bg-slate-900 text-emerald-300 font-mono text-[11.5px] leading-6 p-3 whitespace-pre-wrap" dir="rtl"></div>
                 </div>
+                <div id="usersResetResult" class="hidden rounded-xl bg-slate-900 text-emerald-200 font-mono text-[12px] leading-7 p-3" dir="rtl"></div>
                 <div id="usersList" class="space-y-2"></div>
             </div>
         </div>
@@ -1620,8 +1621,9 @@
         const LEGACY_LOGIN_CODES = {};
         Object.keys(staffAccountsDirectory).forEach((k, i) => { LEGACY_LOGIN_CODES[String(1001 + i)] = k; });
         function loginCodeOf(accId) { const k = Object.keys(LEGACY_LOGIN_CODES).find(c => LEGACY_LOGIN_CODES[c] === accId); return k || (/^u\d{5}$/.test(accId) ? accId.slice(1) : accId); }
+        function normDigits(x) { return String(x || '').replace(/[\u0660-\u0669]/g, d => String(d.charCodeAt(0) - 0x0660)).replace(/[\u06F0-\u06F9]/g, d => String(d.charCodeAt(0) - 0x06F0)); }
         function resolveAccId(raw) {
-            const v = String(raw || '').trim().toLowerCase();
+            const v = normDigits(raw).replace(/\s+/g, '').toLowerCase();
             if (LEGACY_LOGIN_CODES[v]) return LEGACY_LOGIN_CODES[v];
             if (/^\d{5}$/.test(v)) return 'u' + v;
             return v;
@@ -3043,6 +3045,7 @@
                 const acts = protectedAcc ? '<span class="text-[10.5px] text-slate-400 font-bold">حساب إدارة — محمي</span>' : `
                     <button type="button" onclick="setUserBlocked('${u.uid}', ${st.k === 'blocked' ? 'false' : 'true'})" class="px-2.5 py-1.5 rounded-lg ${st.k === 'blocked' ? 'bg-emerald-600' : 'bg-rose-600'} text-white font-black cursor-pointer text-[11px]"><i class="fa-solid ${st.k === 'blocked' ? 'fa-unlock' : 'fa-ban'}"></i> ${st.k === 'blocked' ? 'رفع الحظر' : 'حظر'}</button>
                     <button type="button" onclick="${st.k === 'suspended' ? `suspendUser('${u.uid}', 0)` : `askSuspendUser('${u.uid}')`}" class="px-2.5 py-1.5 rounded-lg bg-amber-500 text-white font-black cursor-pointer text-[11px]"><i class="fa-solid fa-pause"></i> ${st.k === 'suspended' ? 'إلغاء الإيقاف' : 'إيقاف مؤقت'}</button>
+                    <button type="button" onclick="resetUserPin('${u.uid}')" class="px-2.5 py-1.5 rounded-lg bg-sky-700 text-white font-black cursor-pointer text-[11px]"><i class="fa-solid fa-key"></i> رقم ورمز جديد</button>
                     <button type="button" onclick="deleteUserAccount('${u.uid}')" class="px-2.5 py-1.5 rounded-lg bg-slate-800 text-white font-black cursor-pointer text-[11px]"><i class="fa-solid fa-trash"></i> حذف نهائي</button>`;
                 return `<div class="rounded-2xl border border-slate-200 bg-slate-50 p-3 space-y-1.5">
                     <div class="flex items-start justify-between gap-2">
@@ -3093,6 +3096,42 @@
                 showToast('تم حذف الحساب ✓', '', 'fa-check', 'teal');
             } catch (e) { showToast('تعذّر حذف الحساب', (e && e.code) || '', 'fa-triangle-exclamation', 'rose'); }
         }
+        async function provisionAuthAccount(secAuth, pin) {
+            let cred = null, code = '';
+            for (let t = 0; t < 6 && !cred; t++) {
+                const a = new Uint32Array(1); crypto.getRandomValues(a);
+                code = String(20000 + (a[0] % 80000));
+                try { cred = await secAuth.createUserWithEmailAndPassword(accountEmail('u' + code), accountPassword(pin)); }
+                catch (e) { if (!(e && e.code === 'auth/email-already-in-use')) throw e; }
+            }
+            if (!cred) throw new Error('تعذّر توليد رقم مستخدم');
+            return { cred, code };
+        }
+        async function resetUserPin(uid) {
+            const u = findManaged(uid); if (!u || !MANAGED_ROLES.includes(String(u.roleKey)) || !isDirectorSession()) return;
+            const dir = staffAccountsDirectory[u.accId] || {};
+            const name = String(u.name || dir.arName || u.accId).slice(0, 60);
+            if (!confirm('إصدار رقم ورمز جديدين لـ «' + name + '»؟ سيتوقف رقمه القديم فوراً.')) return;
+            const out = document.getElementById('usersResetResult');
+            out.classList.remove('hidden'); out.textContent = 'جارٍ إصدار رمز جديد…';
+            try {
+                const pin = randomPin4();
+                const secAuth = getProvisionAuth();
+                const { cred, code } = await provisionAuthAccount(secAuth, pin);
+                const perm = permissionMatrix[u.roleKey] || {};
+                const doc = { accId: 'u' + code, roleKey: String(u.roleKey), driverId: u.driverId || dir.driverId || null, name: name,
+                    dept: String(u.dept || 'إدارة الحركة والمواصلات').slice(0, 60), jobTitle: String(u.jobTitle || (perm.arName || '').split(' (')[0] || '').slice(0, 60), status: 'active', suspendedUntilMs: 0 };
+                await firestoreDb.collection('users').doc(cred.user.uid).set(doc);
+                await secAuth.signOut();
+                await firestoreDb.collection('users').doc(uid).delete();
+                logCyberEvent('إصدار رقم ورمز جديدين للمستخدم: ' + name);
+                out.innerHTML = '<div class="font-black text-emerald-300">✓ تم — سلّمها له بشكل خاص (لا تظهر مرة أخرى)</div><div>' + escHtml(name) + '</div><div>رقم المستخدم: <b class="text-white text-base">' + code + '</b></div><div>الرمز السري: <b class="text-white text-base">' + pin + '</b></div><button type="button" class="mt-2 px-3 py-1.5 rounded-lg bg-emerald-600 text-white font-black text-[11px]" onclick="copyTextSafe(\'' + escHtml(name).replace(/'/g, '') + ' — رقم المستخدم: ' + code + ' — الرمز: ' + pin + '\')">نسخ البيانات</button>';
+                loadManagedUsers();
+            } catch (e) { out.textContent = '✗ ' + ((e && e.code) || (e && e.message) || 'error'); }
+        }
+        function copyTextSafe(t) {
+            try { navigator.clipboard.writeText(t).then(() => showToast('تم النسخ ✓', '', 'fa-copy', 'teal')); } catch (e) {}
+        }
         async function createNewUser() {
             if (!isDirectorSession() || !firestoreDb) return;
             const g = id => ((document.getElementById(id) || {}).value || '').trim();
@@ -3104,14 +3143,7 @@
             const btn = document.getElementById('nuCreateBtn'); btn.disabled = true; out.textContent = 'جارٍ الإنشاء…';
             try {
                 const secAuth = getProvisionAuth();
-                let cred = null, code = '';
-                for (let t = 0; t < 6 && !cred; t++) {
-                    const a = new Uint32Array(1); crypto.getRandomValues(a);
-                    code = String(20000 + (a[0] % 80000));
-                    try { cred = await secAuth.createUserWithEmailAndPassword(accountEmail('u' + code), accountPassword(pin)); }
-                    catch (e) { if (!(e && e.code === 'auth/email-already-in-use')) throw e; }
-                }
-                if (!cred) throw new Error('تعذّر توليد رقم مستخدم');
+                const { cred, code } = await provisionAuthAccount(secAuth, pin);
                 const doc = { accId: 'u' + code, roleKey: role, driverId: null, name: name, dept: dept, jobTitle: job, status: 'active', suspendedUntilMs: 0 };
                 await firestoreDb.collection('users').doc(cred.user.uid).set(doc);
                 await secAuth.signOut();
@@ -3627,7 +3659,7 @@
             'مشرف أسطول السيارات': 'Fleet supervisor', 'إداري (إحصائيات)': 'Admin (statistics)', 'زائر (اطلاع فقط)': 'Visitor (view only)',
             'الرمز السري:': 'PIN:', 'إنشاء المستخدم': 'Create user',
             'الاسم الكامل': 'Full name', 'الإدارة التي يتبع لها': 'Department', 'المسمى الوظيفي': 'Job title',
-            'حظر': 'Block', 'رفع الحظر': 'Unblock', 'إيقاف مؤقت': 'Suspend', 'إلغاء الإيقاف': 'End suspension', 'حذف نهائي': 'Delete permanently',
+            'حظر': 'Block', 'رقم ورمز جديد': 'New number & PIN', 'نسخ البيانات': 'Copy details', 'رفع الحظر': 'Unblock', 'إيقاف مؤقت': 'Suspend', 'إلغاء الإيقاف': 'End suspension', 'حذف نهائي': 'Delete permanently',
             'حساب إدارة — محمي': 'Management account — protected', 'نشط': 'Active', 'محظور': 'Blocked', 'مدة الإيقاف:': 'Suspension period:',
             'يوم': 'Day', '3 أيام': '3 days', 'أسبوع': 'Week', 'إلغاء': 'Cancel',
             'لا يوجد مستخدمون.': 'No users.', 'جارٍ التحميل…': 'Loading…',
