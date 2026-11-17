@@ -340,6 +340,10 @@
         <!-- Lock Gate Card -->
         <div class="w-full max-w-[380px] bg-slate-900/95 backdrop-blur-2xl border border-cyan-500/35 rounded-[30px] p-5 sm:p-6 shadow-[0_24px_65px_rgba(0,0,0,0.88)] text-center relative my-auto">
             
+            <div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:10px">
+                <button type="button" onclick="toggleLanguage()" style="display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:12px;border:1px solid rgba(34,211,238,.5);background:rgba(15,23,42,.9);color:#67e8f9;font-weight:900;font-size:12px"><i class="fa-solid fa-globe" style="color:#fbbf24"></i><span id="lockLangToggleText2">English</span></button>
+                <button type="button" onclick="cycleAppColorTheme()" style="display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:12px;border:1px solid rgba(251,191,36,.5);background:rgba(15,23,42,.9);color:#fcd34d;font-weight:900;font-size:12px"><i class="fa-solid fa-palette"></i></button>
+            </div>
             <!-- OFFICIAL APP ICON -->
             <div class="relative w-24 h-24 mx-auto mb-3 group cursor-pointer" onclick="openAppIconPreviewModal()" title="أيقونة التطبيق الرسمية — اضغط للمعاينة أو التخصيص">
                 <img id="lockScreenAppIconImg" src="" alt="أيقونة إدارة الحركة والمواصلات" class="w-full h-full app-icon-exact icon-pulse-glow">
@@ -365,30 +369,9 @@
             <!-- Individual Staff Account Selector (Fix #5: Individual Accountability) -->
             <div class="mb-2.5 text-right">
                 <label id="uiStaffAccountLabel" class="block text-[10.5px] font-extrabold text-cyan-300 mb-1">
-                    <i class="fa-solid fa-id-badge text-amber-400 ml-1"></i>حساب الموظف الفردي (لتوثيق العمليات بسجل التدقيق):
+                    <i class="fa-solid fa-id-badge text-amber-400 ml-1"></i>رقم المستخدم (يسلّمه لك مدير الإدارة):
                 </label>
-                <select id="staffAccountSelect" class="w-full bg-slate-950/95 border border-slate-700 focus:border-cyan-400 rounded-xl px-3 py-2 text-xs font-extrabold text-white focus:outline-none">
-                    <option value="director_yousef">أ. يوسف خيري — مدير الإدارة (صلاحية كاملة)</option>
-                    <option value="assistant_fahad">أ. فهد القرشي — مساعد المدير والمشرف العام</option>
-                    <option value="er_manager">المدير المناوب — قسم الطوارئ (إنشاء ومتابعة الطلبات)</option>
-                    <option value="er_manager_ali_alghamdi">د. علي الغامدي — المدير المناوب (بوابة الطوارئ)</option>
-                    <option value="er_manager_abdullah_albaqami">د. عبدالله البقمي — المدير المناوب (بوابة الطوارئ)</option>
-                    <option value="er_manager_ahmed_alsulami">أحمد السلمي — المدير المناوب (بوابة الطوارئ)</option>
-                    <option value="driver_khaled">خالد الزهراني — سائق مناوب (الوردية الأولى)</option>
-                    <option value="driver_mohammed">محمد المشعلي — سائق مناوب (الوردية الأولى)</option>
-                    <option value="driver_abdulaziz_m">عبد العزيز المالكي — سائق مناوب (الوردية الأولى)</option>
-                    <option value="driver_ali_q">علي القرشي — سائق مناوب (الوردية الأولى)</option>
-                    <option value="driver_saad">سعد الغامدي — سائق مناوب (الوردية الثانية)</option>
-                    <option value="driver_abdulaziz_a">عبد العزيز العامري — سائق مناوب (الوردية الثانية)</option>
-                    <option value="driver_ayedh">عايض القرني — سائق مناوب (الوردية الثانية)</option>
-                    <option value="driver_fahad_n">فهد القرشي — سائق مناوب (الوردية الثالثة)</option>
-                    <option value="driver_yassin">ياسين البارقي — سائق مناوب (الوردية الثالثة)</option>
-                    <option value="driver_hassan">حسن حداد — سائق مناوب (الوردية الثالثة)</option>
-                    <option value="sup_drivers_ayedh">أ. عائض القرني — مشرف وحدة السائقين</option>
-                    <option value="sup_fleet_ali">أ. علي القرني — مشرف أسطول السيارات</option>
-                    <option value="admin_khaled">أ. خالد المولد — الإداري والإحصائيات</option>
-                    <option value="visitor_account">زائر / مستعرض — اطلاع فقط (دون أرقام شخصية)</option>
-                </select>
+                <input id="staffAccountSelect" type="text" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" dir="ltr" placeholder="رقم المستخدم" class="w-full bg-slate-950/95 border border-slate-700 focus:border-cyan-400 rounded-xl px-3 py-2.5 text-sm font-extrabold text-white text-center tracking-widest focus:outline-none">
             </div>
 
             <!-- PIN Display Box -->
@@ -542,6 +525,9 @@
                     </button>
                     <button type="button" id="menuGuideBtn" onclick="openGuideModal(); toggleMoreMenu(false)" class="flex items-center gap-1.5 bg-violet-700 hover:bg-violet-600 text-white px-2.5 py-1.5 rounded-xl text-[11px] font-black cursor-pointer transition shadow-sm">
                         <i class="fa-solid fa-circle-info"></i><span>شرح النظام وطريقة التثبيت</span>
+                    </button>
+                    <button type="button" id="menuUsersBtn" style="display:none" onclick="openUsersModal(); toggleMoreMenu(false)" class="items-center gap-1.5 bg-indigo-700 hover:bg-indigo-600 text-white px-2.5 py-1.5 rounded-xl text-[11px] font-black cursor-pointer transition shadow-sm">
+                        <i class="fa-solid fa-users-gear"></i><span>إدارة المستخدمين</span>
                     </button>
                     <button type="button" id="menuProvisionBtn" style="display:none" onclick="openProvisionModal(); toggleMoreMenu(false)" class="items-center gap-1.5 bg-sky-700 hover:bg-sky-600 text-white px-2.5 py-1.5 rounded-xl text-[11px] font-black cursor-pointer transition shadow-sm">
                         <i class="fa-solid fa-user-plus"></i><span>إنشاء حسابات المدراء المناوبين</span>
@@ -948,18 +934,7 @@
                             </button>
                         </div>
 
-                        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-                            <div class="font-black text-slate-900 text-sm flex items-center gap-1.5">
-                                <i class="fa-solid fa-download text-emerald-600"></i>
-                                <span id="uiCardDownloadTitle">تحميل نسخة مستقلة من النظام</span>
-                            </div>
-                            <p id="uiCardDownloadDesc" class="text-slate-600 leading-relaxed">حفظ نسخة كاملة من البرنامج على الجوال أو الكمبيوتر للعمل المباشر في أي وقت.</p>
-                            <button type="button" onclick="downloadStandaloneApp()" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black flex items-center justify-center gap-2 shadow cursor-pointer">
-                                <i class="fa-solid fa-file-arrow-down"></i>
-                                <span id="uiBtnDownloadHtml">تحميل ملف النظام (HTML)</span>
-                            </button>
-                        </div>
-
+                        
                         <div class="p-4 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-2">
                             <div class="font-black text-amber-950 text-sm flex items-center gap-1.5">
                                 <i class="fa-solid fa-share-nodes text-amber-600"></i>
@@ -1218,6 +1193,45 @@
             <div class="px-4 py-3 border-t border-slate-200 bg-slate-50 flex flex-wrap gap-2 justify-end">
                 <button type="button" onclick="copyProvisionPins()" class="px-4 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-black cursor-pointer flex items-center gap-1.5"><i class="fa-regular fa-copy"></i>نسخ الرموز</button>
                 <button type="button" id="provisionRunBtn" onclick="provisionDutyManagers()" class="px-4 py-2 rounded-xl bg-sky-700 hover:bg-sky-600 text-white text-xs font-black cursor-pointer flex items-center gap-1.5"><i class="fa-solid fa-check"></i>إنشاء الحسابات</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="usersModal" style="display:none" class="fixed inset-0 z-[177] bg-slate-950/80 backdrop-blur-sm items-center justify-center p-3 overflow-y-auto no-print">
+        <div class="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-200 overflow-hidden my-auto text-slate-900">
+            <div class="luxury-Command-card text-white px-5 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-500/25 border border-indigo-300/40 flex items-center justify-center text-indigo-200"><i class="fa-solid fa-users-gear"></i></div>
+                    <div>
+                        <h3 class="font-black text-sm sm:text-base">إدارة المستخدمين</h3>
+                        <p class="text-[11px] text-slate-300">إنشاء حساب، حظر، إيقاف مؤقت، أو حذف نهائي</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeUsersModal()" class="text-slate-300 hover:text-white text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-4 space-y-3 text-xs">
+                <button type="button" onclick="toggleNewUserForm()" class="w-full py-2.5 rounded-xl bg-indigo-700 hover:bg-indigo-600 text-white font-black cursor-pointer flex items-center justify-center gap-2"><i class="fa-solid fa-user-plus"></i>طلب إنشاء مستخدم جديد</button>
+                <div id="newUserForm" class="hidden rounded-2xl border border-indigo-200 bg-indigo-50/60 p-3 space-y-2">
+                    <input id="nuName" type="text" maxlength="60" placeholder="الاسم الكامل" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 font-bold">
+                    <input id="nuDept" type="text" maxlength="60" placeholder="الإدارة التي يتبع لها" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 font-bold">
+                    <input id="nuJob" type="text" maxlength="60" placeholder="المسمى الوظيفي" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 font-bold">
+                    <select id="nuRole" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 font-bold">
+                        <option value="3040">المدير المناوب (بوابة الطوارئ)</option>
+                        <option value="4050">سائق</option>
+                        <option value="5060">مشرف وحدة السائقين</option>
+                        <option value="6070">مشرف أسطول السيارات</option>
+                        <option value="7080">إداري (إحصائيات)</option>
+                        <option value="8090">زائر (اطلاع فقط)</option>
+                    </select>
+                    <div class="flex items-center gap-2">
+                        <span class="font-black text-slate-700">الرمز السري:</span>
+                        <input id="nuPin" type="text" inputmode="numeric" maxlength="4" dir="ltr" class="w-24 text-center rounded-lg border border-slate-300 bg-white px-2 py-2 font-mono font-black">
+                        <button type="button" onclick="document.getElementById('nuPin').value=randomPin4()" class="px-3 py-2 rounded-lg bg-slate-200 hover:bg-slate-300 font-black cursor-pointer"><i class="fa-solid fa-rotate"></i></button>
+                    </div>
+                    <button type="button" id="nuCreateBtn" onclick="createNewUser()" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black cursor-pointer">إنشاء المستخدم</button>
+                    <div id="nuResult" class="hidden rounded-xl bg-slate-900 text-emerald-300 font-mono text-[11.5px] leading-6 p-3 whitespace-pre-wrap" dir="rtl"></div>
+                </div>
+                <div id="usersList" class="space-y-2"></div>
             </div>
         </div>
     </div>
@@ -1614,6 +1628,16 @@
             'admin_khaled':      { id: 'admin_khaled',      arName: 'أ. خالد المولد (الإداري والإحصائيات)',   enName: 'Mr. Khaled Al-Mawlid (Admin & Stats)',  roleKey: '7080', driverId: null },
             'visitor_account':   { id: 'visitor_account',   arName: 'زائر / مستعرض (اطلاع فقط)',              enName: 'Visitor / Viewer (Read-Only)',          roleKey: '8090', driverId: null }
         };
+
+        const LEGACY_LOGIN_CODES = {};
+        Object.keys(staffAccountsDirectory).forEach((k, i) => { LEGACY_LOGIN_CODES[String(1001 + i)] = k; });
+        function loginCodeOf(accId) { const k = Object.keys(LEGACY_LOGIN_CODES).find(c => LEGACY_LOGIN_CODES[c] === accId); return k || (/^u\d{5}$/.test(accId) ? accId.slice(1) : accId); }
+        function resolveAccId(raw) {
+            const v = String(raw || '').trim().toLowerCase();
+            if (LEGACY_LOGIN_CODES[v]) return LEGACY_LOGIN_CODES[v];
+            if (/^\d{5}$/.test(v)) return 'u' + v;
+            return v;
+        }
 
         // الدخول يتم عبر Firebase Authentication (التحقق من الرمز على الخادم) — لا توجد رموز أو تجزئات داخل الصفحة.
 
@@ -2269,7 +2293,7 @@
                 uiTrialModeBadge: 'نسخة تجريبية (قبل الاعتماد الرسمي)',
                 uiPrivacyNoPatientBadge: 'الطلبات تحتوي المهمة والمكان فقط (دون أي بيانات مرضى)',
                 uiBtnEnablePushText: 'تفعيل إشعارات الخلفية',
-                uiStaffAccountLabel: 'حساب الموظف الفردي (لتوثيق العمليات بسجل التدقيق):',
+                uiStaffAccountLabel: 'رقم المستخدم (يسلّمه لك مدير الإدارة):',
                 uiLockShieldStatus: 'درع الحماية السيبراني نشط',
                 uiLockClusterBadge: 'تجمع جدة الصحي الأول • مستشفى الملك عبدالعزيز بجدة',
                 uiLockMainTitle: 'منصة الحركة والمواصلات الذكية',
@@ -2355,7 +2379,7 @@
                 uiTrialModeBadge: 'TRIAL MODE (Pre-Approval Stage)',
                 uiPrivacyNoPatientBadge: 'Orders contain Task & Location only (Zero Patient PII)',
                 uiBtnEnablePushText: 'Enable Push Alerts',
-                uiStaffAccountLabel: 'Individual Staff Account (For Audit Attribution):',
+                uiStaffAccountLabel: 'User number (given to you by the Director):',
                 uiLockShieldStatus: 'Cybersecurity Shield Active',
                 uiLockClusterBadge: 'Jeddah First Health Cluster • King Abdulaziz Hospital',
                 uiLockMainTitle: 'Smart Transportation & Mobility Platform',
@@ -2915,6 +2939,7 @@
             setDisplay('menuPresenceBtn', dir, 'flex');
             setDisplay('menuMapBtn', dir, 'flex');
             setDisplay('menuProvisionBtn', dir, 'flex');
+            setDisplay('menuUsersBtn', dir, 'flex');
             setDisplay('menuGuestbookBtn', isAuthenticated, 'flex');
             setDisplay('guestbookQuickBtn', visitor, 'flex');
             applyMapsVisibility();
@@ -2992,6 +3017,138 @@
             setDisplay('provisionModal', true, 'flex');
         }
         function closeProvisionModal() { setDisplay('provisionModal', false); }
+
+        // ===== إدارة المستخدمين (للمدير ومساعده) =====
+        let managedUsers = [];
+        const MANAGED_ROLES = ['3040', '4050', '5060', '6070', '7080', '8090'];
+        function getProvisionAuth() {
+            let sec = null;
+            try { sec = (firebase.apps || []).find(a => a && a.name === 'kahProvision') || null; } catch (e) {}
+            if (!sec) sec = firebase.initializeApp(FIREBASE_CONFIG, 'kahProvision');
+            const au = sec.auth();
+            try { au.setPersistence(firebase.auth.Auth.Persistence.NONE); } catch (e) {}
+            return au;
+        }
+        function toggleNewUserForm() {
+            const f = document.getElementById('newUserForm'); if (!f) return;
+            f.classList.toggle('hidden');
+            if (!f.classList.contains('hidden')) { document.getElementById('nuPin').value = randomPin4(); const r = document.getElementById('nuResult'); r.classList.add('hidden'); r.textContent = ''; }
+        }
+        function openUsersModal() {
+            if (!isDirectorSession()) return;
+            setDisplay('usersModal', true, 'flex');
+            loadManagedUsers();
+        }
+        function closeUsersModal() { setDisplay('usersModal', false); }
+        async function loadManagedUsers() {
+            const box = document.getElementById('usersList'); if (!box || !firestoreDb) return;
+            box.innerHTML = '<div class="text-center text-slate-500 font-bold py-4">جارٍ التحميل…</div>';
+            try {
+                const snap = await firestoreDb.collection('users').get();
+                managedUsers = snap.docs.map(d => Object.assign({ uid: d.id }, d.data()));
+                renderManagedUsers();
+            } catch (e) { box.innerHTML = '<div class="text-center text-rose-600 font-bold py-4">تعذّر تحميل المستخدمين. تأكد من نشر القواعد الجديدة.</div>'; }
+        }
+        function userStatusOf(u) {
+            if (u.status === 'blocked') return { k: 'blocked', t: 'محظور', c: 'bg-rose-100 text-rose-700' };
+            if ((Number(u.suspendedUntilMs) || 0) > Date.now()) return { k: 'suspended', t: 'موقوف حتى ' + fmtDateTime(u.suspendedUntilMs), c: 'bg-amber-100 text-amber-800' };
+            return { k: 'active', t: 'نشط', c: 'bg-emerald-100 text-emerald-700' };
+        }
+        function renderManagedUsers() {
+            const box = document.getElementById('usersList'); if (!box) return;
+            const rows = managedUsers.slice().sort((a, b) => String(a.roleKey).localeCompare(String(b.roleKey)));
+            box.innerHTML = rows.map(u => {
+                const dir = staffAccountsDirectory[u.accId] || {};
+                const nm = u.name || dir.arName || u.accId;
+                const st = userStatusOf(u);
+                const protectedAcc = !MANAGED_ROLES.includes(String(u.roleKey));
+                const meta = [u.dept, u.jobTitle].filter(Boolean).join(' · ');
+                const role = (permissionMatrix[u.roleKey] || {}).arName || u.roleKey;
+                const acts = protectedAcc ? '<span class="text-[10.5px] text-slate-400 font-bold">حساب إدارة — محمي</span>' : `
+                    <button type="button" onclick="setUserBlocked('${u.uid}', ${st.k === 'blocked' ? 'false' : 'true'})" class="px-2.5 py-1.5 rounded-lg ${st.k === 'blocked' ? 'bg-emerald-600' : 'bg-rose-600'} text-white font-black cursor-pointer text-[11px]"><i class="fa-solid ${st.k === 'blocked' ? 'fa-unlock' : 'fa-ban'}"></i> ${st.k === 'blocked' ? 'رفع الحظر' : 'حظر'}</button>
+                    <button type="button" onclick="${st.k === 'suspended' ? `suspendUser('${u.uid}', 0)` : `askSuspendUser('${u.uid}')`}" class="px-2.5 py-1.5 rounded-lg bg-amber-500 text-white font-black cursor-pointer text-[11px]"><i class="fa-solid fa-pause"></i> ${st.k === 'suspended' ? 'إلغاء الإيقاف' : 'إيقاف مؤقت'}</button>
+                    <button type="button" onclick="deleteUserAccount('${u.uid}')" class="px-2.5 py-1.5 rounded-lg bg-slate-800 text-white font-black cursor-pointer text-[11px]"><i class="fa-solid fa-trash"></i> حذف نهائي</button>`;
+                return `<div class="rounded-2xl border border-slate-200 bg-slate-50 p-3 space-y-1.5">
+                    <div class="flex items-start justify-between gap-2">
+                        <div class="min-w-0"><div class="font-black text-slate-900 text-[13px]">${escHtml(nm)}</div>
+                        <div class="text-[11px] text-slate-500 font-bold">${escHtml(role)}${meta ? ' — ' + escHtml(meta) : ''}</div>
+                        <div class="text-[10.5px] text-slate-500 font-mono" dir="ltr">رقم الدخول: ${escHtml(loginCodeOf(u.accId))}</div></div>
+                        <span class="px-2 py-0.5 rounded-full text-[10.5px] font-black ${st.c} whitespace-nowrap">${escHtml(st.t)}</span>
+                    </div>
+                    <div class="flex flex-wrap gap-1.5" id="ua_${u.uid}">${acts}</div>
+                </div>`;
+            }).join('') || '<div class="text-center text-slate-500 font-bold py-4">لا يوجد مستخدمون.</div>';
+        }
+        function findManaged(uid) { return managedUsers.find(x => x.uid === uid); }
+        async function writeUserStatus(uid, patch, logTxt) {
+            const u = findManaged(uid); if (!u || !MANAGED_ROLES.includes(String(u.roleKey))) return;
+            try {
+                await firestoreDb.collection('users').doc(uid).update(patch);
+                Object.assign(u, patch);
+                logCyberEvent(logTxt + ': ' + (u.name || (staffAccountsDirectory[u.accId] || {}).arName || u.accId));
+                renderManagedUsers();
+                showToast('تم تنفيذ الإجراء ✓', '', 'fa-check', 'teal');
+            } catch (e) { showToast('تعذّر تنفيذ الإجراء', (e && e.code) || '', 'fa-triangle-exclamation', 'rose'); }
+        }
+        function setUserBlocked(uid, block) {
+            const u = findManaged(uid); if (!u) return;
+            if (block && !confirm('حظر هذا المستخدم؟ سيُمنع من الدخول فوراً.')) return;
+            writeUserStatus(uid, { status: block ? 'blocked' : 'active', suspendedUntilMs: 0 }, block ? 'حظر مستخدم' : 'رفع حظر مستخدم');
+        }
+        function askSuspendUser(uid) {
+            const box = document.getElementById('ua_' + uid); if (!box) return;
+            box.innerHTML = '<span class="text-[11px] font-black text-slate-700">مدة الإيقاف:</span>' +
+                [['يوم', 1], ['3 أيام', 3], ['أسبوع', 7], ['شهر', 30]].map(x => `<button type="button" onclick="suspendUser('${uid}', ${x[1]})" class="px-2.5 py-1.5 rounded-lg bg-amber-500 text-white font-black cursor-pointer text-[11px]">${x[0]}</button>`).join('') +
+                `<button type="button" onclick="renderManagedUsers()" class="px-2.5 py-1.5 rounded-lg bg-slate-300 text-slate-800 font-black cursor-pointer text-[11px]">إلغاء</button>`;
+        }
+        function suspendUser(uid, days) {
+            const until = days ? Date.now() + days * 86400000 : 0;
+            writeUserStatus(uid, { status: 'active', suspendedUntilMs: until }, days ? 'إيقاف حساب مؤقتاً (' + days + ' يوم)' : 'إلغاء إيقاف حساب');
+        }
+        async function deleteUserAccount(uid) {
+            const u = findManaged(uid); if (!u || !MANAGED_ROLES.includes(String(u.roleKey))) return;
+            const nm = u.name || (staffAccountsDirectory[u.accId] || {}).arName || u.accId;
+            if (!confirm('حذف حساب «' + nm + '» نهائياً؟ لا يمكن التراجع.')) return;
+            try {
+                await firestoreDb.collection('users').doc(uid).delete();
+                managedUsers = managedUsers.filter(x => x.uid !== uid);
+                logCyberEvent('حذف حساب مستخدم نهائياً: ' + nm);
+                renderManagedUsers();
+                showToast('تم حذف الحساب ✓', '', 'fa-check', 'teal');
+            } catch (e) { showToast('تعذّر حذف الحساب', (e && e.code) || '', 'fa-triangle-exclamation', 'rose'); }
+        }
+        async function createNewUser() {
+            if (!isDirectorSession() || !firestoreDb) return;
+            const g = id => ((document.getElementById(id) || {}).value || '').trim();
+            const name = g('nuName'), dept = g('nuDept'), job = g('nuJob'), role = g('nuRole'), pin = g('nuPin');
+            const out = document.getElementById('nuResult'); out.classList.remove('hidden');
+            if (name.length < 3 || !dept || !job) { out.textContent = '✗ أكمل الاسم والإدارة والمسمى الوظيفي.'; return; }
+            if (!/^\d{4}$/.test(pin)) { out.textContent = '✗ الرمز السري يجب أن يكون 4 أرقام.'; return; }
+            if (!MANAGED_ROLES.includes(role)) { out.textContent = '✗ صلاحية غير صالحة.'; return; }
+            const btn = document.getElementById('nuCreateBtn'); btn.disabled = true; out.textContent = 'جارٍ الإنشاء…';
+            try {
+                const secAuth = getProvisionAuth();
+                let cred = null, code = '';
+                for (let t = 0; t < 6 && !cred; t++) {
+                    const a = new Uint32Array(1); crypto.getRandomValues(a);
+                    code = String(20000 + (a[0] % 80000));
+                    try { cred = await secAuth.createUserWithEmailAndPassword(accountEmail('u' + code), accountPassword(pin)); }
+                    catch (e) { if (!(e && e.code === 'auth/email-already-in-use')) throw e; }
+                }
+                if (!cred) throw new Error('تعذّر توليد رقم مستخدم');
+                const doc = { accId: 'u' + code, roleKey: role, driverId: null, name: name, dept: dept, jobTitle: job, status: 'active', suspendedUntilMs: 0 };
+                await firestoreDb.collection('users').doc(cred.user.uid).set(doc);
+                await secAuth.signOut();
+                logCyberEvent('إنشاء مستخدم جديد: ' + name + ' — ' + ((permissionMatrix[role] || {}).arName || role));
+                out.textContent = '✓ تم إنشاء المستخدم\nالاسم: ' + name + '\nالإدارة: ' + dept + '\nالمسمى: ' + job + '\nرقم المستخدم: ' + code + '\nالرمز السري: ' + pin + '\n(سلّمهما له بشكل خاص — الرمز لا يظهر مرة أخرى)';
+                ['nuName', 'nuDept', 'nuJob'].forEach(i => { document.getElementById(i).value = ''; });
+                document.getElementById('nuPin').value = randomPin4();
+                loadManagedUsers();
+            } catch (e) {
+                out.textContent = '✗ ' + ((e && e.code) || (e && e.message) || 'error');
+            } finally { btn.disabled = false; }
+        }
+
         function provLog(t) { const lg = document.getElementById('provisionLog'); if (lg) lg.textContent += t + '\n'; }
         function copyProvisionPins() {
             const lines = DUTY_MANAGER_IDS.map(id => {
@@ -3348,7 +3505,8 @@
             if (pin.length < 4) return;
 
             const chosenAccountEl = document.getElementById('staffAccountSelect');
-            const chosenAccId = chosenAccountEl ? chosenAccountEl.value : 'director_yousef';
+            const chosenAccId = resolveAccId(chosenAccountEl ? chosenAccountEl.value : '');
+            if (!chosenAccId) { enteredPinBuffer = ''; updatePinDotsAndInput(); showGateError(currentLang === 'ar' ? 'أدخل رقم المستخدم أولاً.' : 'Enter your user number first.'); return; }
 
             if (!isFirebaseCloudActive || !firebaseAuth) {
                 enteredPinBuffer = '';
@@ -3366,6 +3524,15 @@
                 const profSnap = await firestoreDb.collection('users').doc(cred.user.uid).get();
                 const prof = profSnap.exists ? profSnap.data() : null;
                 const perm = prof ? permissionMatrix[prof.roleKey] : null;
+                if (prof && (prof.status === 'blocked' || (Number(prof.suspendedUntilMs) || 0) > Date.now())) {
+                    await firebaseAuth.signOut();
+                    enteredPinBuffer = '';
+                    updatePinDotsAndInput();
+                    showGateError(prof.status === 'blocked'
+                        ? (currentLang === 'ar' ? 'هذا الحساب محظور. راجع مدير الإدارة.' : 'This account is blocked. Contact the Director.')
+                        : (currentLang === 'ar' ? 'هذا الحساب موقوف مؤقتاً حتى ' + fmtDateTime(prof.suspendedUntilMs) : 'This account is temporarily suspended.'));
+                    return;
+                }
                 if (!perm) {
                     await firebaseAuth.signOut();
                     enteredPinBuffer = '';
@@ -3379,8 +3546,8 @@
                 const dirProfile = staffAccountsDirectory[chosenAccId] || {};
                 activeStaffMember = {
                     id: chosenAccId,
-                    arName: dirProfile.arName || perm.arName,
-                    enName: dirProfile.enName || perm.enName,
+                    arName: dirProfile.arName || (prof.name ? prof.name + (prof.jobTitle ? ' (' + prof.jobTitle + ')' : '') : perm.arName),
+                    enName: dirProfile.enName || prof.name || perm.enName,
                     roleKey: resolvedRoleKey,
                     driverId: prof.driverId || dirProfile.driverId || null
                 };
@@ -3397,6 +3564,7 @@
                 startCloudListeners(resolvedRoleKey);
                 restoreMapsPreference();
                 startPresenceAndLogin().catch(() => {});
+                startSelfStatusWatch();
 
                 document.getElementById('securityLockGate').classList.add('hidden');
                 document.getElementById('appMainHeader').classList.remove('hidden');
@@ -3440,7 +3608,26 @@
             }
         }
 
+        let selfWatchUnsub = null;
+        function startSelfStatusWatch() {
+            try { if (selfWatchUnsub) selfWatchUnsub(); } catch (e) {}
+            selfWatchUnsub = null;
+            try {
+                const u = firebaseAuth && firebaseAuth.currentUser; if (!u) return;
+                selfWatchUnsub = firestoreDb.collection('users').doc(u.uid).onSnapshot(snap => {
+                    if (!isAuthenticated) return;
+                    const d = snap.exists ? snap.data() : null;
+                    if (!d || d.status === 'blocked' || (Number(d.suspendedUntilMs) || 0) > Date.now()) {
+                        showToast(!d ? 'تم إلغاء هذا الحساب' : (d.status === 'blocked' ? 'تم حظر حسابك' : 'تم إيقاف حسابك مؤقتاً'), 'راجع مدير الإدارة', 'fa-ban', 'rose');
+                        logoutAllUsers();
+                    }
+                }, () => {});
+            } catch (e) {}
+        }
+
         function logoutAllUsers() {
+            try { if (selfWatchUnsub) selfWatchUnsub(); } catch (e) {}
+            selfWatchUnsub = null;
             if (isAuthenticated && activeStaffMember) {
                 logCyberEvent(`تسجيل خروج آمن للموظف: ${activeStaffMember.arName}`);
             }
@@ -3450,7 +3637,7 @@
             if (offlineP && offlineP.then) { offlineP.then(doSignOut, doSignOut); setTimeout(doSignOut, 3000); } else { doSignOut(); }
             presenceDocs = {}; feedbackDocs = []; fleetHealth = {};
             setDisplay('provisionModal', false);
-            ['presenceModal', 'guestbookModal', 'guideModal'].forEach(id => setDisplay(id, false));
+            ['presenceModal', 'guestbookModal', 'guideModal', 'usersModal'].forEach(id => setDisplay(id, false));
             const mp = document.getElementById('moreMenuPanel'); if (mp) mp.classList.add('hidden');
             // لا تبقى أي بيانات طلبات أو أرقام في الذاكرة بعد الخروج
             requests = [];
@@ -4606,20 +4793,6 @@
         function closeIntroModal() { document.getElementById('introModal').classList.add('hidden'); document.getElementById('introModal').classList.remove('flex'); }
         function toggleMoreInfoFooter() { document.getElementById('moreInfoContentBox').classList.toggle('hidden'); document.getElementById('moreInfoChevron').classList.toggle('rotate-180'); }
 
-        function downloadStandaloneApp() {
-            try {
-                const blob = new Blob(['<!DOCTYPE html>\n' + document.documentElement.outerHTML], { type: 'text/html;charset=utf-8' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'KAH-Mobility-Management-System.html';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-                showToast(currentLang === 'ar' ? 'تم تحميل ملف النظام بنجاح ✓' : 'System File Downloaded ✓', '', 'fa-download', 'teal');
-            } catch (e) {}
-        }
 
         function shareSystemLink() {
             const shareData = {
