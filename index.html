@@ -276,7 +276,19 @@
             .no-print { display: none !important; }
             #printReportHeader { display: block !important; }
         }
-    </style>
+    
+        .kah-tribute{position:relative;margin:14px auto 4px;max-width:380px;padding:14px 16px 13px;border-radius:20px;text-align:center;color:#f8e9bd;
+            background:linear-gradient(145deg,rgba(40,28,6,.92),rgba(14,18,32,.95) 55%,rgba(40,28,6,.92));border:1px solid rgba(251,191,36,.55);
+            box-shadow:0 10px 30px rgba(0,0,0,.45),inset 0 0 0 1px rgba(255,236,170,.08)}
+        .kah-tribute .kt-ornament{display:flex;align-items:center;gap:10px;justify-content:center;color:#fbbf24;font-size:15px;margin-bottom:4px}
+        .kah-tribute .kt-ornament span{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(251,191,36,.7),transparent)}
+        .kah-tribute .kt-title{font-weight:900;font-size:15px;letter-spacing:.5px;color:#fcd34d}
+        .kah-tribute .kt-text{margin:6px 0 8px;font-size:11.5px;line-height:1.9;font-weight:700;color:#e7dcc0}
+        .kah-tribute .kt-name{display:inline-block;font-weight:900;font-size:14px;color:#1c1303;padding:4px 16px;border-radius:999px;background:linear-gradient(90deg,#f59e0b,#fde68a,#f59e0b)}
+        body.theme-sugar .kah-tribute{color:#5b3d00;background:linear-gradient(145deg,#fff7df,#fffdf5 55%,#fff7df);border-color:#e0b24a}
+        body.theme-sugar .kah-tribute .kt-title{color:#9a6a00}
+        body.theme-sugar .kah-tribute .kt-text{color:#6b5320}
+</style>
 </head>
 <body id="appBodyThemeRoot" class="antialiased min-h-screen flex flex-col justify-between">
 <div id="loadFailMsg" style="display:none;position:fixed;top:0;right:0;bottom:0;left:0;z-index:99999;background:#020813;color:#fff;font-family:sans-serif;text-align:center;padding:32px;direction:rtl"><div style="margin-top:30vh;font-size:18px;font-weight:bold">تعذّر تحميل النظام</div><div style="margin-top:12px;font-size:14px;opacity:.8">تأكد من اتصال الإنترنت ثم أعد فتح الرابط، أو افتحه من Safari مباشرة.</div><button onclick="location.reload()" style="margin-top:20px;padding:10px 22px;border-radius:12px;border:0;background:#06b6d4;color:#fff;font-weight:bold">إعادة المحاولة</button></div>
@@ -330,7 +342,7 @@
                 <button type="button" onclick="cycleAppColorTheme()" class="bg-slate-900/90 hover:bg-slate-800 text-amber-300 border border-amber-400/40 px-2.5 py-1.5 rounded-xl text-[10.5px] font-black flex items-center gap-1 shadow cursor-pointer transition" title="تغيير سمة الألوان">
                     <i class="fa-solid fa-palette"></i>
                 </button>
-                <button type="button" id="lockLangBtn" title="Language / اللغة" style="min-width:84px;justify-content:center" onclick="toggleLanguage()" class="bg-slate-900/90 hover:bg-slate-800 text-cyan-300 border border-cyan-500/40 px-3 py-1.5 rounded-xl text-[11px] font-black flex items-center gap-1.5 shadow cursor-pointer transition">
+                <button type="button" id="lockLangBtn" onclick="toggleLanguage()" class="bg-slate-900/90 hover:bg-slate-800 text-cyan-300 border border-cyan-500/40 px-3 py-1.5 rounded-xl text-[11px] font-black flex items-center gap-1.5 shadow cursor-pointer transition" style="min-width:84px;justify-content:center">
                     <i class="fa-solid fa-globe text-amber-400"></i>
                     <span id="lockLangToggleText">English</span>
                 </button>
@@ -340,10 +352,6 @@
         <!-- Lock Gate Card -->
         <div class="w-full max-w-[380px] bg-slate-900/95 backdrop-blur-2xl border border-cyan-500/35 rounded-[30px] p-5 sm:p-6 shadow-[0_24px_65px_rgba(0,0,0,0.88)] text-center relative my-auto">
             
-            <div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:10px">
-                <button type="button" onclick="toggleLanguage()" style="display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:12px;border:1px solid rgba(34,211,238,.5);background:rgba(15,23,42,.9);color:#67e8f9;font-weight:900;font-size:12px"><i class="fa-solid fa-globe" style="color:#fbbf24"></i><span id="lockLangToggleText2">English</span></button>
-                <button type="button" onclick="cycleAppColorTheme()" style="display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:12px;border:1px solid rgba(251,191,36,.5);background:rgba(15,23,42,.9);color:#fcd34d;font-weight:900;font-size:12px"><i class="fa-solid fa-palette"></i></button>
-            </div>
             <!-- OFFICIAL APP ICON -->
             <div class="relative w-24 h-24 mx-auto mb-3 group cursor-pointer" onclick="openAppIconPreviewModal()" title="أيقونة التطبيق الرسمية — اضغط للمعاينة أو التخصيص">
                 <img id="lockScreenAppIconImg" src="" alt="أيقونة إدارة الحركة والمواصلات" class="w-full h-full app-icon-exact icon-pulse-glow">
@@ -417,6 +425,12 @@
                 <span id="uiLockDeptFooter" class="text-amber-400 font-extrabold">إدارة الحركة والمواصلات</span>
             </div>
         </div>
+        <div class="kah-tribute" role="note">
+    <div class="kt-ornament"><span></span><i class="fa-solid fa-award"></i><span></span></div>
+    <div class="kt-title kah-desc" data-ar="شكر وتقدير لمؤسس المنصة" data-en="Appreciation to the Platform Founder">شكر وتقدير لمؤسس المنصة</div>
+    <p class="kt-text kah-desc" data-ar="نتقدّم بخالص الشكر والتقدير لمؤسس «المنصة ومنظومة النقل الطبي اللوجستي الذكي» على رؤيته الطموحة وتخطيطه الاستراتيجي واحترافيته العالية في خدمة النقل الطبي بمستشفى الملك عبدالعزيز بجدة." data-en="With sincere thanks and appreciation to the founder of the “Smart Medical & Logistics Transport Platform” for his ambitious vision, strategic planning and high professionalism in serving medical transport at King Abdulaziz Hospital, Jeddah.">نتقدّم بخالص الشكر والتقدير لمؤسس «المنصة ومنظومة النقل الطبي اللوجستي الذكي» على رؤيته الطموحة وتخطيطه الاستراتيجي واحترافيته العالية في خدمة النقل الطبي بمستشفى الملك عبدالعزيز بجدة.</p>
+    <div class="kt-name kah-desc" data-ar="أ. فهد بن عطاالله القرشي" data-en="Mr. Fahad bin Atallah Al-Qurashi">أ. فهد بن عطاالله القرشي</div>
+</div>
     </div>
 
     <!-- ================================================================= -->
@@ -453,11 +467,6 @@
                         </div>
                     </div>
 
-                    <!-- System Introduction Button -->
-                    <button type="button" onclick="openIntroModal()" class="bg-slate-800/90 hover:bg-slate-700 text-amber-300 border border-amber-400/40 px-2.5 py-1.5 rounded-xl text-[11px] font-extrabold flex items-center gap-1.5 cursor-pointer transition shadow-sm">
-                        <i class="fa-solid fa-book-open-reader text-amber-400"></i>
-                        <span id="uiBtnIntro">مقدمة النظام</span>
-                    </button>
 
                     <button type="button" id="guestbookQuickBtn" style="display:none" onclick="openGuestbookModal()" class="items-center gap-1.5 bg-gradient-to-r from-amber-400 to-yellow-300 text-slate-950 px-3 py-1.5 rounded-xl text-[11px] font-black cursor-pointer shadow">
                         <i class="fa-solid fa-feather-pointed"></i><span>اكتب رأيك</span>
@@ -482,55 +491,52 @@
                     <!-- Cyber Security Shield Button -->
                     <button type="button" onclick="openCyberSecurityModal()" class="bg-slate-800/90 hover:bg-slate-700 text-emerald-300 border border-emerald-500/40 px-2.5 py-1.5 rounded-xl text-[11px] font-extrabold flex items-center gap-1.5 cursor-pointer transition shadow-sm" title="درع الحماية والأمن السيبراني">
                         <i class="fa-solid fa-shield-halved text-emerald-400"></i>
-                        <span id="uiBtnCyber">الحماية</span>
+                        <span class="flex flex-col leading-tight text-right"><span id="uiBtnCyber">الحماية</span><span class="kah-desc text-[9px] opacity-75 font-semibold" data-ar="حالة الحماية والتشفير" data-en="Security & encryption status">حالة الحماية والتشفير</span></span>
                     </button>
 
                     <!-- Technical Support Button -->
                     <button type="button" id="headerSupportBtn" onclick="openSupportModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-2.5 py-1.5 rounded-xl text-[11px] font-extrabold flex items-center gap-1.5 cursor-pointer transition shadow-sm">
                         <i class="fa-solid fa-headset"></i>
-                        <span id="uiBtnSupport">الدعم الفني</span>
+                        <span class="flex flex-col leading-tight text-right"><span id="uiBtnSupport">الدعم الفني</span><span class="kah-desc text-[9px] opacity-75 font-semibold" data-ar="أرسل مشكلة أو اقتراحاً للمدير" data-en="Report an issue to the Director">أرسل مشكلة أو اقتراحاً للمدير</span></span>
                     </button>
 
                     <!-- Complaints & Support Inbox (Director & Assistant Only) -->
                     <button type="button" onclick="openInboxModal()" id="headerInboxBtn" class="hidden relative bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-400/40 px-2.5 py-1.5 rounded-xl text-[11px] font-extrabold items-center gap-1.5 cursor-pointer transition">
                         <i class="fa-solid fa-envelope-open-text text-amber-400"></i>
-                        <span id="uiBtnInbox">بريد الشكاوى</span>
+                        <span class="flex flex-col leading-tight text-right"><span id="uiBtnInbox">بريد الشكاوى</span><span class="kah-desc text-[9px] opacity-75 font-semibold" data-ar="رسائل الدعم الواردة" data-en="Incoming support messages">رسائل الدعم الواردة</span></span>
                         <span id="headerInboxCount" class="bg-rose-600 text-white text-[10px] font-black px-1.5 rounded-full">0</span>
                     </button>
 
                     <!-- Color Theme Switcher Button -->
                     <button type="button" onclick="cycleAppColorTheme()" class="bg-slate-800/90 hover:bg-slate-700 text-amber-300 border border-amber-400/40 px-2.5 py-1.5 rounded-xl text-[11px] font-extrabold flex items-center gap-1.5 cursor-pointer transition shadow-sm">
                         <i class="fa-solid fa-palette text-amber-400"></i>
-                        <span id="uiThemeBtnText">سمة الألوان</span>
+                        <span class="flex flex-col leading-tight text-right"><span id="uiThemeBtnText">سمة الألوان</span><span class="kah-desc text-[9px] opacity-75 font-semibold" data-ar="تغيير مظهر ألوان النظام" data-en="Change the app colors">تغيير مظهر ألوان النظام</span></span>
                     </button>
 
                     <!-- Language Switcher Button -->
                     <button type="button" onclick="toggleLanguage()" class="bg-slate-800/90 hover:bg-slate-700 text-cyan-300 border border-cyan-500/40 px-2.5 py-1.5 rounded-xl text-[11px] font-black flex items-center gap-1.5 cursor-pointer transition shadow-sm">
                         <i class="fa-solid fa-globe text-amber-400"></i>
-                        <span id="headerLangToggleText">English</span>
+                        <span class="flex flex-col leading-tight text-right"><span id="headerLangToggleText">English</span><span class="kah-desc text-[9px] opacity-75 font-semibold" data-ar="تبديل لغة الواجهة" data-en="Switch interface language">تبديل لغة الواجهة</span></span>
                     </button>
 
                     
-                    <button type="button" id="menuPhotoBtn" onclick="openRolePhotoPicker(activePermissionKey); toggleMoreMenu(false)" class="bg-amber-400 hover:bg-amber-300 text-slate-950 px-2.5 py-1.5 rounded-xl text-[11px] font-black flex items-center gap-1.5 cursor-pointer transition shadow-sm">📷 <span>صورة المستخدم</span></button>
+                    <button type="button" id="menuPhotoBtn" onclick="openRolePhotoPicker(activePermissionKey); toggleMoreMenu(false)" class="bg-amber-400 hover:bg-amber-300 text-slate-950 px-2.5 py-1.5 rounded-xl text-[11px] font-black flex items-center gap-1.5 cursor-pointer transition shadow-sm">📷 <span class="flex flex-col leading-tight text-right"><span>صورة المستخدم</span><span class="kah-desc text-[9px] opacity-75 font-semibold" data-ar="صورتك الشخصية في النظام" data-en="Your profile photo">صورتك الشخصية في النظام</span></span></button>
                     <button type="button" id="menuPresenceBtn" style="display:none" onclick="openPresenceModal(); toggleMoreMenu(false)" class="items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white px-2.5 py-1.5 rounded-xl text-[11px] font-black cursor-pointer transition shadow-sm">
-                        <i class="fa-solid fa-user-clock"></i><span>المتصلون والإحصائيات</span>
+                        <i class="fa-solid fa-user-clock"></i><span class="flex flex-col leading-tight text-right"><span>المتصلون والإحصائيات</span><span class="kah-desc text-[9px] opacity-75 font-semibold" data-ar="من يستخدم النظام الآن وإحصائيات الدخول" data-en="Who is online + login stats">من يستخدم النظام الآن وإحصائيات الدخول</span></span>
                         <span id="menuPresenceCount" class="bg-white text-emerald-700 text-[10px] font-black px-1.5 rounded-full">0</span>
                     </button>
                     <button type="button" id="menuGuestbookBtn" style="display:none" onclick="openGuestbookModal(); toggleMoreMenu(false)" class="items-center gap-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 px-2.5 py-1.5 rounded-xl text-[11px] font-black cursor-pointer transition shadow-sm">
-                        <i class="fa-solid fa-feather-pointed"></i><span>سجل الزوار والآراء</span>
+                        <i class="fa-solid fa-feather-pointed"></i><span class="flex flex-col leading-tight text-right"><span>سجل الزوار والآراء</span><span class="kah-desc text-[9px] opacity-75 font-semibold" data-ar="آراء الزوار المعتمدة" data-en="Approved visitor feedback">آراء الزوار المعتمدة</span></span>
                         <span id="menuGuestbookPending" style="display:none" class="bg-rose-600 text-white text-[10px] font-black px-1.5 rounded-full">0</span>
                     </button>
                     <button type="button" id="menuMapBtn" style="display:none" onclick="toggleMapsVisibility()" class="items-center gap-1.5 bg-sky-700 hover:bg-sky-600 text-white px-2.5 py-1.5 rounded-xl text-[11px] font-black cursor-pointer transition shadow-sm">
-                        <i class="fa-solid fa-map-location-dot"></i><span id="menuMapBtnText">إخفاء الخريطة</span>
+                        <i class="fa-solid fa-map-location-dot"></i><span class="flex flex-col leading-tight text-right"><span id="menuMapBtnText">إخفاء الخريطة</span><span class="kah-desc text-[9px] opacity-75 font-semibold" data-ar="إظهار أو إخفاء خريطة التتبع" data-en="Show/hide the tracking map">إظهار أو إخفاء خريطة التتبع</span></span>
                     </button>
                     <button type="button" id="menuGuideBtn" onclick="openGuideModal(); toggleMoreMenu(false)" class="flex items-center gap-1.5 bg-violet-700 hover:bg-violet-600 text-white px-2.5 py-1.5 rounded-xl text-[11px] font-black cursor-pointer transition shadow-sm">
-                        <i class="fa-solid fa-circle-info"></i><span>شرح النظام وطريقة التثبيت</span>
+                        <i class="fa-solid fa-circle-info"></i><span class="flex flex-col leading-tight text-right"><span>شرح النظام وطريقة التثبيت</span><span class="kah-desc text-[9px] opacity-75 font-semibold" data-ar="دليل الاستخدام وطريقة التثبيت" data-en="User guide & install steps">دليل الاستخدام وطريقة التثبيت</span></span>
                     </button>
                     <button type="button" id="menuUsersBtn" style="display:none" onclick="openUsersModal(); toggleMoreMenu(false)" class="items-center gap-1.5 bg-indigo-700 hover:bg-indigo-600 text-white px-2.5 py-1.5 rounded-xl text-[11px] font-black cursor-pointer transition shadow-sm">
-                        <i class="fa-solid fa-users-gear"></i><span>إدارة المستخدمين</span>
-                    </button>
-                    <button type="button" id="menuProvisionBtn" style="display:none" onclick="openProvisionModal(); toggleMoreMenu(false)" class="items-center gap-1.5 bg-sky-700 hover:bg-sky-600 text-white px-2.5 py-1.5 rounded-xl text-[11px] font-black cursor-pointer transition shadow-sm">
-                        <i class="fa-solid fa-user-plus"></i><span>إنشاء حسابات المدراء المناوبين</span>
+                        <i class="fa-solid fa-users-gear"></i><span class="flex flex-col leading-tight text-right"><span>إدارة المستخدمين</span><span class="kah-desc text-[9px] opacity-75 font-semibold" data-ar="إنشاء وحظر وحذف الحسابات" data-en="Create, block or delete accounts">إنشاء وحظر وحذف الحسابات</span></span>
                     </button>
                 </div>
                 <!-- Universal Ringtone (Tone 1 / Tone 2) & Volume Selector (High / Medium / Low) for All Users -->
@@ -572,11 +578,7 @@
 
                 
                 <div class="flex items-center flex-wrap gap-2">
-                    <button type="button" onclick="testIncomingToneSample()" class="bg-slate-800/90 hover:bg-slate-700 text-cyan-300 border border-cyan-500/40 text-xs font-black px-3.5 py-2.5 rounded-xl flex items-center gap-1.5 cursor-pointer transition">
-                        <i class="fa-solid fa-volume-high text-amber-400"></i>
-                        <span id="uiBtnTestTone">سماع نغمة الطلب</span>
-                    </button>
-                    <!-- Director & Assistant Only: Wipe All Trial Data Before Production Launch -->
+                                        <!-- Director & Assistant Only: Wipe All Trial Data Before Production Launch -->
                     <div id="directorResetBox" class="hidden flex flex-wrap items-center gap-2">
                         <button type="button" onclick="resetAllRequestsByDirector()" class="bg-rose-600 hover:bg-rose-500 text-white text-xs font-black px-4 py-2.5 rounded-xl shadow cursor-pointer flex items-center gap-1.5 transition">
                             <i class="fa-solid fa-trash-can"></i>
@@ -906,8 +908,8 @@
                             <i class="fa-solid fa-circle-info"></i>
                         </div>
                         <div class="text-right">
-                            <div id="uiMoreInfoTitle" class="font-black text-xs sm:text-sm text-white">لمزيد من المعلومات (التعليمات • تحميل النظام • المشاركة وتحميل صورة المستخدم من الجهاز)</div>
-                            <div id="uiMoreInfoSub" class="text-[11px] text-slate-300">اضغط هنا لعرض دليل الاستخدام وأدوات التحميل والمشاركة ورفع الصور</div>
+                            <div id="uiMoreInfoTitle" class="font-black text-xs sm:text-sm text-white">لمزيد من المعلومات (نبذة المنصة • الأيقونة • المشاركة)</div>
+                            <div id="uiMoreInfoSub" class="text-[11px] text-slate-300">اضغط لقراءة نبذة المنصة وكلمات القيادة ومعاينة الأيقونة ومشاركة الرابط</div>
                         </div>
                     </div>
                     <i id="moreInfoChevron" class="fa-solid fa-chevron-down text-amber-300 transition-transform duration-200"></i>
@@ -915,12 +917,10 @@
 
                 <div id="moreInfoContentBox" class="hidden p-5 space-y-4 text-xs">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="md:col-span-3 p-4 rounded-2xl bg-violet-50 border border-violet-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                            <div>
-                                <div class="font-black text-violet-950 text-sm flex items-center gap-1.5"><i class="fa-solid fa-circle-info text-violet-600"></i><span>شرح النظام بالكامل وطريقة تثبيته على الجوال</span></div>
-                                <p class="text-violet-900 mt-1 leading-relaxed">دليل مبسّط: الأدوار، إنشاء الطلب وقبوله، التنبيهات، وتثبيت التطبيق على الآيفون والأندرويد بزر المشاركة.</p>
-                            </div>
-                            <button type="button" onclick="openGuideModal()" class="py-2.5 px-4 rounded-xl bg-violet-700 hover:bg-violet-600 text-white font-black flex items-center justify-center gap-1.5 cursor-pointer shrink-0"><i class="fa-solid fa-book-open"></i><span>فتح الدليل</span></button>
+                        <div class="md:col-span-2 p-4 rounded-2xl border space-y-2" style="background:linear-gradient(145deg,#fffaf0,#fff);border-color:#e0b24a">
+                            <div class="font-black text-sm flex items-center gap-1.5" style="color:#9a6a00"><i class="fa-solid fa-landmark"></i><span>نبذة عن المنصة وكلمات القيادة</span></div>
+                            <p class="leading-relaxed" style="color:#6b5320">مقدمة منظومة النقل الطبي واللوجستي الذكي، وكلمة مدير إدارة الحركة والمواصلات، وكلمة مؤسس المنصة.</p>
+                            <button type="button" onclick="openIntroModal()" class="w-full py-2.5 rounded-xl text-slate-950 font-black flex items-center justify-center gap-2 shadow cursor-pointer" style="background:linear-gradient(90deg,#f59e0b,#fde68a,#f59e0b)"><i class="fa-solid fa-book-open-reader"></i><span>قراءة النبذة</span></button>
                         </div>
                         <div class="p-4 rounded-2xl bg-cyan-50/70 border border-cyan-200 space-y-2">
                             <div class="font-black text-cyan-950 text-sm flex items-center gap-1.5">
@@ -960,6 +960,12 @@
     <!-- ================================================================= -->
     <footer id="appMainFooter" class="hidden bg-slate-950 text-slate-400 border-t border-slate-800 py-3.5 px-4 sm:px-8 text-[11px] no-print">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+            <div class="w-full sm:order-3 sm:basis-full"><div class="kah-tribute" role="note">
+    <div class="kt-ornament"><span></span><i class="fa-solid fa-award"></i><span></span></div>
+    <div class="kt-title kah-desc" data-ar="شكر وتقدير لمؤسس المنصة" data-en="Appreciation to the Platform Founder">شكر وتقدير لمؤسس المنصة</div>
+    <p class="kt-text kah-desc" data-ar="نتقدّم بخالص الشكر والتقدير لمؤسس «المنصة ومنظومة النقل الطبي اللوجستي الذكي» على رؤيته الطموحة وتخطيطه الاستراتيجي واحترافيته العالية في خدمة النقل الطبي بمستشفى الملك عبدالعزيز بجدة." data-en="With sincere thanks and appreciation to the founder of the “Smart Medical & Logistics Transport Platform” for his ambitious vision, strategic planning and high professionalism in serving medical transport at King Abdulaziz Hospital, Jeddah.">نتقدّم بخالص الشكر والتقدير لمؤسس «المنصة ومنظومة النقل الطبي اللوجستي الذكي» على رؤيته الطموحة وتخطيطه الاستراتيجي واحترافيته العالية في خدمة النقل الطبي بمستشفى الملك عبدالعزيز بجدة.</p>
+    <div class="kt-name kah-desc" data-ar="أ. فهد بن عطاالله القرشي" data-en="Mr. Fahad bin Atallah Al-Qurashi">أ. فهد بن عطاالله القرشي</div>
+</div></div>
             <div id="uiFooterRights" class="font-bold text-slate-400">حقوق النشر والملكية محفوظة © 2026 — تجمع جدة الصحي الأول (مستشفى الملك عبدالعزيز بجدة)</div>
             <div id="uiFooterDept" class="font-extrabold text-amber-400 tracking-wide">إدارة الحركة والمواصلات</div>
         </div>
@@ -1070,6 +1076,11 @@
                 <i class="fa-solid fa-car-side text-xl"></i>
                 <span id="uiRadarBtnAccept">قبول الطلب والانطلاق الآن ✓</span>
             </button>
+            <div id="radarDeclineBox" class="hidden rounded-2xl bg-slate-900 border border-rose-500/50 p-3 space-y-2 text-right">
+                <label id="radarDeclineLabel" for="radarDeclineReason" class="block text-xs font-black text-rose-300">اشرح باختصار سبب الرفض (يصل لمشرف وحدة السائقين):</label>
+                <textarea id="radarDeclineReason" rows="2" maxlength="200" class="w-full rounded-xl bg-slate-950 border border-slate-700 focus:border-rose-400 px-3 py-2 text-xs font-bold text-white focus:outline-none" placeholder="مثال: السيارة معطلة / خارج الوردية / في مهمة أخرى"></textarea>
+                <div id="radarDeclineErr" class="hidden text-[11px] font-black text-amber-300"></div>
+            </div>
             <button type="button" onclick="declineOrderFromRadar()" class="w-full py-3 px-4 rounded-2xl bg-slate-900 hover:bg-rose-950 text-rose-300 border border-rose-500/40 font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer">
                 <i class="fa-solid fa-xmark"></i>
                 <span id="uiRadarBtnDecline">رفض / اعتذار (توجيه لسائق آخر)</span>
@@ -1173,30 +1184,6 @@
     <!-- ================================================================= -->
     <!-- MODAL: شرح النظام وطريقة التثبيت                                   -->
     <!-- ================================================================= -->
-    <div id="provisionModal" style="display:none" class="fixed inset-0 z-[176] bg-slate-950/80 backdrop-blur-sm items-center justify-center p-3 overflow-y-auto no-print">
-        <div class="bg-white rounded-3xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden my-auto text-slate-900">
-            <div class="luxury-Command-card text-white px-5 py-4 flex items-center justify-between">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-10 h-10 rounded-xl bg-sky-500/25 border border-sky-300/40 flex items-center justify-center text-sky-200"><i class="fa-solid fa-user-plus"></i></div>
-                    <div>
-                        <h3 class="font-black text-sm sm:text-base">حسابات المدراء المناوبين</h3>
-                        <p class="text-[11px] text-slate-300">صلاحيتهم: بوابة الطوارئ — المدير المناوب</p>
-                    </div>
-                </div>
-                <button type="button" onclick="closeProvisionModal()" class="text-slate-300 hover:text-white text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="p-4 space-y-3 text-xs">
-                <p class="text-slate-600 font-bold leading-6">الرموز تُولَّد عشوائياً وتظهر هنا مرة واحدة فقط. سلّم كل مدير رمزه بشكل خاص، ويمكنك تغيير أي رمز قبل الإنشاء.</p>
-                <div id="provisionList" class="space-y-2"></div>
-                <div id="provisionLog" class="rounded-xl bg-slate-900 text-emerald-300 font-mono text-[11px] leading-6 p-3 min-h-[40px] whitespace-pre-wrap" dir="rtl"></div>
-            </div>
-            <div class="px-4 py-3 border-t border-slate-200 bg-slate-50 flex flex-wrap gap-2 justify-end">
-                <button type="button" onclick="copyProvisionPins()" class="px-4 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-black cursor-pointer flex items-center gap-1.5"><i class="fa-regular fa-copy"></i>نسخ الرموز</button>
-                <button type="button" id="provisionRunBtn" onclick="provisionDutyManagers()" class="px-4 py-2 rounded-xl bg-sky-700 hover:bg-sky-600 text-white text-xs font-black cursor-pointer flex items-center gap-1.5"><i class="fa-solid fa-check"></i>إنشاء الحسابات</button>
-            </div>
-        </div>
-    </div>
-
     <div id="usersModal" style="display:none" class="fixed inset-0 z-[177] bg-slate-950/80 backdrop-blur-sm items-center justify-center p-3 overflow-y-auto no-print">
         <div class="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-200 overflow-hidden my-auto text-slate-900">
             <div class="luxury-Command-card text-white px-5 py-4 flex items-center justify-between">
@@ -1250,7 +1237,6 @@
             </div>
             <div id="guideBody" class="p-4 space-y-2.5 max-h-[72vh] overflow-y-auto"></div>
             <div class="px-4 py-3 border-t border-slate-200 bg-slate-50 flex flex-wrap gap-2 justify-end">
-                <button type="button" onclick="shareSystemLink()" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black cursor-pointer flex items-center gap-1.5"><i class="fa-solid fa-share-from-square"></i>نسخ ومشاركة رابط النظام</button>
                 <button type="button" onclick="closeGuideModal()" class="px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-black cursor-pointer">إغلاق</button>
             </div>
         </div>
@@ -1393,12 +1379,14 @@
                         <p class="text-slate-600">فصل دقيق للصلاحيات برموز سرية مشفرة وصور مستخدمين مستقلة مع درع حماية سيبراني ضد المتطفلين.</p>
                     </div>
                 </div>
+                <div id="introLeadershipAr"><div style="border:1px solid #e0b24a;border-radius:16px;padding:12px 14px;margin:0 0 10px;background:linear-gradient(145deg,#fffaf0,#fff)"><div style="font-weight:900;color:#9a6a00;font-size:12.5px;margin-bottom:6px">كلمة مدير إدارة الحركة والمواصلات</div><p style="margin:0 0 8px">انطلاقاً من حرصنا الدائم على تطوير منظومة العمل والارتقاء بمستوى الخدمات اللوجستية، نواصل سعينا نحو تبني الحلول الرقمية المبتكرة التي ترفع من كفاءة الأداء وتضمن سرعة الاستجابة ودقة التنفيذ في جميع عمليات النقل الطبي.</p><p style="margin:0 0 8px">وبهذه المناسبة، أتقدم بخالص الشكر والتقدير للأستاذ فهد بن عطاالله القرشي، مؤسس «المنصة ومنظومة النقل الطبي اللوجستي الذكي»؛ وذلك على رؤيته الطموحة لتأسيس هذه المنظومة الإلكترونية المتكاملة لإدارة وتنظيم عمليات النقل الطبي واللوجستي بإدارة الحركة والمواصلات، وما أظهره من تخطيط استراتيجي واحترافية وكفاءة عالية في الأداء.</p><div style="text-align:left;margin-top:6px;font-weight:900;color:#1c1303">الأستاذ/ يوسف محمد خيري<div style="font-weight:700;font-size:11px;color:#6b5320">مدير إدارة الحركة والمواصلات</div></div></div><div style="border:1px solid #e0b24a;border-radius:16px;padding:12px 14px;margin:0 0 10px;background:linear-gradient(145deg,#fffaf0,#fff)"><div style="font-weight:900;color:#9a6a00;font-size:12.5px;margin-bottom:6px">كلمة المؤسس والمشرف العام على المنصة</div><p style="margin:0 0 8px">تُمثّل «المنصة ومنظومة النقل الطبي اللوجستي الذكي» خطوة نوعية نحو التحول الرقمي الشامل في إدارة وتنظيم عمليات النقل الطبي واللوجستي. لقد حرصنا عند تصميم هذه المنظومة الإلكترونية المتكاملة على توظيف أحدث التقنيات الذكية لرفع كفاءة التشغيل، وتسهيل إجراءات المتابعة، وضمان أعلى معايير الدقة والموثوقية.</p><p style="margin:0 0 8px">كما أتقدم بجزيل الشكر والامتنان لإدارة الحركة والمواصلات، ممثلةً بمديرها الأستاذ يوسف محمد خيري، على دعمهم اللامحدود وتعاونهم المثمر الذي كان له الأثر الأكبر في تحويل هذه الرؤية إلى واقع ملموس يخدم المنظومة الصحية بأعلى مستويات الجودة والاحترافية.</p><div style="text-align:left;margin-top:6px;font-weight:900;color:#1c1303">الأستاذ/ فهد بن عطاالله القرشي<div style="font-weight:700;font-size:11px;color:#6b5320">مؤسس المنصة والمشرف العام</div></div></div></div>
+                <div id="introLeadershipEn" class="hidden" dir="ltr" style="text-align:left"><div style="border:1px solid #e0b24a;border-radius:16px;padding:12px 14px;margin:0 0 10px;background:linear-gradient(145deg,#fffaf0,#fff)"><div style="font-weight:900;color:#9a6a00;font-size:12.5px;margin-bottom:6px">Message from the Director of Transport & Mobility</div><p style="margin:0 0 8px">In line with our constant commitment to developing our work system and raising the level of logistics services, we continue to adopt innovative digital solutions that improve performance, speed up response and ensure accuracy in all medical transport operations.</p><p style="margin:0 0 8px">On this occasion, I extend my sincere thanks and appreciation to Mr. Fahad bin Atallah Al-Qurashi, founder of the “Smart Medical & Logistics Transport Platform”, for his ambitious vision in establishing this integrated electronic system to manage and organize medical and logistics transport in the Transport & Mobility Department, and for the strategic planning, professionalism and high efficiency he has shown.</p><div style="text-align:left;margin-top:6px;font-weight:900;color:#1c1303">Mr. Yousef Mohammed Khairi<div style="font-weight:700;font-size:11px;color:#6b5320">Director, Transport & Mobility Department</div></div></div><div style="border:1px solid #e0b24a;border-radius:16px;padding:12px 14px;margin:0 0 10px;background:linear-gradient(145deg,#fffaf0,#fff)"><div style="font-weight:900;color:#9a6a00;font-size:12.5px;margin-bottom:6px">Message from the Founder & General Supervisor of the Platform</div><p style="margin:0 0 8px">The “Smart Medical & Logistics Transport Platform” represents a qualitative step toward comprehensive digital transformation in managing and organizing medical and logistics transport. In designing this integrated system we made sure to use the latest smart technologies to raise operating efficiency, simplify follow-up procedures and ensure the highest standards of accuracy and reliability.</p><p style="margin:0 0 8px">I also extend my deepest thanks and gratitude to the Transport & Mobility Department, represented by its director Mr. Yousef Mohammed Khairi, for their unlimited support and fruitful cooperation, which had the greatest impact in turning this vision into a tangible reality serving the health system with the highest levels of quality and professionalism.</p><div style="text-align:left;margin-top:6px;font-weight:900;color:#1c1303">Mr. Fahad bin Atallah Al-Qurashi<div style="font-weight:700;font-size:11px;color:#6b5320">Founder & General Supervisor</div></div></div></div>
                 <div class="pt-3 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-900 text-white p-4 rounded-2xl">
                     <div>
                         <div class="text-[11px] text-slate-400">الجهة المشرفة والمشغلة للنظام:</div>
                         <div class="text-xs sm:text-sm font-black text-amber-400">إدارة الحركة والمواصلات — مستشفى الملك عبدالعزيز بجدة</div>
                         <!-- Very small creator attribution ONLY inside Intro Modal as requested -->
-                        <div class="text-[8.5px] text-slate-400/75 font-medium mt-1">منشئ النظام: فهد بن عطاالله القرشي</div>
+                        <div class="text-[11px] text-amber-200 font-black mt-1">مؤسس المنصة والمشرف العام: أ. فهد بن عطاالله القرشي</div>
                     </div>
                     <button type="button" onclick="closeIntroModal()" class="px-5 py-2 rounded-xl bg-cyan-500 text-slate-950 font-black text-xs cursor-pointer shrink-0">إغلاق المقدمة</button>
                 </div>
@@ -1862,8 +1850,10 @@
                         cloudSyncedJson[data.id || doc.id] = stableJson(data);
                         if (data.status === 'pending') newestPending = data;
                     });
+                    const prevMap = {}; requests.forEach(r => { prevMap[r.id] = r.status; prevMap['d_' + r.id] = (r.declines || []).length; });
                     requests = cloudReqs;
                     if (isAuthenticated) {
+                        try { notifyRequesterIfNeeded(prevMap, cloudReqs); } catch (e) {}
                         renderAll();
                         // إغلاق التنبيه المفتوح إذا قبل الطلب سائق آخر
                         if (radarActiveReqId) {
@@ -2361,8 +2351,8 @@
                 thVehiclePlate: 'رقم اللوحة الرسمي (واضح)',
                 thVehicleStatus: 'حالة المركبة',
                 thVehicleHealth: 'حالة السيارة',
-                uiMoreInfoTitle: 'لمزيد من المعلومات (التعليمات • تحميل النظام • المشاركة وتحميل صورة المستخدم من الجهاز)',
-                uiMoreInfoSub: 'اضغط هنا لعرض دليل الاستخدام وأدوات التحميل والمشاركة ورفع الصور',
+                uiMoreInfoTitle: 'لمزيد من المعلومات (نبذة المنصة • الأيقونة • المشاركة)',
+                uiMoreInfoSub: 'اضغط لقراءة نبذة المنصة وكلمات القيادة ومعاينة الأيقونة ومشاركة الرابط',
                 uiFooterRights: 'حقوق النشر والملكية محفوظة © 2026 — تجمع جدة الصحي الأول (مستشفى الملك عبدالعزيز بجدة)',
                 uiFooterDept: 'إدارة الحركة والمواصلات',
                 uiRadarBadgeText: 'طلب توصيل وارد الآن',
@@ -2447,8 +2437,8 @@
                 thVehiclePlate: 'Official License Plate',
                 thVehicleStatus: 'Availability',
                 thVehicleHealth: 'Vehicle Condition',
-                uiMoreInfoTitle: 'More Information (Instructions • Download System • Share & Upload User Photo)',
-                uiMoreInfoSub: 'Click here to view user guide, download standalone file, share link, or upload photo',
+                uiMoreInfoTitle: 'More information (About • App icon • Share)',
+                uiMoreInfoSub: 'Tap to read about the platform and leadership messages, preview the icon and share the link',
                 uiFooterRights: 'Copyright © 2026 — Jeddah First Health Cluster (King Abdulaziz Hospital)',
                 uiFooterDept: 'Transportation & Mobility Management',
                 uiRadarBadgeText: 'Incoming Delivery Order Now',
@@ -2480,9 +2470,11 @@
             const l2 = document.getElementById('lockLangToggleText');
             if (l1) l1.textContent = nextToggleLabel;
             if (l2) l2.textContent = nextToggleLabel;
-            const l3 = document.getElementById('lockLangToggleText2'); if (l3) l3.textContent = nextToggleLabel;
+            try { applyInfoHints(); } catch (e) {}
+            document.querySelectorAll('.kah-desc').forEach(e => { e.textContent = e.getAttribute(currentLang === 'ar' ? 'data-ar' : 'data-en'); });
 
             renderAll();
+            try { applyFullLanguage(); } catch (e) {}
             showToast(
                 currentLang === 'ar' ? 'تم التبديل إلى اللغة العربية ✓' : 'Switched to English Mode ✓',
                 currentLang === 'ar' ? 'تم تعريب كافة القوائم والجداول والأيقونات.' : 'All menus, tables, and icons are now in English.',
@@ -2899,6 +2891,7 @@
 
         // ---------- شرح النظام وطريقة التثبيت ----------
         const GUIDE_AR = [
+            ['fa-route', 'مراحل الطلب والتقييم', '<b>1)</b> المرسل ينشئ الطلب فيرنّ بملء شاشة السائقين حتى يقبل أحدهم أو يرفض بسبب يصل لمشرف وحدة السائقين.<br><b>2)</b> السائق يضغط «الذهاب إلى جهة الاستلام» فتفتح الخريطة، ثم «تسجيل وصول» فيُشعَر طالب الخدمة ويبدأ عدّاد الانتظار.<br><b>3)</b> «الذهاب إلى جهة التسليم» تفتح الخريطة، وعند الوصول «وصول — انتهى الطلب».<br><b>4)</b> يقيّم السائق وطالب الخدمة بعضهما من 1 إلى 5 نجوم دون تعليق.'],
             ['fa-hospital', 'ما هو هذا النظام؟', 'منصة إدارة الحركة والمواصلات بمستشفى الملك عبدالعزيز بجدة (تجمع جدة الصحي الأول). تُنشأ فيها طلبات النقل (عينات، مستلزمات، مهام ميدانية)، فتصل فوراً لشاشات السائقين بنغمة تنبيه، ويتابعها المدير والمساعد لحظة بلحظة. الطلبات تحتوي المهمة والمكان فقط، دون أي بيانات مرضى.'],
             ['fa-users-gear', 'الأدوار والصلاحيات', '<b>المدير ومساعده:</b> صلاحية كاملة، رؤية كل ما يحدث، المتصلون والإحصائيات، اعتماد آراء الزوار، إخفاء الخريطة.<br><b>الطوارئ:</b> إنشاء ومتابعة وتقييم الطلبات.<br><b>السائق:</b> استقبال الطلب بملء الشاشة وقبوله.<br><b>مشرف السائقين / الأسطول:</b> متابعة السائقين والمركبات.<br><b>الإداري:</b> الإحصائيات والتقارير.<br><b>الزائر:</b> اطلاع فقط، ويكتب رأيه في سجل الزوار.'],
             ['fa-key', 'الدخول', 'اختر اسمك من القائمة، ثم أدخل رمزك السري (4 أرقام) واضغط «دخول». الرمز شخصي لكل حساب، فلا تشاركه. بعد 3 محاولات خاطئة يُقفل الدخول دقيقة.'],
@@ -2911,6 +2904,7 @@
             ['fa-shield-halved', 'الأمان والخصوصية', 'الدخول يتم عبر خادم آمن، والصلاحيات تُفرض على مستوى قاعدة البيانات نفسها. لا تُحفظ بيانات الطلبات على الجهاز بعد الخروج. سجل الدخول والمتصلون يراهما المدير ومساعده فقط.']
         ];
         const GUIDE_EN = [
+            ['fa-route', 'Order stages & rating', '<b>1)</b> The requester creates the order; it rings full-screen on drivers\' devices until one accepts, or declines with a reason sent to the drivers supervisor.<br><b>2)</b> The driver taps “Go to pickup” (opens maps), then “I have arrived” — the requester is notified and the waiting timer starts.<br><b>3)</b> “Go to destination” opens maps; on arrival tap “Arrived — order complete”.<br><b>4)</b> Driver and requester rate each other from 1 to 5 stars, no comments.'],
             ['fa-hospital', 'What is this system?', 'A transport & mobility platform for King Abdulaziz Hospital, Jeddah (Jeddah First Health Cluster). Requests (specimens, supplies, field tasks) reach drivers instantly with an alert tone while the Director and Assistant follow every step. Requests carry task and location only — no patient data.'],
             ['fa-users-gear', 'Roles', '<b>Director & Assistant:</b> full access, online users & stats, approve guest notes, hide map.<br><b>ER:</b> create/track/rate requests.<br><b>Driver:</b> receives full-screen alert and accepts.<br><b>Supervisors:</b> follow drivers and fleet.<br><b>Admin:</b> statistics.<br><b>Visitor:</b> read-only; can leave a note in the guestbook.'],
             ['fa-key', 'Sign in', 'Pick your name, enter your 4-digit PIN, tap Sign in. The PIN is personal. Three wrong attempts lock sign-in for one minute.'],
@@ -2938,7 +2932,6 @@
             const visitor = isAuthenticated && String(activePermissionKey) === '8090';
             setDisplay('menuPresenceBtn', dir, 'flex');
             setDisplay('menuMapBtn', dir, 'flex');
-            setDisplay('menuProvisionBtn', dir, 'flex');
             setDisplay('menuUsersBtn', dir, 'flex');
             setDisplay('menuGuestbookBtn', isAuthenticated, 'flex');
             setDisplay('guestbookQuickBtn', visitor, 'flex');
@@ -2994,7 +2987,6 @@
             }, err => reportCloudError(currentLang === 'ar' ? 'حالة السيارات' : 'Fleet condition', err)));
         }
 
-        const DUTY_MANAGER_IDS = ['er_manager_ali_alghamdi', 'er_manager_abdullah_albaqami', 'er_manager_ahmed_alsulami'];
         function randomPin4() {
             const a = new Uint32Array(1);
             let p;
@@ -3002,22 +2994,6 @@
             while (/^(\d)\1{3}$/.test(p) || p === '1234' || p === '4321' || p === '0000');
             return p;
         }
-        function openProvisionModal() {
-            if (!isDirectorSession()) return;
-            const box = document.getElementById('provisionList');
-            if (box) box.innerHTML = DUTY_MANAGER_IDS.map(id => `
-                <div class="flex items-center justify-between gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">
-                    <div class="min-w-0">
-                        <div class="font-black text-slate-900 text-[12.5px]">${escHtml(staffAccountsDirectory[id].arName)}</div>
-                        <div class="font-mono text-[10.5px] text-slate-500" dir="ltr">${id}</div>
-                    </div>
-                    <input id="provPin_${id}" type="text" inputmode="numeric" maxlength="4" value="${randomPin4()}" dir="ltr" class="w-20 text-center rounded-lg border border-slate-300 bg-white px-2 py-1.5 font-mono font-black text-sm tracking-widest">
-                </div>`).join('');
-            const lg = document.getElementById('provisionLog'); if (lg) lg.textContent = '';
-            setDisplay('provisionModal', true, 'flex');
-        }
-        function closeProvisionModal() { setDisplay('provisionModal', false); }
-
         // ===== إدارة المستخدمين (للمدير ومساعده) =====
         let managedUsers = [];
         const MANAGED_ROLES = ['3040', '4050', '5060', '6070', '7080', '8090'];
@@ -3059,11 +3035,11 @@
             const rows = managedUsers.slice().sort((a, b) => String(a.roleKey).localeCompare(String(b.roleKey)));
             box.innerHTML = rows.map(u => {
                 const dir = staffAccountsDirectory[u.accId] || {};
-                const nm = u.name || dir.arName || u.accId;
+                const nm = u.name || (currentLang === 'ar' ? dir.arName : dir.enName) || dir.arName || u.accId;
                 const st = userStatusOf(u);
                 const protectedAcc = !MANAGED_ROLES.includes(String(u.roleKey));
                 const meta = [u.dept, u.jobTitle].filter(Boolean).join(' · ');
-                const role = (permissionMatrix[u.roleKey] || {}).arName || u.roleKey;
+                const role = ((permissionMatrix[u.roleKey] || {})[currentLang === 'ar' ? 'arName' : 'enName']) || u.roleKey;
                 const acts = protectedAcc ? '<span class="text-[10.5px] text-slate-400 font-bold">حساب إدارة — محمي</span>' : `
                     <button type="button" onclick="setUserBlocked('${u.uid}', ${st.k === 'blocked' ? 'false' : 'true'})" class="px-2.5 py-1.5 rounded-lg ${st.k === 'blocked' ? 'bg-emerald-600' : 'bg-rose-600'} text-white font-black cursor-pointer text-[11px]"><i class="fa-solid ${st.k === 'blocked' ? 'fa-unlock' : 'fa-ban'}"></i> ${st.k === 'blocked' ? 'رفع الحظر' : 'حظر'}</button>
                     <button type="button" onclick="${st.k === 'suspended' ? `suspendUser('${u.uid}', 0)` : `askSuspendUser('${u.uid}')`}" class="px-2.5 py-1.5 rounded-lg bg-amber-500 text-white font-black cursor-pointer text-[11px]"><i class="fa-solid fa-pause"></i> ${st.k === 'suspended' ? 'إلغاء الإيقاف' : 'إيقاف مؤقت'}</button>
@@ -3147,62 +3123,6 @@
             } catch (e) {
                 out.textContent = '✗ ' + ((e && e.code) || (e && e.message) || 'error');
             } finally { btn.disabled = false; }
-        }
-
-        function provLog(t) { const lg = document.getElementById('provisionLog'); if (lg) lg.textContent += t + '\n'; }
-        function copyProvisionPins() {
-            const lines = DUTY_MANAGER_IDS.map(id => {
-                const el = document.getElementById('provPin_' + id);
-                return `${staffAccountsDirectory[id].arName}: ${el ? el.value : ''}`;
-            }).join('\n');
-            try {
-                navigator.clipboard.writeText(lines).then(() => showToast('تم نسخ الرموز ✓', '', 'fa-copy', 'teal'), () => showToast('تعذّر النسخ', 'انسخها يدوياً من القائمة', 'fa-triangle-exclamation', 'amber'));
-            } catch (e) { showToast('تعذّر النسخ', 'انسخها يدوياً من القائمة', 'fa-triangle-exclamation', 'amber'); }
-        }
-        async function provisionDutyManagers() {
-            if (!isDirectorSession() || !firestoreDb) return;
-            const btn = document.getElementById('provisionRunBtn');
-            if (btn) btn.disabled = true;
-            const lg = document.getElementById('provisionLog'); if (lg) lg.textContent = '';
-            let ok = 0, fail = 0;
-            try {
-                let sec = null;
-                try { sec = (firebase.apps || []).find(a => a && a.name === 'kahProvision') || null; } catch (e) {}
-                if (!sec) sec = firebase.initializeApp(FIREBASE_CONFIG, 'kahProvision');
-                const secAuth = sec.auth();
-                try { await secAuth.setPersistence(firebase.auth.Auth.Persistence.NONE); } catch (e) {}
-                for (const id of DUTY_MANAGER_IDS) {
-                    const pin = ((document.getElementById('provPin_' + id) || {}).value || '').trim();
-                    const nm = staffAccountsDirectory[id].arName;
-                    if (!/^\d{4}$/.test(pin)) { provLog('✗ ' + nm + ': الرمز يجب أن يكون 4 أرقام'); fail++; continue; }
-                    try {
-                        let cred;
-                        let existed = false;
-                        try {
-                            cred = await secAuth.createUserWithEmailAndPassword(accountEmail(id), accountPassword(pin));
-                        } catch (e) {
-                            if (e && e.code === 'auth/email-already-in-use') {
-                                existed = true;
-                                cred = await secAuth.signInWithEmailAndPassword(accountEmail(id), accountPassword(pin));
-                            } else { throw e; }
-                        }
-                        await firestoreDb.collection('users').doc(cred.user.uid).set({ accId: id, roleKey: '3040', driverId: null });
-                        await secAuth.signOut();
-                        provLog((existed ? '✓ مفعّل مسبقاً وتم تحديث صلاحيته: ' : '✓ أُنشئ: ') + nm + ' — الرمز ' + pin);
-                        logCyberEvent('إنشاء/تفعيل حساب مدير مناوب: ' + nm);
-                        ok++;
-                    } catch (e) {
-                        const code = (e && e.code) || (e && e.message) || 'error';
-                        provLog('✗ ' + nm + ': ' + (code === 'auth/wrong-password' || code === 'auth/invalid-credential' ? 'الحساب موجود برمز مختلف' : code));
-                        fail++;
-                    }
-                }
-            } catch (e) {
-                provLog('✗ ' + ((e && e.code) || (e && e.message) || 'error'));
-                fail++;
-            }
-            provLog('انتهى: نجح ' + ok + ' / فشل ' + fail);
-            if (btn) btn.disabled = false;
         }
 
         // =================================================================
@@ -3608,6 +3528,295 @@
             }
         }
 
+
+        // ===== معلومات مفيدة لكل أيقونة: مؤشر الفأرة (title) + ضغطة مطوّلة على الجوال =====
+        const INFO_HINTS = {
+            'uiTrialModeBadge': ['مرحلة التشغيل', 'النظام في تشغيل تجريبي. بياناتك محفوظة ولن تُمسح عند الاعتماد الرسمي.', 'Operating stage', 'Trial run. Your data is kept at official launch.'],
+            'liveNetStatusBadge': ['حالة الاتصال', 'أخضر = متصل بالخادم والطلبات تصلك لحظياً. إن انقطع الإنترنت يظهر التنبيه هنا.', 'Connection', 'Green = connected and receiving requests live.'],
+            'btnEnablePush': ['إشعارات الخلفية', 'فعّلها ليصلك تنبيه الطلب الجديد حتى والشاشة مقفلة.', 'Background alerts', 'Enable to get new-request alerts even with the screen locked.'],
+            'moreMenuBtn': ['القائمة', 'الإعدادات: السمة واللغة والنغمة والصورة وشرح النظام.', 'Menu', 'Settings: theme, language, tones, photo and user guide.'],
+            'tab-driver': ['مركز التحكم والسائقين', 'متابعة الطلبات الحية وتوجيهها للسائقين، وحالة كل سائق.', 'Control center', 'Live requests, dispatching and driver status.'],
+            'tab-requester': ['بوابة الطوارئ والطلبات', 'إنشاء طلب نقل جديد ومتابعة حالته حتى التسليم، ثم تقييم الخدمة.', 'ER gate', 'Create a transport request, track it and rate the service.'],
+            'tab-schedules': ['جداول المناوبات', 'جداول الورديات المعتمدة للسائقين والمدراء المناوبين.', 'Schedules', 'Approved shift schedules.'],
+            'tab-admin': ['الأسطول والإحصائيات', 'حالة المركبات (جيدة/غير جيدة/عطلانة) وأداء السائقين والإحصائيات.', 'Fleet & stats', 'Vehicle health, driver performance and statistics.'],
+            'uiLockBtnClear': ['مسح', 'يمسح الأرقام المدخلة لتبدأ من جديد.', 'Clear', 'Clears the entered digits.'],
+            'uiLockBtnEnter': ['دخول', 'يتحقق من رقم المستخدم والرمز ويفتح النظام حسب صلاحيتك.', 'Enter', 'Verifies your number and PIN.'],
+            'staffAccountSelect': ['رقم المستخدم', 'الرقم الذي سلّمه لك مدير الإدارة. كل مستخدم له رقم ورمز خاص.', 'User number', 'The number given to you by the Director.'],
+            'headerAppIconImg': ['أيقونة التطبيق', 'اضغط لمعاينة أيقونة التطبيق الرسمية.', 'App icon', 'Tap to preview the official app icon.']
+        };
+        function hintFor(id) { const h = INFO_HINTS[id]; if (!h) return null; return currentLang === 'ar' ? [h[0], h[1]] : [h[2], h[3]]; }
+        function applyInfoHints() {
+            Object.keys(INFO_HINTS).forEach(id => {
+                const el = document.getElementById(id); if (!el) return;
+                const host = el.closest('button, [onclick], #liveNetStatusBadge, span') || el;
+                const h = hintFor(id); if (!h) return;
+                host.setAttribute('data-info', h[0] + '||' + h[1]); host.setAttribute('title', h[0] + ' — ' + h[1]);
+            });
+            document.querySelectorAll('#appMainHeader button, #moreMenuPanel button').forEach(b => {
+                if (b.hasAttribute('data-info') && !b.hasAttribute('data-info-auto')) return;
+                const d = b.querySelector('.kah-desc'); const lab = b.querySelector('span > span:not(.kah-desc)') || b.querySelector('span'); const t = (lab || b).textContent.trim();
+                if (d && d.textContent.trim()) { b.setAttribute('data-info-auto', '1'); b.setAttribute('data-info', t + '||' + d.textContent.trim()); b.setAttribute('title', t + ' — ' + d.textContent.trim()); }
+            });
+            const lo = document.querySelector('#appMainHeader button[onclick^="logoutAllUsers"]');
+            if (lo) { const t = currentLang === 'ar' ? ['خروج آمن', 'يُنهي جلستك ويقفل النظام. يُسجَّل الخروج في سجل التدقيق.'] : ['Secure sign-out', 'Ends your session and locks the system.']; lo.setAttribute('data-info', t.join('||')); lo.setAttribute('title', t.join(' — ')); }
+            const lang = document.querySelector('#securityLockGate button[onclick^="toggleLanguage"]');
+            if (lang) lang.setAttribute('title', currentLang === 'ar' ? 'تبديل لغة الواجهة بين العربية والإنجليزية' : 'Switch interface language');
+        }
+        (function setupInfoLongPress() {
+            let timer = null;
+            const start = e => {
+                const host = e.target.closest && e.target.closest('[data-info]'); if (!host) return;
+                clearTimeout(timer);
+                timer = setTimeout(() => { const [t, d] = host.getAttribute('data-info').split('||'); showToast(t, d, 'fa-circle-info', 'amber'); }, 550);
+            };
+            const stop = () => clearTimeout(timer);
+            document.addEventListener('touchstart', start, { passive: true });
+            ['touchend', 'touchmove', 'touchcancel', 'mouseup'].forEach(ev => document.addEventListener(ev, stop, { passive: true }));
+        })();
+
+        // ===== طبقة الترجمة الشاملة للإنجليزية (تكمل القاموس الأساسي وتغطي كل النصوص) =====
+        const EN_MAP = {
+            'تعذّر تحميل النظام': 'The system could not be loaded',
+            'تأكد من اتصال الإنترنت ثم أعد فتح الرابط، أو افتحه من Safari مباشرة.': 'Check your internet connection, then reopen the link (or open it directly in Safari).',
+            'إعادة المحاولة': 'Try again',
+            'اكتب رأيك': 'Write your opinion',
+            'صورة المستخدم': 'User photo',
+            'المتصلون والإحصائيات': 'Online users & stats',
+            'سجل الزوار والآراء': 'Guestbook & feedback',
+            'إخفاء الخريطة': 'Hide the map',
+            'إظهار الخريطة': 'Show the map',
+            'شرح النظام وطريقة التثبيت': 'User guide & install steps',
+            'إدارة المستخدمين': 'User management',
+            'GPS نشط': 'GPS active',
+            'قمر صناعي': 'Satellite',
+            'تحديث موقعي': 'Refresh my location',
+            '☀️ الوردية الأولى (الصباح)': '☀️ 1st Shift (Morning)',
+            '🌇 الوردية الثانية (المساء)': '🌇 2nd Shift (Evening)',
+            '🌙 الوردية الثالثة (الليلية)': '🌙 3rd Shift (Night)',
+            'التقارير الدورية والسجل الدائم للطلبات المنتهية والنشطة': 'Periodic reports & permanent log of completed and active orders',
+            'تصدير سجل العمليات الموثق إلى ملف Excel (CSV يدعم العربية) أو تقرير PDF رسمي للطباعة والاعتماد': 'Export the documented operations log to Excel (CSV) or an official PDF report for printing and approval',
+            'تصدير لتقرير Excel (CSV)': 'Export Excel report (CSV)',
+            'تصدير وطباعة تقرير PDF رسمي': 'Export & print official PDF report',
+            '📊 السجل الدائم لكافة الطلبات الموثقة (النشطة والمنتهية)': '📊 Permanent log of all documented orders (active & completed)',
+            'رقم الطلب': 'Order No.', 'التوقيت': 'Time', 'المهمة (دون بيانات مرضى)': 'Task (no patient data)',
+            'من ⬅️ إلى': 'From ⬅️ To', 'السائق والمركبة': 'Driver & vehicle', 'منفّذ الإجراء': 'Performed by', 'الحالة والتقييم': 'Status & rating',
+            'شرح النظام بالكامل وطريقة تثبيته على الجوال': 'Full system guide and how to install it on your phone',
+            'دليل مبسّط: الأدوار، إنشاء الطلب وقبوله، التنبيهات، وتثبيت التطبيق على الآيفون والأندرويد بزر المشاركة.': 'A simple guide: roles, creating and accepting orders, alerts, and installing the app on iPhone and Android.',
+            'فتح الدليل': 'Open the guide',
+            'أيقونة التطبيق الرسمية للجوال': 'Official mobile app icon',
+            'تم تصميم أيقونة التطبيق الرسمية بهوية تجمع جدة الصحي الأول ومستشفى الملك عبدالعزيز وإدارة الحركة والمواصلات.': 'The official app icon carries the identity of Jeddah First Health Cluster, King Abdulaziz Hospital and the Transport & Mobility Department.',
+            'معاينة أيقونة التطبيق': 'Preview the app icon',
+            'مشاركة النظام': 'Share the system',
+            'مشاركة رابط النظام مع بقية المستخدمين.': 'Share the system link with other users.',
+            'نسخ ومشاركة النظام': 'Copy & share the system',
+            '🔔 نغمة 1': '🔔 Tone 1', '🎵 نغمة 2': '🎵 Tone 2', 'نغمة 1': 'Tone 1', 'نغمة 2': 'Tone 2',
+            'صوت عالي': 'High', 'معتدل': 'Medium', 'منخفض': 'Low',
+            'معاينة': 'Preview', 'سماع نغمة الطلب': 'Play order tone',
+            'اشرح باختصار سبب الرفض (يصل لمشرف وحدة السائقين):': 'Briefly explain the reason for declining (sent to the drivers supervisor):',
+            'من يستخدم النظام الآن، وسجل الدخول باليوم والشهر والسنة': 'Who is using the system now, and the login log by day, month and year',
+            '🟢 المتصلون الآن': '🟢 Online now', '📊 السجل والإحصائيات': '📊 Log & statistics',
+            'يوم': 'Day', 'شهر': 'Month', 'سنة': 'Year', 'تحديث': 'Refresh', 'توزيع الدخول': 'Login distribution',
+            'حسب المستخدم': 'By user', 'آخر عمليات الدخول (حتى 120)': 'Latest logins (up to 120)',
+            'انطباعات من اطّلعوا على البرنامج — تظهر بعد اعتماد المدير أو مساعده': 'Impressions from those who viewed the program — shown after approval by the Director or Assistant',
+            'اكتب رأيك وانطباعك عن البرنامج': 'Write your opinion about the program',
+            'إرسال للاعتماد': 'Send for approval', 'بانتظار اعتمادك': 'Awaiting your approval', 'الآراء المعتمدة': 'Approved feedback',
+            'لا توجد آراء معتمدة بعد. كن أول من يشاركنا انطباعه.': 'No approved feedback yet. Be the first to share your impression.',
+            'إنشاء حساب، حظر، إيقاف مؤقت، أو حذف نهائي': 'Create an account, block, suspend temporarily, or delete permanently',
+            'طلب إنشاء مستخدم جديد': 'Create a new user',
+            'المدير المناوب (بوابة الطوارئ)': 'Duty Manager (ER gate)', 'سائق': 'Driver', 'مشرف وحدة السائقين': 'Drivers unit supervisor',
+            'مشرف أسطول السيارات': 'Fleet supervisor', 'إداري (إحصائيات)': 'Admin (statistics)', 'زائر (اطلاع فقط)': 'Visitor (view only)',
+            'الرمز السري:': 'PIN:', 'إنشاء المستخدم': 'Create user',
+            'الاسم الكامل': 'Full name', 'الإدارة التي يتبع لها': 'Department', 'المسمى الوظيفي': 'Job title',
+            'حظر': 'Block', 'رفع الحظر': 'Unblock', 'إيقاف مؤقت': 'Suspend', 'إلغاء الإيقاف': 'End suspension', 'حذف نهائي': 'Delete permanently',
+            'حساب إدارة — محمي': 'Management account — protected', 'نشط': 'Active', 'محظور': 'Blocked', 'مدة الإيقاف:': 'Suspension period:',
+            'يوم': 'Day', '3 أيام': '3 days', 'أسبوع': 'Week', 'إلغاء': 'Cancel',
+            'لا يوجد مستخدمون.': 'No users.', 'جارٍ التحميل…': 'Loading…',
+            'دليل سريع لكل مستخدم': 'A quick guide for every user', 'نسخ ومشاركة رابط النظام': 'Copy & share the system link', 'إغلاق': 'Close',
+            'إنشاء طلب نقل جديد': 'Create a new transport order',
+            'يُرسل بنغمة تأكيد خفيفة للمرسل ويفتح شاشة استلام متواصلة للمستقبل': 'Sent with a light confirmation tone and rings full-screen on the receiver',
+            'من (جهة الطلب / المرسل):': 'From (requesting party / sender):',
+            '🏥 الطوارئ - المدير المناوب': '🏥 ER - Duty Manager', '👤 طلبات أفراد': '👤 Individual requests', '🏢 إدارة الحركة والمواصلات': '🏢 Transport & Mobility Dept.',
+            'المدة الزمنية المتوقعة (دقائق):': 'Expected duration (minutes):',
+            '⏱️ 5 دقائق (حرج STAT)': '⏱️ 5 min (critical STAT)', '⏱️ 8 دقائق (قياسي)': '⏱️ 8 min (standard)', '⏱️ 12 دقيقة': '⏱️ 12 min', '⏱️ 15 دقيقة': '⏱️ 15 min',
+            '👤 اسم المدير المناوب (قسم الطوارئ):': '👤 Duty Manager name (ER):',
+            'تفاصيل جهة الاستلام / اسم صاحب الطلب:': 'Receiving party details / requester name:',
+            'نوع العينة أو المستلزم / الطلب:': 'Sample / supply / request type:',
+            'عينات سموم وكيمياء شرعية عاجلة': 'Urgent toxicology & forensic chemistry samples',
+            'طلب استلام طرد / مستلزمات طبية': 'Parcel / medical supplies pickup',
+            'وحدات دم وبلازما (بنك الدم)': 'Blood & plasma units (blood bank)',
+            'مستلزمات طبية وجراحية عاجلة': 'Urgent medical & surgical supplies',
+            'طلب نقل أفراد / مهمة رسمية': 'Staff transport / official mission',
+            'إلى (الجهة المستلمة):': 'To (receiving facility):',
+            'مختبر السموم والكيمياء الطبية': 'Toxicology & Medical Chemistry Lab',
+            'مستشفى شرق جدة': 'East Jeddah Hospital', 'مستشفى الثغر بجدة': 'Al-Thagher Hospital, Jeddah',
+            'مدينة الملك عبدالعزيز الطبية بجدة': 'King Abdulaziz Medical City, Jeddah',
+            'مستشفى الملك فيصل التخصصي بجدة': 'King Faisal Specialist Hospital, Jeddah',
+            'مستشفى القوات المسلحة بالحرس الوطني بجدة': 'National Guard Armed Forces Hospital, Jeddah',
+            'مستشفى الملك فهد العسكري بجدة': 'King Fahad Armed Forces Hospital, Jeddah',
+            'مستشفى الملك فهد العام (تجمع جدة الصحي الأول) بجدة': 'King Fahad General Hospital (Jeddah First Health Cluster)',
+            'تجمع جدة الصحي الثاني بجدة': 'Jeddah Second Health Cluster', 'مجمع الملك عبدالله الطبي بجدة': 'King Abdullah Medical Complex, Jeddah',
+            'مدينة الملك عبدالله الطبية بمكة المكرمة': 'King Abdullah Medical City, Makkah',
+            'مركز الأسنان التخصصي بحي النزهة': 'Specialized Dental Center, Al-Nuzha', 'مركز الأسنان التخصصي بالسليمانية': 'Specialized Dental Center, Al-Sulaymaniyah',
+            'مطار الملك عبدالعزيز بجدة': 'King Abdulaziz Airport, Jeddah', 'جهات أخرى…': 'Other…',
+            'فتح مربع اختياري قبل إرسال الطلب (ملاحظات / رقم تحويلة)': 'Open an optional box before sending (notes / extension number)',
+            'إرسال الطلب الآن': 'Send the order now',
+            'اكتب اسم المدير المناوب في قسم الطوارئ...': 'Type the ER duty manager name...',
+            'اكتب اسم الموظف أو القسم...': 'Type the employee or department name...',
+            'اكتب اسم الجهة المستلمة...': 'Type the receiving facility name...',
+            'اكتب أي ملاحظة اختيارية أو توجيه للسائق قبل إرسال الطلب...': 'Type any optional note or instruction for the driver before sending...',
+            'مثال: السيارة معطلة / خارج الوردية / في مهمة أخرى': 'e.g. vehicle out of order / off shift / on another mission',
+            'اسمك (اختياري)': 'Your name (optional)', 'ما رأيك في البرنامج؟ وما انطباعك بعد الاطلاع عليه؟': 'What do you think of the program? What is your impression?',
+            'اكتب اسمك أو القسم...': 'Type your name or department...', 'اشرح تفاصيل طلب الدعم أو الشكوى أو الاستفسار...': 'Describe your support request, complaint or inquiry...',
+            'رقم المستخدم': 'User number',
+            'تجمع جدة الصحي الأول • مستشفى الملك عبدالعزيز': 'Jeddah First Health Cluster • King Abdulaziz Hospital',
+            'مقدمة منظومة النقل الطبي واللوجستي الذكي': 'Introduction to the Smart Medical & Logistics Transport System',
+            'تُعد «منظومة النقل الطبي واللوجستي الذكي» بمستشفى الملك عبدالعزيز بجدة (تجمع جدة الصحي الأول) نقلة نوعية في أتمتة وحوكمة عمليات نقل العينات المخبرية الحرجة، ووحدات الدم، وعينات السموم، والمستلزمات الطبية، وطلبات الاستلام والأفراد على مدار الساعة (24/7).': 'The “Smart Medical & Logistics Transport System” at King Abdulaziz Hospital, Jeddah (Jeddah First Health Cluster) is a qualitative leap in automating and governing the transport of critical lab samples, blood units, toxicology samples, medical supplies, pickups and staff — around the clock (24/7).',
+            '⚡ استجابة فورية وتقييم الخدمة': '⚡ Instant response & service rating',
+            'تنبيه فوري عند استقبال الطلب مع احتساب المدة الزمنية وإمكانية تقييم جودة الخدمة من قِبل طالب الخدمة.': 'Instant alert on receiving an order, with elapsed-time tracking and the ability for the requester to rate service quality.',
+            '🛡️ حوكمة الصلاحيات والأمن السيبراني': '🛡️ Access governance & cybersecurity',
+            'فصل دقيق للصلاحيات برموز سرية مشفرة وصور مستخدمين مستقلة مع درع حماية سيبراني ضد المتطفلين.': 'Precise role separation with encrypted PINs and independent user photos, plus a cyber shield against intruders.',
+            'الجهة المشرفة والمشغلة للنظام:': 'Supervising & operating body:',
+            'إدارة الحركة والمواصلات — مستشفى الملك عبدالعزيز بجدة': 'Transport & Mobility Department — King Abdulaziz Hospital, Jeddah',
+            'منشئ النظام: فهد بن عطاالله القرشي': 'System founder: Fahad bin Atallah Al-Qurashi',
+            'إغلاق المقدمة': 'Close introduction',
+            'أيقونة التطبيق الرسمية': 'Official app icon',
+            'هوية تجمع جدة الصحي الأول — إدارة الحركة والمواصلات': 'Identity of Jeddah First Health Cluster — Transport & Mobility Dept.',
+            'تجمع جدة الصحي الأول • مستشفى الملك عبدالعزيز بجدة': 'Jeddah First Health Cluster • King Abdulaziz Hospital, Jeddah',
+            'إدارة الحركة والمواصلات': 'Transport & Mobility Department',
+            'نقل آمن .. خدمة متميزة .. صحة أفضل': 'Safe transport .. Distinguished service .. Better health',
+            'منظومة حماية الأمن السيبراني ومكافحة المتطفلين': 'Cybersecurity & intruder protection system',
+            'حماية البوابة ضد التخمين': 'Gate brute-force protection',
+            'قفل تلقائي للبوابة لمدة 60 ثانية مع إنذار صوتي عند إدخال الرمز السري خطأ 3 مرات متتالية.': 'Automatic 60-second gate lock with an audible alarm after 3 consecutive wrong PIN entries.',
+            'فلترة وتعقيم المدخلات (XSS Shield)': 'Input filtering & sanitization (XSS Shield)',
+            'فحص وتعقيم جميع الحقول النصية لمنع حقن الأكواد الخبيثة أو التلاعب ببيانات الطلبات.': 'All text fields are checked and sanitized to prevent malicious code injection or tampering with order data.',
+            '📋 سجل الرصد الأمني (Security Audit Log):': '📋 Security Audit Log:',
+            'مركز الدعم الفني والبلاغات': 'Technical support & reports center',
+            'إرسال مباشر إلى بريد مدير الإدارة ومساعده': 'Sent directly to the Director’s and Assistant’s inbox',
+            'اسم المرسل / القسم:': 'Sender / department:', 'تصنيف الطلب:': 'Request category:',
+            '🛠️ دعم فني في النظام': '🛠️ Technical support', '📍 مشكلة في الخريطة أو GPS': '📍 Map or GPS issue',
+            '⚠️ شكوى تشغيلية': '⚠️ Operational complaint', '💡 استفسار أو مقترح': '💡 Inquiry or suggestion',
+            'الأهمية:': 'Priority:', '🚨 عاجل': '🚨 Urgent', '⚡ متوسط': '⚡ Medium', '📋 اعتيادي': '📋 Routine',
+            'تفاصيل الرسالة / البلاغ:': 'Message / report details:', 'إرسال للبريد الإداري': 'Send to the management inbox',
+            'خاص بمدير الإدارة ومساعده فقط': 'For the Director and Assistant only',
+            'صندوق البريد واستقبال الشكاوى والاستفسارات الحقيقية': 'Inbox for real complaints and inquiries',
+            'تغيير سمة الألوان': 'Change color theme', 'اتصال مباشر': 'Call directly', 'واتساب مباشر': 'WhatsApp directly',
+            'صوت عالي (100%)': 'High volume (100%)', 'صوت معتدل (60%)': 'Medium volume (60%)', 'صوت منخفض (25%)': 'Low volume (25%)',
+            'تجربة النغمة ومستوى الصوت المختار': 'Test the selected tone and volume',
+            'أيقونة التطبيق الرسمية — اضغط للمعاينة أو التخصيص': 'Official app icon — tap to preview',
+            'الوردية الأولى (الصباح)': '1st Shift (Morning)',
+            'الجدول الرسمي للمناوبين المكلفين بإيصال العينات الطبية (مركز السموم ومستلزمات المستشفى) — بداية السريان: الأحد 8 نوفمبر 2026م': 'Official schedule of on-duty staff assigned to deliver medical samples (Toxicology Center and hospital supplies) — effective from Sunday 8 November 2026',
+            'الأسبوع / Week': 'Week',
+            'الأحد Sun': 'Sun', 'الاثنين Mon': 'Mon', 'الثلاثاء Tue': 'Tue', 'الأربعاء Wed': 'Wed', 'الخميس Thu': 'Thu', 'الجمعة Fri': 'Fri', 'السبت Sat': 'Sat',
+            'الأسبوع الأول (08/11 - 14/11)': 'Week 1 (08/11 - 14/11)', 'الأسبوع الثاني (15/11 - 21/11)': 'Week 2 (15/11 - 21/11)',
+            'الأسبوع الثالث (22/11 - 28/11)': 'Week 3 (22/11 - 28/11)', 'الأسبوع الرابع — إعادة الدورة (29/11 - 05/12)': 'Week 4 — cycle restarts (29/11 - 05/12)',
+            'إفادة وتوجيه للسادة المسؤولين، المديرين المناوبين، والكادر الطبي والتمريضي: الموظف الموضح اسمه ورقم جواله في كل تاريخ أعلاه هو المناوب الرسمي المستلم في الوردية الأولى (الصباح: 08:00 - 16:00) والمكلف بتأمين حركة المركبات وإيصال العينات الطبية الطارئة (مركز السموم والمختبرات المرجعية) ومستلزمات المستشفى.': 'Notice to officials, duty managers and medical & nursing staff: the employee named (with phone number) on each date above is the official on-duty receiver for the 1st shift (morning: 08:00 - 16:00), assigned to secure vehicle movement and deliver urgent medical samples (Toxicology Center and reference labs) and hospital supplies.',
+            'لا توجد طلبات مسجلة في السجل الدائم حالياً (0 طلبات).': 'No orders in the permanent log yet (0 orders).',
+            'الصباح (08:00 - 16:00)': 'Morning (08:00 - 16:00)', 'المساء (16:00 - 00:00)': 'Evening (16:00 - 00:00)', 'الليلية (00:00 - 08:00)': 'Night (00:00 - 08:00)',
+            'جيدة': 'Good', 'غير جيدة': 'Fair', 'عطلانة': 'Out of order',
+            'المدير المناوب — قسم الطوارئ (إنشاء ومتابعة وتقييم الطلبات)': 'Duty Manager — ER (create, track and rate orders)',
+            'زائر / مستعرض (اطلاع على الجداول والمنظومة دون أرقام شخصية)': 'Visitor / viewer (schedules and system, no personal numbers)',
+            'السائق المناوب (استقبال وتنفيذ الطلبات الميدانية)': 'On-duty driver (receive and carry out field orders)',
+            'تم تفعيل القفل السيبراني المؤقت ضد المتطفلين!': 'Temporary cyber lock activated against intruders!',
+            'تم رصد 3 محاولات خاطئة. يرجى الانتظار': '3 wrong attempts detected. Please wait',
+            'ثانية.': 'seconds.',
+            'نبذة عن المنصة وكلمات القيادة': 'About the platform & leadership messages', 'مقدمة منظومة النقل الطبي واللوجستي الذكي، وكلمة مدير إدارة الحركة والمواصلات، وكلمة مؤسس المنصة.': 'Introduction to the system, plus messages from the Transport & Mobility Director and the platform founder.', 'قراءة النبذة': 'Read more', 'مؤسس المنصة والمشرف العام: أ. فهد بن عطاالله القرشي': 'Platform founder & general supervisor: Mr. Fahad bin Atallah Al-Qurashi',
+            'صورتك الشخصية في النظام': 'Your personal photo in the system', 'من يستخدم النظام الآن وإحصائيات الدخول': 'Who is using the system now + login stats', 'آراء الزوار المعتمدة': 'Approved visitor feedback', 'إظهار أو إخفاء خريطة التتبع': 'Show or hide the tracking map', 'دليل الاستخدام وطريقة التثبيت': 'User guide & install steps', 'إنشاء وحظر وحذف الحسابات': 'Create, block or delete accounts', 'أرسل مشكلة أو اقتراحاً للمدير': 'Report an issue to the Director', 'رسائل الدعم الواردة': 'Incoming support messages', 'تغيير مظهر ألوان النظام': 'Change the app colors', 'حالة الحماية والتشفير': 'Security & encryption status', 'تبديل لغة الواجهة': 'Switch interface language',
+            'متصل بـ Firebase • مزامنة لحظية': 'Connected to Firebase • live sync',
+            'متصل • مزامنة لحظية نشطة': 'Connected • live sync active',
+            'عينات دم وغازات دم حرجة (STAT)': 'Critical blood & blood-gas samples (STAT)',
+            'الطوارئ - المدير المناوب': 'ER - Duty Manager',
+            'مركز السموم والكيمياء الطبية': 'Toxicology & Medical Chemistry Center',
+            'إدارة الحركة والمواصلات | Transportation & Mobility': 'Transportation & Mobility Management',
+            'الوردية الأولى (الصباح) | 1st Shift (Morning) • 08:00 - 16:00 (08:00 AM - 04:00 PM)': '1st Shift (Morning) • 08:00 - 16:00 (08:00 AM - 04:00 PM)'
+        };
+        const PLATE_EN = { 'ا': 'A', 'أ': 'A', 'ب': 'B', 'ح': 'J', 'د': 'D', 'ر': 'R', 'س': 'S', 'ص': 'X', 'ط': 'T', 'ع': 'E', 'ق': 'G', 'ك': 'K', 'ل': 'L', 'م': 'Z', 'ن': 'N', 'هـ': 'H', 'ه': 'H', 'و': 'U', 'ى': 'V', 'ي': 'V' };
+        function plateToEn(txt) { return txt.replace(/((?:[؀-ۿ]ـ?\s?){2,3})(\d{3,4})/g, (m, l, d) => l.trim().split(/\s+/).map(c => PLATE_EN[c] || c).join(' ') + ' ' + d); }
+        const EN_WORDS = { 'هونداي': 'Hyundai', 'فان': 'Van', 'مازدا': 'Mazda', 'اكس': 'X', 'فورد': 'Ford', 'اكسبدشين': 'Expedition', 'شفرلايت': 'Chevrolet', 'كروز': 'Cruze', 'ونيت غماره': 'Double-cab', 'ميستوبيشي': 'Mitsubishi', 'جيب': 'SUV', 'دباب': 'Scooter', 'سوزوكي': 'Suzuki', 'دايهاتسو': 'Daihatsu', 'اكس بلور': 'Explorer', 'باص': 'Bus', 'نيسان': 'Nissan', 'شاسيه': 'Chassis', 'برداه': 'Prado', 'بكب ثلاجه': 'Refrigerated pickup', 'ايسوزو': 'Isuzu', 'سطر': 'Line' };
+        const EN_PATTERNS = [
+            [/^(\d+) طلبات$/, (m) => m[1] + ' orders'], [/^(\d+) طلب$/, (m) => m[1] + ' orders'],
+            [/^(\d+) د$/, (m) => m[1] + ' min'], [/^(\d+:\d+) دقائق$/, (m) => m[1] + ' min'], [/^(\d+) دقيقة$/, (m) => m[1] + ' min'],
+            [/^محاولات خاطئة: (\d+)$/, (m) => 'Failed attempts: ' + m[1]],
+            [/^رقم الدخول: (.*)$/, (m) => 'Login number: ' + m[1]],
+            [/^موقوف حتى (.*)$/, (m) => 'Suspended until ' + m[1]],
+            [/^صندوق القبول \((\d+)\)$/, (m) => 'Accepted box (' + m[1] + ')'],
+            [/^صندوق الرفض بالشرح \((\d+)\)$/, (m) => 'Declined box (with reasons) (' + m[1] + ')'],
+            [/^(\d+) ثانية\.?$/, (m) => m[1] + ' seconds.'],
+            [/^الرمز السري غير صحيح! المحاولات المتبقية: (\d+)$/, (m) => 'Wrong PIN! Attempts left: ' + m[1]]
+        ];
+        let ENG_NAMES = null;
+        function buildEngNames() { ENG_NAMES = {}; try { Object.values(staffAccountsDirectory).forEach(a => { if (a.arName && a.enName) { ENG_NAMES[a.arName] = a.enName; ENG_NAMES[a.arName.replace(/\s*\(.*\)$/, '').trim()] = a.enName.replace(/\s*\(.*\)$/, '').trim(); } }); driversRoster.forEach(d => { if (d.name && d.enName) ENG_NAMES[d.name] = d.enName; }); Object.values(permissionMatrix).forEach(m => { if (m.arName && m.enName) ENG_NAMES[m.arName] = m.enName; }); } catch (e) {} }
+        const _origText = new WeakMap(); const _origAttr = new WeakMap();
+        function enTranslate(str) {
+            const t = str.trim(); if (!t || !/[؀-ۿ]/.test(t)) return null;
+            if (/^[؀-ۿ\s]+\d{3,4}$/.test(t) && t.length < 16) return str.replace(t, plateToEn(t));
+            const bi = t.match(/^[؀-ۿ()\s]+ \| ([A-Za-z0-9].+)$/); if (bi) return str.replace(t, bi[1]);
+            let r = EN_MAP[t];
+            if (r) return str.replace(t, r);
+            if (t.indexOf(' — ') > 0) { const parts = t.split(' — ').map(x => EN_MAP[x.trim()] || (x.trim() === 'العربية' ? 'Arabic' : null) || x.trim()); if (parts.some((x, i) => x !== t.split(' — ')[i].trim())) return str.replace(t, parts.join(' — ')); }
+            for (const [re, fn] of EN_PATTERNS) { const m = t.match(re); if (m) return str.replace(t, fn(m)); }
+            const nm = (typeof ENG_NAMES !== 'undefined') && ENG_NAMES;
+            if (nm) {
+                const m2 = t.match(/^(.+?)\s*\([A-Za-z ]+\)$/); const core = m2 ? m2[1].trim() : t;
+                if (nm[core]) return str.replace(t, nm[core]);
+                const m3 = t.match(/^(.+?)\s*\((.+)\)$/); if (m3 && nm[m3[1].trim()] && EN_MAP[m3[2].trim()]) return str.replace(t, nm[m3[1].trim()] + ' (' + EN_MAP[m3[2].trim()] + ')');
+            }
+            for (const sep of [' ⬅️ ', ' • ', ' — ']) {
+                if (t.indexOf(sep) > 0) { const ps = t.split(sep); const tr = ps.map(x => { const r2 = enTranslate(x); return r2 == null ? x : r2.trim(); }); if (tr.some((x, i) => x !== ps[i])) return str.replace(t, tr.join(sep)); }
+            }
+            const pm = t.match(/^(.+?)\s*\((.+)\)$/);
+            if (pm) { const x1 = enTranslate(pm[1]); const x2 = enTranslate(pm[2]); if (x1 != null || x2 != null) return str.replace(t, (x1 == null ? pm[1] : x1.trim()) + ' (' + (x2 == null ? pm[2] : x2.trim()) + ')'); }
+            const em = t.match(/^([^\u0600-\u06FF\w]+)\s*(.+)$/u);
+            if (em) { const x3 = enTranslate(em[2]); if (x3 != null) return str.replace(t, em[1] + ' ' + x3.trim()); }
+            if (/^سطر \d+:/.test(t) || /^(هونداي|مازدا|فورد|شفرلايت|ونيت|جيب|دباب|دايهاتسو|اكس|باص|شاسيه|برداه|بكب|سوزوكي|ميستوبيشي|نيسان|ايسوزو|فان|كروز|اكسبدشين)/.test(t)) {
+                let o = t; Object.keys(EN_WORDS).sort((a, b) => b.length - a.length).forEach(k => { o = o.split(k).join(EN_WORDS[k]); }); o = plateToEn(o);
+                return str.replace(t, o);
+            }
+            return null;
+        }
+        let _i18nBusy = false;
+        function translateNodeTree(root) {
+            if (!root) return;
+            if (currentLang === 'en') {
+                _i18nBusy = true;
+                try {
+                    const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT); let n; const nodes = [];
+                    while ((n = w.nextNode())) nodes.push(n);
+                    nodes.forEach(nd => {
+                        const p = nd.parentElement; if (!p || p.tagName === 'SCRIPT' || p.tagName === 'STYLE' || p.closest('#cyberAuditLogList')) return;
+                        const v = nd.nodeValue; if (!/[؀-ۿ]/.test(v)) return;
+                        const tr = enTranslate(v);
+                        if (tr != null && tr !== v) { _origText.set(nd, v); nd.nodeValue = tr; }
+                    });
+                    const els = root.querySelectorAll ? root.querySelectorAll('[placeholder],[title]') : [];
+                    els.forEach(el => {
+                        ['placeholder', 'title'].forEach(a => {
+                            const v = el.getAttribute(a); if (!v || !/[؀-ۿ]/.test(v)) return;
+                            let tr = enTranslate(v);
+                            if (tr == null && a === 'title' && el.hasAttribute('data-info')) tr = null;
+                            if (tr != null && tr !== v) { const o = _origAttr.get(el) || {}; o[a] = v; _origAttr.set(el, o); el.setAttribute(a, tr); }
+                        });
+                    });
+                } finally { _i18nBusy = false; }
+            }
+        }
+        function restoreArabicText() {
+            _i18nBusy = true;
+            try {
+                const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT); let n;
+                while ((n = w.nextNode())) { const o = _origText.get(n); if (o != null) { n.nodeValue = o; _origText.delete(n); } }
+                document.querySelectorAll('[placeholder],[title]').forEach(el => { const o = _origAttr.get(el); if (o) { Object.keys(o).forEach(a => el.setAttribute(a, o[a])); _origAttr.delete(el); } });
+            } finally { _i18nBusy = false; }
+        }
+        let _i18nTimer = null;
+        function scheduleTranslate() { clearTimeout(_i18nTimer); _i18nTimer = setTimeout(() => { if (currentLang === 'en') translateNodeTree(document.body); }, 60); }
+        function applyFullLanguage() { if (!ENG_NAMES) buildEngNames(); if (currentLang === 'en') translateNodeTree(document.body); else restoreArabicText(); }
+        (function setupI18nObserver() {
+            try {
+                new MutationObserver(muts => { if (_i18nBusy || currentLang !== 'en') return; if (!ENG_NAMES) buildEngNames(); scheduleTranslate(); })
+                    .observe(document.body, { childList: true, subtree: true, characterData: true });
+            } catch (e) {}
+        })();
+
         let selfWatchUnsub = null;
         function startSelfStatusWatch() {
             try { if (selfWatchUnsub) selfWatchUnsub(); } catch (e) {}
@@ -3636,7 +3845,6 @@
             const doSignOut = () => { try { if (firebaseAuth) firebaseAuth.signOut().catch(() => {}); } catch (e) {} };
             if (offlineP && offlineP.then) { offlineP.then(doSignOut, doSignOut); setTimeout(doSignOut, 3000); } else { doSignOut(); }
             presenceDocs = {}; feedbackDocs = []; fleetHealth = {};
-            setDisplay('provisionModal', false);
             ['presenceModal', 'guestbookModal', 'guideModal', 'usersModal'].forEach(id => setDisplay(id, false));
             const mp = document.getElementById('moreMenuPanel'); if (mp) mp.classList.add('hidden');
             // لا تبقى أي بيانات طلبات أو أرقام في الذاكرة بعد الخروج
@@ -3792,6 +4000,75 @@
             renderAll();
         }
 
+
+        // ===== مراحل الطلب + الخرائط + عدّاد الانتظار =====
+        function statusLabel(st) {
+            const ar = currentLang === 'ar';
+            const m = {
+                pending: ar ? '🔔 بانتظار القبول' : '🔔 Awaiting acceptance',
+                declined_needs_supervisor: ar ? '⚠️ بانتظار سائق' : '⚠️ Awaiting a driver',
+                en_route_er: ar ? '🚗 السائق في الطريق للاستلام' : '🚗 Driver heading to pickup',
+                arrived_pickup: ar ? '📍 السائق وصل جهة الاستلام' : '📍 Driver arrived at pickup',
+                en_route_dest: ar ? '🚚 في الطريق لجهة التسليم' : '🚚 Heading to destination',
+                delivered: ar ? '✓ تم التسليم' : '✓ Delivered'
+            };
+            return m[st] || m.en_route_er;
+        }
+        function statusColor(st) {
+            return st === 'delivered' ? 'bg-emerald-100 text-emerald-900' : (st === 'pending' || st === 'declined_needs_supervisor') ? 'bg-amber-100 text-amber-900 animate-pulse' : st === 'arrived_pickup' ? 'bg-violet-100 text-violet-900' : 'bg-cyan-100 text-cyan-900';
+        }
+        function openMapsTo(place, kind) {
+            const base = String(place || '').trim();
+            const q = kind === 'pickup' ? (base + '، مستشفى الملك عبدالعزيز، جدة') : (/مكة|جدة|Jeddah|Makkah/i.test(base) ? base : base + '، جدة');
+            try { window.open('https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(q) + '&travelmode=driving', '_blank', 'noopener'); } catch (e) {}
+        }
+        function canOperateOrders() { return ['4050', '1020', '2030', '5060'].includes(String(activePermissionKey)); }
+        function fmtWait(sec) { sec = Math.max(0, Math.floor(sec)); return pad2(Math.floor(sec / 60)) + ':' + pad2(sec % 60); }
+        function driverGoToPickup(reqId) {
+            const req = requests.find(r => r.id === reqId); if (!req || !canOperateOrders()) return;
+            if (!req.navPickupAtMs) { req.navPickupAtMs = Date.now(); saveStateToLocal(); }
+            openMapsTo(req.pickup, 'pickup');
+        }
+        function driverArrivedPickup(reqId) {
+            const req = requests.find(r => r.id === reqId); if (!req || !canOperateOrders() || req.status !== 'en_route_er') return;
+            req.status = 'arrived_pickup'; req.arrivedPickupAtMs = Date.now();
+            saveStateToLocal(); playQuickSendConfirmationBeep();
+            logCyberEvent('وصول السائق لجهة الاستلام (#' + req.id + ')');
+            showToast(currentLang === 'ar' ? '📍 تم تسجيل الوصول وإشعار طالب الخدمة' : '📍 Arrival recorded — requester notified', currentLang === 'ar' ? 'بدأ عدّاد الانتظار.' : 'Waiting timer started.', 'fa-location-dot', 'teal');
+            renderAll();
+        }
+        function driverGoToDestination(reqId) {
+            const req = requests.find(r => r.id === reqId); if (!req || !canOperateOrders()) return;
+            if (req.status === 'arrived_pickup') {
+                req.waitSeconds = Math.round((Date.now() - (req.arrivedPickupAtMs || Date.now())) / 1000);
+                req.status = 'en_route_dest'; req.departedAtMs = Date.now();
+                saveStateToLocal(); renderAll();
+            }
+            openMapsTo(req.destination, 'dest');
+        }
+        function tickWaitTimers() {
+            document.querySelectorAll('.kah-wait').forEach(el => {
+                const since = Number(el.getAttribute('data-since')) || 0; if (since) el.textContent = fmtWait((Date.now() - since) / 1000);
+            });
+        }
+        setInterval(tickWaitTimers, 1000);
+        function notifyRequesterIfNeeded(prevMap, list) {
+            if (!activeStaffMember) return;
+            list.forEach(r => {
+                const pv = prevMap[r.id];
+                if (pv && pv !== r.status && r.status === 'arrived_pickup' && r.createdByActor === activeStaffMember.arName) {
+                    playQuickSendConfirmationBeep();
+                    showToast(currentLang === 'ar' ? '📍 وصل السائق لجهة الاستلام' : '📍 The driver has arrived', (r.driver || '') + ' — #' + r.id, 'fa-location-dot', 'amber');
+                    try { triggerNativeBackgroundNotification('📍 وصل السائق', (r.driver || '') + ' — #' + r.id); } catch (e) {}
+                }
+                if (activePermissionKey === '5060' && r.declines && r.declines.length && (prevMap['d_' + r.id] || 0) < r.declines.length && prevMap['d_' + r.id] !== undefined) {
+                    const d = r.declines[r.declines.length - 1];
+                    playQuickSendConfirmationBeep();
+                    showToast(currentLang === 'ar' ? '❌ رفض طلب #' + r.id : '❌ Order #' + r.id + ' declined', (d.by || '') + ': ' + (d.reason || ''), 'fa-ban', 'amber');
+                }
+            });
+        }
+
         // ===== شاشة الاستقبال بملء الشاشة (عامة لكل السائقين بغض النظر عن الجدول) =====
         let dismissedRadarIds = {};
 
@@ -3849,6 +4126,7 @@
                 setTxt('radarOptionalNoteText', hasNote ? req.optionalNote : '');
             }
             fillRadarSelects(req);
+            try { document.getElementById('radarDeclineBox').classList.add('hidden'); document.getElementById('radarDeclineReason').value = ''; document.getElementById('radarDeclineErr').classList.add('hidden'); const _b = document.getElementById('uiRadarBtnDecline'); if (_b) _b.textContent = currentLang === 'ar' ? 'رفض / اعتذار (مع ذكر السبب)' : 'Decline (with reason)'; } catch (e) {}
             modal.classList.remove('hidden');
             modal.classList.add('flex');
             try { triggerNativeBackgroundNotification(`🚨 طلب نقل جديد #${req.id}`, `${req.title || ''} — ${req.pickup || ''}`); } catch (e) {}
@@ -3917,6 +4195,7 @@
             req.vehicleLine = chosenVehicle;
             req.status = 'en_route_er';
             req.acceptedByActor = actorName;
+            req.acceptedAtMs = Date.now();
             req.lockVersion = (req.lockVersion || 1) + 1;
 
             document.getElementById('incomingOrderCenterModal').classList.add('hidden');
@@ -3937,15 +4216,30 @@
         function declineOrderFromRadar() {
             const req = requests.find(r => r.id === radarActiveReqId);
             if (!req) { closeRadarModal(); return; }
+            const box = document.getElementById('radarDeclineBox');
+            const btnTxt = document.getElementById('uiRadarBtnDecline');
+            if (box.classList.contains('hidden')) {
+                box.classList.remove('hidden');
+                if (btnTxt) btnTxt.textContent = currentLang === 'ar' ? 'إرسال الرفض لمشرف السائقين' : 'Send decline to the supervisor';
+                try { document.getElementById('radarDeclineReason').focus(); } catch (e) {}
+                return;
+            }
+            const reason = (document.getElementById('radarDeclineReason').value || '').trim().replace(/\s+/g, ' ');
+            const err = document.getElementById('radarDeclineErr');
+            if (reason.length < 3) {
+                err.textContent = currentLang === 'ar' ? 'اكتب سبب الرفض (3 أحرف على الأقل).' : 'Please enter a reason (3+ characters).';
+                err.classList.remove('hidden'); return;
+            }
+            const actor = activeStaffMember ? activeStaffMember.arName : '';
+            req.declines = (req.declines || []).concat([{ by: actor, reason: reason.slice(0, 200), atMs: Date.now() }]);
             dismissedRadarIds[req.id] = true;
+            saveStateToLocal();
             closeRadarModal();
-            logCyberEvent(`اعتذار/إغلاق تنبيه الطلب (#${req.id}) من جهاز ${activeStaffMember ? activeStaffMember.arName : ''} — يبقى الطلب متاحاً لبقية السائقين.`);
+            logCyberEvent('رفض الطلب (#' + req.id + ') من ' + actor + ' — السبب مرفوع لمشرف وحدة السائقين.');
             showToast(
-                currentLang === 'ar' ? `تم إغلاق التنبيه للطلب #${req.id}` : `Alert closed for order #${req.id}`,
-                currentLang === 'ar' ? 'يبقى الطلب متاحاً لبقية السائقين حتى يقبله أحدهم.' : 'The order stays available to the other drivers.',
-                'fa-bell-slash',
-                'amber'
-            );
+                currentLang === 'ar' ? 'تم إرسال الرفض بسببه لمشرف السائقين' : 'Decline sent to the supervisor',
+                currentLang === 'ar' ? 'يبقى الطلب متاحاً لبقية السائقين.' : 'The order stays available to other drivers.',
+                'fa-paper-plane', 'amber');
             renderAll();
         }
 
@@ -3956,7 +4250,9 @@
             }
             const req = requests.find(r => r.id === reqId);
             if (!req) return;
+            if (req.status === 'arrived_pickup') req.waitSeconds = Math.round((Date.now() - (req.arrivedPickupAtMs || Date.now())) / 1000);
             req.status = 'delivered';
+            req.deliveredAtMs = Date.now();
             req.etaMinutes = 0;
             saveStateToLocal();
             playQuickSendConfirmationBeep();
@@ -3974,8 +4270,11 @@
                 showVisitorReadOnlyAlert();
                 return;
             }
+            if (String(activePermissionKey) === '4050') return;
+            stars = Math.round(Number(stars));
+            if (!(stars >= 1 && stars <= 5)) return;
             const req = requests.find(r => r.id === reqId);
-            if (!req) return;
+            if (!req || req.status !== 'delivered' || req.ratingStars > 0) return;
             req.ratingStars = stars;
             saveStateToLocal();
             playQuickSendConfirmationBeep();
@@ -3985,6 +4284,19 @@
                 'fa-star',
                 'teal'
             );
+            renderAll();
+        }
+
+        function rateRequester(reqId, stars) {
+            if (String(activePermissionKey) !== '4050') return;
+            stars = Math.round(Number(stars));
+            if (!(stars >= 1 && stars <= 5)) return;
+            const req = requests.find(r => r.id === reqId);
+            if (!req || req.status !== 'delivered' || req.requesterRatingStars > 0) return;
+            req.requesterRatingStars = stars;
+            saveStateToLocal();
+            playQuickSendConfirmationBeep();
+            showToast(currentLang === 'ar' ? `⭐ تم تقييم طالب الخدمة (${stars} من 5)` : `⭐ Requester rated (${stars}/5)`, '', 'fa-star', 'teal');
             renderAll();
         }
 
@@ -4347,6 +4659,19 @@
             if (badgeCount) badgeCount.textContent = String(requests.filter(r => r.status !== 'delivered').length);
         }
 
+
+        function supervisorBoxesHtml() {
+            if (!['5060', '1020', '2030'].includes(String(activePermissionKey))) return '';
+            const ar = currentLang === 'ar';
+            const acc = requests.filter(r => r.acceptedByActor).slice().sort((x, y) => (y.acceptedAtMs || 0) - (x.acceptedAtMs || 0)).slice(0, 6);
+            const dec = [];
+            requests.forEach(r => (r.declines || []).forEach(d => dec.push(Object.assign({ rid: r.id, title: r.title }, d))));
+            dec.sort((x, y) => (y.atMs || 0) - (x.atMs || 0));
+            const accHtml = acc.length ? acc.map(r => `<div class="rounded-xl bg-white border border-emerald-200 p-2.5 text-[11.5px]"><div class="font-black text-emerald-900">#${escHtml(r.id)} — ${escHtml(r.driver || '')}</div><div class="text-slate-500 font-bold">${escHtml(r.title || '')} · ${fmtClock(r.acceptedAtMs)}</div></div>`).join('') : `<div class="text-[11.5px] text-slate-400 font-bold">${ar ? 'لا توجد طلبات مقبولة بعد.' : 'No accepted orders yet.'}</div>`;
+            const decHtml = dec.length ? dec.slice(0, 8).map(d => `<div class="rounded-xl bg-white border border-rose-200 p-2.5 text-[11.5px]"><div class="font-black text-rose-900">#${escHtml(d.rid)} — ${escHtml(d.by || '')}</div><div class="text-slate-700 font-bold">${ar ? 'السبب:' : 'Reason:'} ${escHtml(d.reason || '')}</div><div class="text-slate-400 font-bold">${fmtClock(d.atMs)}</div></div>`).join('') : `<div class="text-[11.5px] text-slate-400 font-bold">${ar ? 'لا توجد طلبات مرفوضة.' : 'No declined orders.'}</div>`;
+            return `<div class="grid grid-cols-1 sm:grid-cols-2 gap-3"><div class="rounded-3xl bg-emerald-50 border-2 border-emerald-300 p-3 space-y-2"><div class="font-black text-emerald-900 text-sm"><i class="fa-solid fa-circle-check ml-1"></i>${ar ? 'صندوق القبول' : 'Accepted box'} (${acc.length})</div>${accHtml}</div><div class="rounded-3xl bg-rose-50 border-2 border-rose-300 p-3 space-y-2"><div class="font-black text-rose-900 text-sm"><i class="fa-solid fa-circle-xmark ml-1"></i>${ar ? 'صندوق الرفض بالشرح' : 'Declined box (with reasons)'} (${dec.length})</div>${decHtml}</div></div>`;
+        }
+
         function renderDriverControlView() {
             const countEl = document.getElementById('activeQueueCount');
             if (countEl) countEl.textContent = currentLang === 'ar' ? `${requests.length} طلبات` : `${requests.length} Orders`;
@@ -4366,14 +4691,8 @@
                 return;
             }
 
-            listEl.innerHTML = requests.map(req => {
-                const statusBadge = req.status === 'pending'
-                    ? `<span class="px-3 py-1 rounded-xl text-xs font-black bg-amber-100 text-amber-900 animate-pulse">${currentLang === 'ar' ? '🔔 بانتظار القبول' : '🔔 Awaiting Accept'}</span>`
-                    : req.status === 'delivered'
-                    ? `<span class="px-3 py-1 rounded-xl text-xs font-black bg-emerald-100 text-emerald-900">${currentLang === 'ar' ? '✓ تم التسليم' : '✓ Delivered'}</span>`
-                    : req.status === 'declined_needs_supervisor'
-                    ? `<span class="px-3 py-1 rounded-xl text-xs font-black bg-rose-100 text-rose-900">${currentLang === 'ar' ? '⚠️ معتذر - يوجه لسائق آخر' : '⚠️ Declined'}</span>`
-                    : `<span class="px-3 py-1 rounded-xl text-xs font-black bg-cyan-100 text-cyan-900">${currentLang === 'ar' ? '🚗 السائق في الطريق' : '🚗 En Route'}</span>`;
+            listEl.innerHTML = supervisorBoxesHtml() + requests.map(req => {
+                const statusBadge = `<span class="px-3 py-1 rounded-xl text-xs font-black ${statusColor(req.status)}">${statusLabel(req.status)}</span>`;
 
                 return `
                 <div class="premium-card rounded-3xl p-5 border-2 ${req.status === 'pending' ? 'border-amber-400' : 'border-slate-200'} space-y-3">
@@ -4406,10 +4725,18 @@
                             ${isVisitorReadOnly()
                                 ? `<span class="text-[11px] text-slate-400 font-bold bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200"><i class="fa-solid fa-eye ml-1"></i>${currentLang === 'ar' ? 'وضع الاطلاع فقط' : 'View Only'}</span>`
                                 : (req.status === 'pending' || req.status === 'declined_needs_supervisor')
-                                ? `<button type="button" onclick="openRadarModalForOrder('${req.id}')" class="bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black px-4 py-2 rounded-xl shadow cursor-pointer">${currentLang === 'ar' ? '🔔 فتح شاشة الاستقبال بملء الجوال' : '🔔 Open Full-Screen Alert'}</button>`
-                                : req.status !== 'delivered'
-                                ? `<button type="button" onclick="markOrderDelivered('${req.id}')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black px-4 py-2 rounded-xl shadow cursor-pointer">${currentLang === 'ar' ? '✓ إتمام التسليم' : '✓ Complete Delivery'}</button>`
-                                : ''
+                                ? `<span class="text-[11px] text-amber-800 font-black bg-amber-50 px-3 py-1.5 rounded-xl border border-amber-200"><i class="fa-solid fa-bell ml-1"></i>${currentLang === 'ar' ? 'يرنّ على أجهزة السائقين بملء الشاشة' : 'Ringing on drivers\' devices'}</span>`
+                                : (req.status !== 'delivered' && !canOperateOrders())
+                                ? `<span class="text-[11px] text-slate-500 font-black bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200">${statusLabel(req.status)}</span>`
+                                : req.status === 'en_route_er'
+                                ? `<div class="flex flex-wrap gap-2"><button type="button" onclick="driverGoToPickup('${req.id}')" class="bg-sky-600 hover:bg-sky-500 text-white text-xs font-black px-4 py-2 rounded-xl shadow cursor-pointer"><i class="fa-solid fa-diamond-turn-right ml-1"></i>${currentLang === 'ar' ? 'الذهاب إلى جهة الاستلام' : 'Go to pickup'}</button><button type="button" onclick="driverArrivedPickup('${req.id}')" class="bg-violet-600 hover:bg-violet-500 text-white text-xs font-black px-4 py-2 rounded-xl shadow cursor-pointer"><i class="fa-solid fa-location-dot ml-1"></i>${currentLang === 'ar' ? 'تسجيل وصول' : 'I have arrived'}</button></div>`
+                                : req.status === 'arrived_pickup'
+                                ? `<div class="flex flex-wrap items-center gap-2"><span class="text-[11px] font-black text-violet-800 bg-violet-50 border border-violet-200 px-3 py-1.5 rounded-xl"><i class="fa-solid fa-hourglass-half ml-1"></i>${currentLang === 'ar' ? 'عدّاد الانتظار' : 'Waiting'} <b class="kah-wait font-mono" data-since="${req.arrivedPickupAtMs || 0}">00:00</b></span><button type="button" onclick="driverGoToDestination('${req.id}')" class="bg-sky-600 hover:bg-sky-500 text-white text-xs font-black px-4 py-2 rounded-xl shadow cursor-pointer"><i class="fa-solid fa-diamond-turn-right ml-1"></i>${currentLang === 'ar' ? 'الذهاب إلى جهة التسليم' : 'Go to destination'}</button></div>`
+                                : req.status === 'en_route_dest'
+                                ? `<div class="flex flex-wrap gap-2"><button type="button" onclick="driverGoToDestination('${req.id}')" class="bg-sky-600 hover:bg-sky-500 text-white text-xs font-black px-4 py-2 rounded-xl shadow cursor-pointer"><i class="fa-solid fa-map-location-dot ml-1"></i>${currentLang === 'ar' ? 'فتح الخريطة' : 'Open map'}</button><button type="button" onclick="markOrderDelivered('${req.id}')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black px-4 py-2 rounded-xl shadow cursor-pointer"><i class="fa-solid fa-flag-checkered ml-1"></i>${currentLang === 'ar' ? 'وصول — انتهى الطلب' : 'Arrived — order complete'}</button></div>`
+                                : (String(activePermissionKey) === '4050'
+                                    ? `<div class="flex flex-col items-end gap-1"><span class="text-[10.5px] font-black text-slate-500">${currentLang === 'ar' ? 'قيّم طالب الخدمة:' : 'Rate the requester:'}</span><div class="flex gap-1" dir="ltr">${[1, 2, 3, 4, 5].map(st => `<button type="button" ${req.requesterRatingStars > 0 ? 'disabled' : ''} onclick="rateRequester('${req.id}', ${st})" class="w-8 h-8 rounded-lg font-black ${req.requesterRatingStars >= st ? 'bg-amber-400 text-slate-950' : 'bg-slate-200 text-slate-500 hover:bg-amber-200'} ${req.requesterRatingStars > 0 ? 'cursor-not-allowed' : 'cursor-pointer'}">★</button>`).join('')}</div></div>`
+                                    : (req.requesterRatingStars > 0 ? `<span class="bg-amber-100 text-amber-800 text-[11px] font-black px-2 py-0.5 rounded-lg">${currentLang === 'ar' ? 'تقييم السائق للطالب' : 'Driver→Requester'}: ${'★'.repeat(req.requesterRatingStars)}</span>` : ''))
                             }
                         </div>
                     </div>
@@ -4442,7 +4769,7 @@
                             <p class="text-xs text-cyan-700 font-extrabold mt-0.5">${req.pickup} ⬅️ ${req.destination}</p>
                         </div>
                         <span class="bg-cyan-600 text-white text-xs font-black px-3.5 py-1.5 rounded-xl">
-                            ${req.status === 'pending' ? (currentLang === 'ar' ? '⏳ بانتظار قبول السائق...' : '⏳ Awaiting Driver...') : req.status === 'delivered' ? (currentLang === 'ar' ? '✓ تم التسليم بنجاح' : '✓ Delivered') : (currentLang === 'ar' ? '🚗 السائق في الطريق إليكم' : '🚗 Driver En Route')}
+                            ${statusLabel(req.status)}
                         </span>
                     </div>
 
@@ -4466,18 +4793,19 @@
                         </div>
                     </div>
 
+                    ${req.status === 'arrived_pickup' ? `<div class="p-3.5 rounded-2xl bg-violet-50 border-2 border-violet-400 flex items-center justify-between gap-3"><div class="text-sm font-black text-violet-900"><i class="fa-solid fa-location-dot ml-1"></i>${currentLang === 'ar' ? 'وصل السائق إليكم — يرجى تجهيز العينة/المريض' : 'The driver has arrived — please get ready'}</div><div class="text-xs font-black text-violet-800">${currentLang === 'ar' ? 'مدة الانتظار' : 'Waiting'} <b class="kah-wait font-mono text-base" data-since="${req.arrivedPickupAtMs || 0}">00:00</b></div></div>` : ''}
                     <!-- Service Rating Box (1 to 5 Stars) by Service Requester -->
-                    <div class="p-4 rounded-2xl bg-slate-900 text-white flex flex-col sm:flex-row items-center justify-between gap-3">
+                    ${(req.status === 'delivered' && String(activePermissionKey) !== '4050') ? `<div class="p-4 rounded-2xl bg-slate-900 text-white flex flex-col sm:flex-row items-center justify-between gap-3">
                         <div>
                             <span class="bg-amber-400 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-md">⭐ ${currentLang === 'ar' ? 'تقييم الخدمة من قِبل طالب الخدمة' : 'Service Rating by Requester'}</span>
                             <h4 class="text-xs sm:text-sm font-black mt-1">${currentLang === 'ar' ? 'كيف تقيّم سرعة وجودة استجابة إدارة الحركة والمواصلات؟' : 'How do you rate the transport service speed & quality?'}</h4>
                         </div>
                         <div class="flex items-center gap-1.5" dir="ltr">
                             ${[1, 2, 3, 4, 5].map(st => `
-                                <button type="button" ${isVisitor ? 'disabled' : ''} onclick="rateRequestService('${req.id}', ${st})" class="w-9 h-9 rounded-xl font-black text-base transition ${isVisitor ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'} ${req.ratingStars >= st ? 'bg-amber-400 text-slate-950 shadow-lg scale-105' : 'bg-slate-800 text-slate-400 hover:text-amber-300'}">★</button>
+                                <button type="button" ${(isVisitor || req.ratingStars > 0) ? 'disabled' : ''} onclick="rateRequestService('${req.id}', ${st})" class="w-9 h-9 rounded-xl font-black text-base transition ${(isVisitor || req.ratingStars > 0) ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer'} ${req.ratingStars >= st ? 'bg-amber-400 text-slate-950 shadow-lg scale-105' : 'bg-slate-800 text-slate-400 hover:text-amber-300'}">★</button>
                             `).join('')}
                         </div>
-                    </div>
+                    </div>` : ''}
                 </div>
             `;
         }
@@ -4558,7 +4886,7 @@
                             <td class="py-2.5 px-3 text-[11px] font-extrabold text-indigo-700">${sanitizeHtmlInput(r.acceptedByActor || r.createdByActor || 'النظام')}</td>
                             <td class="py-2.5 px-3 font-black">
                                 <span class="px-2 py-0.5 rounded-lg text-[10.5px] ${r.status === 'delivered' ? 'bg-emerald-100 text-emerald-800' : r.status === 'pending' ? 'bg-amber-100 text-amber-800' : 'bg-cyan-100 text-cyan-800'}">
-                                    ${r.status === 'delivered' ? 'تم التسليم ✓' : r.status === 'pending' ? 'قيد الانتظار' : 'قيد التنفيذ'}
+                                    ${statusLabel(r.status)}
                                 </span>
                                 ${r.ratingStars > 0 ? `<span class="text-amber-500 mr-1">${'★'.repeat(r.ratingStars)}</span>` : ''}
                             </td>
@@ -4789,7 +5117,7 @@
         }
         function closeInboxModal() { document.getElementById('inboxModal').classList.add('hidden'); document.getElementById('inboxModal').classList.remove('flex'); }
 
-        function openIntroModal() { document.getElementById('introModal').classList.remove('hidden'); document.getElementById('introModal').classList.add('flex'); }
+        function openIntroModal() { try { document.getElementById('introLeadershipAr').classList.toggle('hidden', currentLang !== 'ar'); document.getElementById('introLeadershipEn').classList.toggle('hidden', currentLang === 'ar'); } catch (e) {} document.getElementById('introModal').classList.remove('hidden'); document.getElementById('introModal').classList.add('flex'); }
         function closeIntroModal() { document.getElementById('introModal').classList.add('hidden'); document.getElementById('introModal').classList.remove('flex'); }
         function toggleMoreInfoFooter() { document.getElementById('moreInfoContentBox').classList.toggle('hidden'); document.getElementById('moreInfoChevron').classList.toggle('rotate-180'); }
 
@@ -4848,7 +5176,7 @@
                 r.driver,
                 r.vehicleLine || '',
                 r.acceptedByActor || r.createdByActor || '',
-                r.status === 'delivered' ? 'تم التسليم' : r.status === 'pending' ? 'قيد الانتظار' : 'في الطريق',
+                statusLabel(r.status).replace(/^[^\p{L}]+/u, ''),
                 r.ratingStars > 0 ? `${r.ratingStars}/5` : 'غير مقيم'
             ]);
             const csvLines = [headers, ...rows].map(row =>
@@ -4987,6 +5315,8 @@
         }
 
         window.onload = function () {
+            try { applyInfoHints(); } catch (e) {}
+            try { applyFullLanguage(); } catch (e) {}
             // 1. Initialize Official App Icon & PWA Manifest
             try { localStorage.removeItem('kah_custom_app_icon_v1'); } catch (e) {}
             const iconUrl = generateOfficialAppIconDataUrl();
