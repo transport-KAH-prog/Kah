@@ -338,7 +338,7 @@
         <div class="w-full max-w-[380px] flex items-center justify-between gap-2 mb-2.5">
             <button type="button" onclick="openCyberSecurityModal()" class="bg-slate-900/90 hover:bg-slate-800 border border-cyan-500/40 px-3 py-1.5 rounded-xl text-[10.5px] font-black text-cyan-300 flex items-center gap-1.5 shadow cursor-pointer transition">
                 <i class="fa-solid fa-shield-halved text-emerald-400 animate-pulse"></i>
-                <span id="uiLockShieldStatus">درع الحماية السيبراني نشط</span>
+                <span id="uiLockShieldStatus">الدخول الآمن مفعّل</span>
             </button>
 
             <div class="flex items-center gap-1.5">
@@ -372,7 +372,7 @@
             <div id="cyberLockoutBanner" class="hidden mb-3 bg-rose-950 border-2 border-rose-500 text-rose-200 rounded-2xl p-3 text-xs font-black space-y-1 animate-pulse">
                 <div class="flex items-center justify-center gap-1.5 text-rose-400">
                     <i class="fa-solid fa-triangle-exclamation text-base"></i>
-                    <span id="uiLockoutTitle">تم تفعيل القفل السيبراني المؤقت ضد المتطفلين!</span>
+                    <span id="uiLockoutTitle">تم إيقاف الدخول مؤقتاً بعد 3 محاولات خاطئة</span>
                 </div>
                 <p id="uiLockoutSub" class="text-[11px] font-bold">تم رصد 3 محاولات خاطئة. يرجى الانتظار <span id="lockoutCountdownSec" class="font-mono text-amber-300 text-sm">60</span> ثانية.</p>
             </div>
@@ -533,7 +533,7 @@
                         <span id="menuGuestbookPending" style="display:none" class="bg-rose-600 text-white text-[10px] font-black px-1.5 rounded-full">0</span>
                     </button>
                     <button type="button" id="menuMapBtn" style="display:none" onclick="toggleMapsVisibility()" class="items-center gap-1.5 bg-sky-700 hover:bg-sky-600 text-white px-2.5 py-1.5 rounded-xl text-[11px] font-black cursor-pointer transition shadow-sm">
-                        <i class="fa-solid fa-map-location-dot"></i><span class="flex flex-col leading-tight text-right"><span id="menuMapBtnText">إخفاء الخريطة</span><span class="kah-desc text-[9px] opacity-75 font-semibold" data-ar="إظهار أو إخفاء خريطة التتبع" data-en="Show/hide the tracking map">إظهار أو إخفاء خريطة التتبع</span></span>
+                        <i class="fa-solid fa-map-location-dot"></i><span class="flex flex-col leading-tight text-right"><span id="menuMapBtnText">إخفاء الخريطة</span><span class="kah-desc text-[9px] opacity-75 font-semibold" data-ar="إظهار أو إخفاء الخريطة" data-en="Show/hide the map">إظهار أو إخفاء الخريطة</span></span>
                     </button>
                     <button type="button" id="menuGuideBtn" onclick="openGuideModal(); toggleMoreMenu(false)" class="flex items-center gap-1.5 bg-violet-700 hover:bg-violet-600 text-white px-2.5 py-1.5 rounded-xl text-[11px] font-black cursor-pointer transition shadow-sm">
                         <i class="fa-solid fa-circle-info"></i><span class="flex flex-col leading-tight text-right"><span>شرح النظام وطريقة التثبيت</span><span class="kah-desc text-[9px] opacity-75 font-semibold" data-ar="دليل الاستخدام وطريقة التثبيت" data-en="User guide & install steps">دليل الاستخدام وطريقة التثبيت</span></span>
@@ -677,9 +677,9 @@
                             <div class="flex items-center justify-between">
                                 <h4 id="uiMapTitle" class="font-black text-xs sm:text-sm flex items-center gap-1.5">
                                     <i class="fa-solid fa-map-location-dot text-cyan-400"></i>
-                                    <span>خريطة التتبع الحية وموقع سيارة السائق (🚗)</span>
+                                    <span>الخريطة والملاحة (موقعك الحالي)</span>
                                 </h4>
-                                <span class="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-2 py-0.5 rounded-full font-bold">GPS نشط</span>
+                                <span class="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-2 py-0.5 rounded-full font-bold">موقعك</span>
                             </div>
                             <div class="grid grid-cols-2 gap-1.5">
                                 <button type="button" onclick="syncCurrentMobileGps('driver')" class="bg-sky-600 hover:bg-sky-500 text-white text-[10.5px] font-black py-1.5 px-2 rounded-xl flex items-center justify-center gap-1 shadow cursor-pointer">
@@ -734,7 +734,7 @@
                 <div id="requesterMapColumnWrapper" class="lg:col-span-5">
                     <div class="premium-card rounded-3xl overflow-hidden border border-slate-200">
                         <div class="p-3.5 luxury-Command-card text-white flex items-center justify-between">
-                            <span id="uiErMapHeader" class="font-black text-xs sm:text-sm">موقع سيارة السائق المناوب (🚗) وتتبع المسار</span>
+                            <span id="uiErMapHeader" class="font-black text-xs sm:text-sm">الخريطة والملاحة (موقعك الحالي)</span>
                             <button type="button" onclick="syncCurrentMobileGps('er')" class="bg-rose-600 hover:bg-rose-500 text-white text-[10.5px] font-black px-2.5 py-1 rounded-xl cursor-pointer">تحديث موقعي</button>
                         </div>
                         <div class="relative h-80 sm:h-96 w-full bg-slate-100">
@@ -1381,8 +1381,8 @@
                         <p class="text-slate-600">تنبيه فوري عند استقبال الطلب مع احتساب المدة الزمنية وإمكانية تقييم جودة الخدمة من قِبل طالب الخدمة.</p>
                     </div>
                     <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-                        <div class="font-black text-slate-900 mb-1">🛡️ حوكمة الصلاحيات والأمن السيبراني</div>
-                        <p class="text-slate-600">فصل دقيق للصلاحيات برموز سرية مشفرة وصور مستخدمين مستقلة مع درع حماية سيبراني ضد المتطفلين.</p>
+                        <div class="font-black text-slate-900 mb-1">🛡️ حوكمة الصلاحيات والأمان</div>
+                        <p class="text-slate-600">دخول بحساب شخصي لكل موظف، وصلاحيات تُفرض من الخادم، وسجل تدقيق للعمليات.</p>
                     </div>
                 </div>
                 <div id="introLeadershipAr"><div style="border:1px solid #e0b24a;border-radius:16px;padding:12px 14px;margin:0 0 10px;background:linear-gradient(145deg,#fffaf0,#fff)"><div style="font-weight:900;color:#9a6a00;font-size:12.5px;margin-bottom:6px">كلمة مدير إدارة الحركة والمواصلات</div><p style="margin:0 0 8px">انطلاقاً من حرصنا الدائم على تطوير منظومة العمل والارتقاء بمستوى الخدمات اللوجستية، نواصل سعينا نحو تبني الحلول الرقمية المبتكرة التي ترفع من كفاءة الأداء وتضمن سرعة الاستجابة ودقة التنفيذ في جميع عمليات النقل الطبي.</p><p style="margin:0 0 8px">وبهذه المناسبة، أتقدم بخالص الشكر والتقدير للأستاذ فهد بن عطاالله القرشي، مؤسس «المنصة ومنظومة النقل الطبي اللوجستي الذكي»؛ وذلك على رؤيته الطموحة لتأسيس هذه المنظومة الإلكترونية المتكاملة لإدارة وتنظيم عمليات النقل الطبي واللوجستي بإدارة الحركة والمواصلات، وما أظهره من تخطيط استراتيجي واحترافية وكفاءة عالية في الأداء.</p><div style="text-align:left;margin-top:6px;font-weight:900;color:#1c1303">الأستاذ/ يوسف محمد خيري<div style="font-weight:700;font-size:11px;color:#6b5320">مدير إدارة الحركة والمواصلات</div></div></div><div style="border:1px solid #e0b24a;border-radius:16px;padding:12px 14px;margin:0 0 10px;background:linear-gradient(145deg,#fffaf0,#fff)"><div style="font-weight:900;color:#9a6a00;font-size:12.5px;margin-bottom:6px">كلمة المؤسس والمشرف العام على المنصة</div><p style="margin:0 0 8px">تُمثّل «المنصة ومنظومة النقل الطبي اللوجستي الذكي» خطوة نوعية نحو التحول الرقمي الشامل في إدارة وتنظيم عمليات النقل الطبي واللوجستي. لقد حرصنا عند تصميم هذه المنظومة الإلكترونية المتكاملة على توظيف أحدث التقنيات الذكية لرفع كفاءة التشغيل، وتسهيل إجراءات المتابعة، وضمان أعلى معايير الدقة والموثوقية.</p><p style="margin:0 0 8px">كما أتقدم بجزيل الشكر والامتنان لإدارة الحركة والمواصلات، ممثلةً بمديرها الأستاذ يوسف محمد خيري، على دعمهم اللامحدود وتعاونهم المثمر الذي كان له الأثر الأكبر في تحويل هذه الرؤية إلى واقع ملموس يخدم المنظومة الصحية بأعلى مستويات الجودة والاحترافية.</p><div style="text-align:left;margin-top:6px;font-weight:900;color:#1c1303">الأستاذ/ فهد بن عطاالله القرشي<div style="font-weight:700;font-size:11px;color:#6b5320">مؤسس المنصة والمشرف العام</div></div></div></div>
@@ -1438,7 +1438,7 @@
                     </div>
                     <div>
                         <span class="text-[10px] bg-emerald-400 text-slate-950 font-black px-2 py-0.5 rounded-full">PROTECTION ACTIVE 100%</span>
-                        <h3 class="font-black text-sm sm:text-base text-white mt-0.5">منظومة حماية الأمن السيبراني ومكافحة المتطفلين</h3>
+                        <h3 class="font-black text-sm sm:text-base text-white mt-0.5">الحماية والأمان في المنصة</h3>
                     </div>
                 </div>
                 <button type="button" onclick="closeCyberSecurityModal()" class="text-slate-400 hover:text-white text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
@@ -1478,7 +1478,7 @@
                     <div class="w-9 h-9 rounded-xl bg-indigo-500/20 border border-indigo-400/40 flex items-center justify-center text-indigo-300"><i class="fa-solid fa-headset"></i></div>
                     <div>
                         <h3 class="font-black text-sm sm:text-base">مركز الدعم الفني والبلاغات</h3>
-                        <p class="text-[11px] text-indigo-200">إرسال مباشر إلى بريد مدير الإدارة ومساعده</p>
+                        <p class="text-[11px] text-indigo-200">تصل إلى صندوق الشكاوى لدى المدير ومساعده داخل المنصة</p>
                     </div>
                 </div>
                 <button type="button" onclick="closeSupportModal()" class="text-slate-400 hover:text-white text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
@@ -1514,7 +1514,7 @@
                 <div class="pt-2 flex justify-end gap-2">
                     <button type="button" onclick="closeSupportModal()" class="px-4 py-2 rounded-xl border border-slate-200 font-bold text-slate-600 cursor-pointer">إلغاء</button>
                     <button type="submit" class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-black shadow flex items-center gap-1.5 cursor-pointer">
-                        <i class="fa-solid fa-paper-plane"></i><span>إرسال للبريد الإداري</span>
+                        <i class="fa-solid fa-paper-plane"></i><span>إرسال للمدير</span>
                     </button>
                 </div>
             </form>
@@ -2289,7 +2289,7 @@
                 uiPrivacyNoPatientBadge: 'الطلبات تحتوي المهمة والمكان فقط (دون أي بيانات مرضى)',
                 uiBtnEnablePushText: 'تفعيل إشعارات الخلفية',
                 uiStaffAccountLabel: 'رقم المستخدم (يسلّمه لك مدير الإدارة):',
-                uiLockShieldStatus: 'درع الحماية السيبراني نشط',
+                uiLockShieldStatus: 'الدخول الآمن مفعّل',
                 uiLockClusterBadge: 'تجمع جدة الصحي الأول • مستشفى الملك عبدالعزيز بجدة',
                 uiLockMainTitle: 'منصة الحركة والمواصلات الذكية',
                 uiLockSubTitle: 'الرجاء اختيار حسابك الفردي وإدخال الرمز السري للبدء',
@@ -2322,14 +2322,14 @@
                 uiBtnResetAll: 'مسح كل بيانات التجربة وتصفير الطلبات (0)',
                 uiQueueHeading: 'سجل الطلبات الواردة والنشطة',
                 uiBtnNewOrder: 'إنشاء طلب نقل جديد',
-                uiMapTitle: 'خريطة التتبع الحية وموقع سيارة السائق (🚗)',
+                uiMapTitle: 'الخريطة والملاحة (موقعك الحالي)',
                 uiBtnMyGps: 'تحديث موقعي (GPS)',
                 uiMapFooterNote: 'مستشفى الملك عبدالعزيز بجدة ⬅️ مركز السموم',
                 uiBtnGmapsNav: 'ملاحة Google Maps ↗',
                 uiErBadge: 'قسم الطوارئ — المدير المناوب',
                 uiErTitle: 'بوابة إنشاء الطلبات ومتابعة السائق وتقييم الخدمة',
                 uiErBtnCreate: 'إنشاء طلب نقل جديد الآن',
-                uiErMapHeader: 'موقع سيارة السائق المناوب (🚗) وتتبع المسار',
+                uiErMapHeader: 'الخريطة والملاحة (موقعك الحالي)',
                 uiSchedMainTitle: 'الجدول الرسمي المعتمد للمناوبين (8 نوفمبر — 5 ديسمبر 2026م)',
                 uiSchedSubTitle: 'إيصال العينات الطبية (مركز السموم والمختبرات المرجعية) ومستلزمات المستشفى — تواصل مباشر اتصال أو واتساب',
                 uiKpiVehiclesLabel: 'المركبات المتاحة للنوبة',
@@ -2375,7 +2375,7 @@
                 uiPrivacyNoPatientBadge: 'Orders contain Task & Location only (Zero Patient PII)',
                 uiBtnEnablePushText: 'Enable Push Alerts',
                 uiStaffAccountLabel: 'User number (given to you by the Director):',
-                uiLockShieldStatus: 'Cybersecurity Shield Active',
+                uiLockShieldStatus: 'Secure sign-in enabled',
                 uiLockClusterBadge: 'Jeddah First Health Cluster • King Abdulaziz Hospital',
                 uiLockMainTitle: 'Smart Transportation & Mobility Platform',
                 uiLockSubTitle: 'Select your individual account and enter your security PIN',
@@ -2408,14 +2408,14 @@
                 uiBtnResetAll: 'Wipe All Trial Data & Reset Orders (0)',
                 uiQueueHeading: 'Incoming & Active Orders Queue',
                 uiBtnNewOrder: 'Create New Transport Order',
-                uiMapTitle: 'Live Tracking Map & On-Duty Driver Car (🚗)',
+                uiMapTitle: 'Map & navigation (your current location)',
                 uiBtnMyGps: 'Update My GPS',
                 uiMapFooterNote: 'King Abdulaziz Hospital ⬅️ Poison Control Center',
                 uiBtnGmapsNav: 'Google Maps Nav ↗',
                 uiErBadge: 'Emergency Dept — On-Duty Manager',
                 uiErTitle: 'Order Creation, Live Driver Tracking & Service Rating',
                 uiErBtnCreate: 'Submit New Transport Order Now',
-                uiErMapHeader: 'On-Duty Driver Car Location (🚗) & Live Route',
+                uiErMapHeader: 'Map & navigation (your current location)',
                 uiSchedMainTitle: 'Official Approved On-Duty Schedules (Nov 8 — Dec 5, 2026)',
                 uiSchedSubTitle: 'Lab Samples (Poison Center) & Hospital Supplies — Direct Call or WhatsApp',
                 uiKpiVehiclesLabel: 'Available Fleet Vehicles',
@@ -2899,20 +2899,20 @@
             ['fa-route', 'مراحل الطلب والتقييم', '<b>1)</b> المرسل ينشئ الطلب فيرنّ بملء شاشة السائقين حتى يقبل أحدهم أو يرفض بسبب يصل لمشرف وحدة السائقين.<br><b>2)</b> السائق يضغط «الذهاب إلى جهة الاستلام» فتفتح الخريطة، ثم «تسجيل وصول» فيُشعَر طالب الخدمة ويبدأ عدّاد الانتظار.<br><b>3)</b> «الذهاب إلى جهة التسليم» تفتح الخريطة، وعند الوصول «وصول — انتهى الطلب».<br><b>4)</b> يقيّم السائق وطالب الخدمة بعضهما من 1 إلى 5 نجوم دون تعليق.'],
             ['fa-hospital', 'ما هو هذا النظام؟', 'منصة إدارة الحركة والمواصلات بمستشفى الملك عبدالعزيز بجدة (تجمع جدة الصحي الأول). تُنشأ فيها طلبات النقل (عينات، مستلزمات، مهام ميدانية)، فتصل فوراً لشاشات السائقين بنغمة تنبيه، ويتابعها المدير والمساعد لحظة بلحظة. الطلبات تحتوي المهمة والمكان فقط، دون أي بيانات مرضى.'],
             ['fa-users-gear', 'الأدوار والصلاحيات', '<b>المدير ومساعده:</b> صلاحية كاملة، رؤية كل ما يحدث، المتصلون والإحصائيات، اعتماد آراء الزوار، إخفاء الخريطة.<br><b>الطوارئ:</b> إنشاء ومتابعة وتقييم الطلبات.<br><b>السائق:</b> استقبال الطلب بملء الشاشة وقبوله.<br><b>مشرف السائقين / الأسطول:</b> متابعة السائقين والمركبات.<br><b>الإداري:</b> الإحصائيات والتقارير.<br><b>الزائر:</b> اطلاع فقط، ويكتب رأيه في سجل الزوار.'],
-            ['fa-key', 'الدخول', 'اختر اسمك من القائمة، ثم أدخل رمزك السري (4 أرقام) واضغط «دخول». الرمز شخصي لكل حساب، فلا تشاركه. بعد 3 محاولات خاطئة يُقفل الدخول دقيقة.'],
+            ['fa-key', 'الدخول', 'اكتب رقم المستخدم الذي سلّمه لك المدير، ثم أدخل رمزك السري (4 أرقام) واضغط «دخول». الرمز شخصي لكل حساب، فلا تشاركه. بعد 3 محاولات خاطئة يُقفل الدخول دقيقة.'],
             ['fa-paper-plane', 'إنشاء الطلب وقبوله', '1) من «إنشاء طلب نقل جديد» اختر نوع الطلب والجهة والوجهة وأرسل.<br>2) يظهر الطلب بملء شاشة السائقين مع نغمة متواصلة.<br>3) أول سائق يضغط «قبول الطلب» يستلمه، وتتوقف النغمة عند الجميع.<br>4) يتابع الطالب حالة الطلب وصولاً إلى التسليم، ثم يقيّم الخدمة.'],
-            ['fa-bell', 'التنبيهات والنغمات', 'من زر ☰ اختر النغمة (الرنين الملكي / الجرس الذهبي) ومستوى الصوت. للتنبيه الفوري: اترك التطبيق مفتوحاً وفعّل «إشعارات الخلفية». الإشعارات التي تصل والتطبيق مغلق تماماً تحتاج خدمة دفع إضافية غير مفعّلة حالياً.'],
+            ['fa-bell', 'التنبيهات والنغمات', 'من زر ☰ اختر النغمة (نغمة 1 / نغمة 2) ومستوى الصوت. للتنبيه الفوري: اترك التطبيق مفتوحاً وفعّل «إشعارات الخلفية». الإشعارات التي تصل والتطبيق مغلق تماماً تحتاج خدمة دفع إضافية غير مفعّلة حالياً.'],
             ['fa-mobile-screen-button', 'تثبيت التطبيق على الآيفون (iPhone)', '1) افتح الرابط في <b>Safari</b> (وليس من داخل واتساب).<br>2) اضغط زر <b>المشاركة</b> (المربع الذي يخرج منه سهم للأعلى) أسفل الشاشة.<br>3) مرّر للأسفل واختر <b>«إضافة إلى الشاشة الرئيسية»</b>.<br>4) اضغط <b>«إضافة»</b>، فتظهر أيقونة التطبيق على شاشتك الرئيسية ويفتح بملء الشاشة.'],
             ['fa-brands fa-android', 'تثبيت التطبيق على الأندرويد', '1) افتح الرابط في <b>Chrome</b>.<br>2) اضغط ⋮ (القائمة) أعلى الشاشة.<br>3) اختر <b>«تثبيت التطبيق»</b> أو <b>«إضافة إلى الشاشة الرئيسية»</b>.<br>4) أكّد، وستجد الأيقونة بين تطبيقاتك.'],
             ['fa-desktop', 'على الكمبيوتر', 'افتح الرابط في Chrome أو Edge، ثم اضغط أيقونة التثبيت في شريط العنوان، أو القائمة ⋮ ثم «تثبيت».'],
-            ['fa-lightbulb', 'نصائح سريعة', '• اترك شاشة الجوال تعمل والتطبيق مفتوحاً أثناء المناوبة ليصلك التنبيه.<br>• إذا لم يظهر شيء، حدّث الصفحة وادخل من جديد.<br>• لتغيير السمة (ومنها السمة السكرية الفاخرة) أو اللغة أو الصوت: زر ☰.<br>• لمشاركة النظام مع زميل: زر «نسخ ومشاركة رابط النظام» في أسفل هذا الدليل.'],
+            ['fa-lightbulb', 'نصائح سريعة', '• اترك شاشة الجوال تعمل والتطبيق مفتوحاً أثناء المناوبة ليصلك التنبيه.<br>• إذا لم يظهر شيء، حدّث الصفحة وادخل من جديد.<br>• لتغيير السمة (ومنها السمة السكرية الفاخرة) أو اللغة أو الصوت: زر ☰.<br>• لمشاركة النظام مع زميل: من قسم «لمزيد من المعلومات» أسفل الصفحة الرئيسية.'],
             ['fa-shield-halved', 'الأمان والخصوصية', 'الدخول يتم عبر خادم آمن، والصلاحيات تُفرض على مستوى قاعدة البيانات نفسها. لا تُحفظ بيانات الطلبات على الجهاز بعد الخروج. سجل الدخول والمتصلون يراهما المدير ومساعده فقط.']
         ];
         const GUIDE_EN = [
             ['fa-route', 'Order stages & rating', '<b>1)</b> The requester creates the order; it rings full-screen on drivers\' devices until one accepts, or declines with a reason sent to the drivers supervisor.<br><b>2)</b> The driver taps “Go to pickup” (opens maps), then “I have arrived” — the requester is notified and the waiting timer starts.<br><b>3)</b> “Go to destination” opens maps; on arrival tap “Arrived — order complete”.<br><b>4)</b> Driver and requester rate each other from 1 to 5 stars, no comments.'],
             ['fa-hospital', 'What is this system?', 'A transport & mobility platform for King Abdulaziz Hospital, Jeddah (Jeddah First Health Cluster). Requests (specimens, supplies, field tasks) reach drivers instantly with an alert tone while the Director and Assistant follow every step. Requests carry task and location only — no patient data.'],
             ['fa-users-gear', 'Roles', '<b>Director & Assistant:</b> full access, online users & stats, approve guest notes, hide map.<br><b>ER:</b> create/track/rate requests.<br><b>Driver:</b> receives full-screen alert and accepts.<br><b>Supervisors:</b> follow drivers and fleet.<br><b>Admin:</b> statistics.<br><b>Visitor:</b> read-only; can leave a note in the guestbook.'],
-            ['fa-key', 'Sign in', 'Pick your name, enter your 4-digit PIN, tap Sign in. The PIN is personal. Three wrong attempts lock sign-in for one minute.'],
+            ['fa-key', 'Sign in', 'Type the user number the Director gave you, enter your 4-digit PIN, tap Sign in. The PIN is personal. Three wrong attempts lock sign-in for one minute.'],
             ['fa-paper-plane', 'Creating & accepting a request', '1) Tap “New transport request”, choose type, origin and destination.<br>2) It rings full-screen on drivers’ devices.<br>3) The first driver to accept takes it; the tone stops for everyone.<br>4) The requester tracks it until delivery, then rates the service.'],
             ['fa-bell', 'Alerts & tones', 'Use ☰ to pick a tone and volume. For instant alerts keep the app open and enable background notifications. Alerts while the app is fully closed need an extra push service (not enabled yet).'],
             ['fa-mobile-screen-button', 'Install on iPhone', '1) Open the link in <b>Safari</b> (not inside WhatsApp).<br>2) Tap the <b>Share</b> button (square with an up arrow).<br>3) Scroll and choose <b>Add to Home Screen</b>.<br>4) Tap <b>Add</b>.'],
@@ -3653,7 +3653,7 @@
             'إظهار الخريطة': 'Show the map',
             'شرح النظام وطريقة التثبيت': 'User guide & install steps',
             'إدارة المستخدمين': 'User management',
-            'GPS نشط': 'GPS active',
+            'موقعك': 'Your location',
             'قمر صناعي': 'Satellite',
             'تحديث موقعي': 'Refresh my location',
             '☀️ الوردية الأولى (الصباح)': '☀️ 1st Shift (Morning)',
@@ -3739,8 +3739,8 @@
             'تُعد «منظومة النقل الطبي واللوجستي الذكي» بمستشفى الملك عبدالعزيز بجدة (تجمع جدة الصحي الأول) نقلة نوعية في أتمتة وحوكمة عمليات نقل العينات المخبرية الحرجة، ووحدات الدم، وعينات السموم، والمستلزمات الطبية، وطلبات الاستلام والأفراد على مدار الساعة (24/7).': 'The “Smart Medical & Logistics Transport System” at King Abdulaziz Hospital, Jeddah (Jeddah First Health Cluster) is a qualitative leap in automating and governing the transport of critical lab samples, blood units, toxicology samples, medical supplies, pickups and staff — around the clock (24/7).',
             '⚡ استجابة فورية وتقييم الخدمة': '⚡ Instant response & service rating',
             'تنبيه فوري عند استقبال الطلب مع احتساب المدة الزمنية وإمكانية تقييم جودة الخدمة من قِبل طالب الخدمة.': 'Instant alert on receiving an order, with elapsed-time tracking and the ability for the requester to rate service quality.',
-            '🛡️ حوكمة الصلاحيات والأمن السيبراني': '🛡️ Access governance & cybersecurity',
-            'فصل دقيق للصلاحيات برموز سرية مشفرة وصور مستخدمين مستقلة مع درع حماية سيبراني ضد المتطفلين.': 'Precise role separation with encrypted PINs and independent user photos, plus a cyber shield against intruders.',
+            '🛡️ حوكمة الصلاحيات والأمان': '🛡️ Access governance & security',
+            'دخول بحساب شخصي لكل موظف، وصلاحيات تُفرض من الخادم، وسجل تدقيق للعمليات.': 'Personal sign-in for every employee, server-enforced permissions and an audit log of operations.',
             'الجهة المشرفة والمشغلة للنظام:': 'Supervising & operating body:',
             'إدارة الحركة والمواصلات — مستشفى الملك عبدالعزيز بجدة': 'Transport & Mobility Department — King Abdulaziz Hospital, Jeddah',
             'منشئ النظام: فهد بن عطاالله القرشي': 'System founder: Fahad bin Atallah Al-Qurashi',
@@ -3750,19 +3750,19 @@
             'تجمع جدة الصحي الأول • مستشفى الملك عبدالعزيز بجدة': 'Jeddah First Health Cluster • King Abdulaziz Hospital, Jeddah',
             'إدارة الحركة والمواصلات': 'Transport & Mobility Department',
             'نقل آمن .. خدمة متميزة .. صحة أفضل': 'Safe transport .. Distinguished service .. Better health',
-            'منظومة حماية الأمن السيبراني ومكافحة المتطفلين': 'Cybersecurity & intruder protection system',
+            'الحماية والأمان في المنصة': 'Platform security & protection',
             'حماية البوابة ضد التخمين': 'Gate brute-force protection',
             'قفل تلقائي للبوابة لمدة 60 ثانية مع إنذار صوتي عند إدخال الرمز السري خطأ 3 مرات متتالية.': 'Automatic 60-second gate lock with an audible alarm after 3 consecutive wrong PIN entries.',
             'فلترة وتعقيم المدخلات (XSS Shield)': 'Input filtering & sanitization (XSS Shield)',
             'فحص وتعقيم جميع الحقول النصية لمنع حقن الأكواد الخبيثة أو التلاعب ببيانات الطلبات.': 'All text fields are checked and sanitized to prevent malicious code injection or tampering with order data.',
             '📋 سجل الرصد الأمني (Security Audit Log):': '📋 Security Audit Log:',
             'مركز الدعم الفني والبلاغات': 'Technical support & reports center',
-            'إرسال مباشر إلى بريد مدير الإدارة ومساعده': 'Sent directly to the Director’s and Assistant’s inbox',
+            'تصل إلى صندوق الشكاوى لدى المدير ومساعده داخل المنصة': 'Delivered to the Director’s and Assistant’s in-app inbox',
             'اسم المرسل / القسم:': 'Sender / department:', 'تصنيف الطلب:': 'Request category:',
             '🛠️ دعم فني في النظام': '🛠️ Technical support', '📍 مشكلة في الخريطة أو GPS': '📍 Map or GPS issue',
             '⚠️ شكوى تشغيلية': '⚠️ Operational complaint', '💡 استفسار أو مقترح': '💡 Inquiry or suggestion',
             'الأهمية:': 'Priority:', '🚨 عاجل': '🚨 Urgent', '⚡ متوسط': '⚡ Medium', '📋 اعتيادي': '📋 Routine',
-            'تفاصيل الرسالة / البلاغ:': 'Message / report details:', 'إرسال للبريد الإداري': 'Send to the management inbox',
+            'تفاصيل الرسالة / البلاغ:': 'Message / report details:', 'إرسال للمدير': 'Send to the Director',
             'خاص بمدير الإدارة ومساعده فقط': 'For the Director and Assistant only',
             'صندوق البريد واستقبال الشكاوى والاستفسارات الحقيقية': 'Inbox for real complaints and inquiries',
             'تغيير سمة الألوان': 'Change color theme', 'اتصال مباشر': 'Call directly', 'واتساب مباشر': 'WhatsApp directly',
@@ -3782,11 +3782,11 @@
             'المدير المناوب — قسم الطوارئ (إنشاء ومتابعة وتقييم الطلبات)': 'Duty Manager — ER (create, track and rate orders)',
             'زائر / مستعرض (اطلاع على الجداول والمنظومة دون أرقام شخصية)': 'Visitor / viewer (schedules and system, no personal numbers)',
             'السائق المناوب (استقبال وتنفيذ الطلبات الميدانية)': 'On-duty driver (receive and carry out field orders)',
-            'تم تفعيل القفل السيبراني المؤقت ضد المتطفلين!': 'Temporary cyber lock activated against intruders!',
+            'تم إيقاف الدخول مؤقتاً بعد 3 محاولات خاطئة': 'Sign-in paused after 3 wrong attempts',
             'تم رصد 3 محاولات خاطئة. يرجى الانتظار': '3 wrong attempts detected. Please wait',
             'ثانية.': 'seconds.',
             'نبذة عن المنصة وكلمات القيادة': 'About the platform & leadership messages', 'مقدمة منظومة النقل الطبي واللوجستي الذكي، وكلمة مدير إدارة الحركة والمواصلات، وكلمة مؤسس المنصة.': 'Introduction to the system, plus messages from the Transport & Mobility Director and the platform founder.', 'قراءة النبذة': 'Read more', 'مؤسس المنصة والمشرف العام: أ. فهد بن عطاالله القرشي': 'Platform founder & general supervisor: Mr. Fahad bin Atallah Al-Qurashi',
-            'صورتك الشخصية في النظام': 'Your personal photo in the system', 'من يستخدم النظام الآن وإحصائيات الدخول': 'Who is using the system now + login stats', 'آراء الزوار المعتمدة': 'Approved visitor feedback', 'إظهار أو إخفاء خريطة التتبع': 'Show or hide the tracking map', 'دليل الاستخدام وطريقة التثبيت': 'User guide & install steps', 'إنشاء وحظر وحذف الحسابات': 'Create, block or delete accounts', 'أرسل مشكلة أو اقتراحاً للمدير': 'Report an issue to the Director', 'رسائل الدعم الواردة': 'Incoming support messages', 'تغيير مظهر ألوان النظام': 'Change the app colors', 'حالة الحماية والتشفير': 'Security & encryption status', 'تبديل لغة الواجهة': 'Switch interface language',
+            'صورتك الشخصية في النظام': 'Your personal photo in the system', 'من يستخدم النظام الآن وإحصائيات الدخول': 'Who is using the system now + login stats', 'آراء الزوار المعتمدة': 'Approved visitor feedback', 'إظهار أو إخفاء الخريطة': 'Show or hide the tracking map', 'دليل الاستخدام وطريقة التثبيت': 'User guide & install steps', 'إنشاء وحظر وحذف الحسابات': 'Create, block or delete accounts', 'أرسل مشكلة أو اقتراحاً للمدير': 'Report an issue to the Director', 'رسائل الدعم الواردة': 'Incoming support messages', 'تغيير مظهر ألوان النظام': 'Change the app colors', 'حالة الحماية والتشفير': 'Security & encryption status', 'تبديل لغة الواجهة': 'Switch interface language',
             'متصل بـ Firebase • مزامنة لحظية': 'Connected to Firebase • live sync',
             'متصل • مزامنة لحظية نشطة': 'Connected • live sync active',
             'عينات دم وغازات دم حرجة (STAT)': 'Critical blood & blood-gas samples (STAT)',
@@ -4377,6 +4377,13 @@
                 );
                 return;
             }
+            const typed = prompt(currentLang === 'ar'
+                ? 'تحذير: سيُحذف كل الطلبات والسجل الدائم والبلاغات نهائياً من الخادم ولا يمكن استرجاعها.\nللتأكيد اكتب كلمة: حذف'
+                : 'Warning: all orders, the permanent log and tickets will be deleted permanently from the server.\nType DELETE to confirm');
+            if (!typed || !['حذف', 'delete'].includes(String(typed).trim().toLowerCase())) {
+                showToast(currentLang === 'ar' ? 'أُلغي الحذف ✓' : 'Deletion cancelled ✓', '', 'fa-shield-halved', 'teal');
+                return;
+            }
             requests = [];
             selectedRequestId = null;
             supportTickets = [];
@@ -4752,7 +4759,7 @@
                         <i class="fa-solid fa-shield-check"></i>
                     </div>
                     <h4 class="font-black text-base">${currentLang === 'ar' ? 'النظام جاهز تماماً — 0 طلبات حالياً' : 'System Ready — 0 Active Orders'}</h4>
-                    <p class="text-xs text-slate-500 max-w-md mx-auto">${currentLang === 'ar' ? 'لا توجد أي رسائل أو طلبات وهمية. سيظهر أي طلب جديد فوراً بملء شاشة الجوال.' : 'No trial or fake orders. Any new order will appear immediately in full-screen view.'}</p>
+                    <p class="text-xs text-slate-500 max-w-md mx-auto">${currentLang === 'ar' ? 'لا توجد طلبات حالياً. سيظهر أي طلب جديد فوراً بملء شاشة الجوال.' : 'No trial or fake orders. Any new order will appear immediately in full-screen view.'}</p>
                 </div>`;
                 return;
             }
