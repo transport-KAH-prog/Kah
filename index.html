@@ -751,12 +751,13 @@
         <section id="view-schedules" class="hidden space-y-5">
             <div class="premium-card rounded-3xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
-                    <h2 id="uiSchedMainTitle" class="text-base sm:text-lg font-black">الجدول الرسمي المعتمد للمناوبين (8 نوفمبر — 5 ديسمبر 2026م)</h2>
+                    <h2 id="uiSchedMainTitle" class="text-base sm:text-lg font-black">جداول المناوبات المعتمدة — تتجدد تلقائياً</h2>
                     <p id="uiSchedSubTitle" class="text-xs text-slate-500 mt-0.5">إيصال العينات الطبية (مركز السموم والمختبرات المرجعية) ومستلزمات المستشفى — تواصل مباشر اتصال أو واتساب</p>
                 </div>
                 <div class="flex flex-wrap items-center gap-2">
                     <button type="button" onclick="switchScheduleShift('morning')" id="shiftTab-morning" class="px-4 py-2 rounded-xl text-xs font-black transition bg-cyan-600 text-white shadow cursor-pointer">☀️ الوردية الأولى (الصباح)</button>
                     <button type="button" onclick="switchScheduleShift('evening')" id="shiftTab-evening" class="px-4 py-2 rounded-xl text-xs font-black transition bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">🌇 الوردية الثانية (المساء)</button>
+                    <button type="button" id="schedAdminBtn" style="display:none" onclick="openScheduleAdmin()" class="items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-black bg-indigo-700 hover:bg-indigo-600 text-white shadow cursor-pointer"><i class="fa-solid fa-calendar-days"></i><span>إدارة الجداول والإجازات</span></button>
                     <button type="button" onclick="switchScheduleShift('night')" id="shiftTab-night" class="px-4 py-2 rounded-xl text-xs font-black transition bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">🌙 الوردية الثالثة (الليلية)</button>
                 </div>
             </div>
@@ -1226,6 +1227,22 @@
                 <div id="usersResetResult" class="hidden rounded-xl bg-slate-900 text-emerald-200 font-mono text-[12px] leading-7 p-3" dir="rtl"></div>
                 <div id="usersList" class="space-y-2"></div>
             </div>
+        </div>
+    </div>
+
+    <div id="scheduleAdminModal" style="display:none" class="fixed inset-0 z-[178] bg-slate-950/80 backdrop-blur-sm items-center justify-center p-3 overflow-y-auto no-print">
+        <div class="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-200 overflow-hidden my-auto text-slate-900">
+            <div class="luxury-Command-card text-white px-5 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-500/25 border border-indigo-300/40 flex items-center justify-center text-indigo-200"><i class="fa-solid fa-calendar-days"></i></div>
+                    <div>
+                        <h3 class="font-black text-sm sm:text-base">إدارة الجداول والإجازات</h3>
+                        <p class="text-[11px] text-slate-300">للمدير ومساعده — تظهر التعديلات لجميع المستخدمين</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeScheduleAdmin()" class="text-slate-300 hover:text-white text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="schedAdminBody" class="p-4 text-xs max-h-[78vh] overflow-y-auto"></div>
         </div>
     </div>
 
@@ -1843,6 +1860,7 @@
             stopCloudListeners();
             if (isFirebaseCloudActive && firestoreDb) startFeedbackListener(roleKey);
             if (isFirebaseCloudActive && firestoreDb) startFleetListener();
+            if (isFirebaseCloudActive && firestoreDb) startScheduleListeners();
             if (!isFirebaseCloudActive || !firestoreDb || roleKey === '8090') return;
 
             cloudUnsubs.push(firestoreDb.collection('kah_requests').orderBy('createdAtMs', 'desc').limit(100)
@@ -2330,7 +2348,7 @@
                 uiErTitle: 'بوابة إنشاء الطلبات ومتابعة السائق وتقييم الخدمة',
                 uiErBtnCreate: 'إنشاء طلب نقل جديد الآن',
                 uiErMapHeader: 'الخريطة والملاحة (موقعك الحالي)',
-                uiSchedMainTitle: 'الجدول الرسمي المعتمد للمناوبين (8 نوفمبر — 5 ديسمبر 2026م)',
+                uiSchedMainTitle: 'جداول المناوبات المعتمدة — تتجدد تلقائياً',
                 uiSchedSubTitle: 'إيصال العينات الطبية (مركز السموم والمختبرات المرجعية) ومستلزمات المستشفى — تواصل مباشر اتصال أو واتساب',
                 uiKpiVehiclesLabel: 'المركبات المتاحة للنوبة',
                 uiKpiVehiclesSup: 'مشرف الأسطول: أ. علي القرني',
@@ -2416,7 +2434,7 @@
                 uiErTitle: 'Order Creation, Live Driver Tracking & Service Rating',
                 uiErBtnCreate: 'Submit New Transport Order Now',
                 uiErMapHeader: 'Map & navigation (your current location)',
-                uiSchedMainTitle: 'Official Approved On-Duty Schedules (Nov 8 — Dec 5, 2026)',
+                uiSchedMainTitle: 'Approved duty schedules — auto-renewing',
                 uiSchedSubTitle: 'Lab Samples (Poison Center) & Hospital Supplies — Direct Call or WhatsApp',
                 uiKpiVehiclesLabel: 'Available Fleet Vehicles',
                 uiKpiVehiclesSup: 'Fleet Sup: Mr. Ali Al-Qarni',
@@ -2938,6 +2956,7 @@
             setDisplay('menuPresenceBtn', dir, 'flex');
             setDisplay('menuMapBtn', dir, 'flex');
             setDisplay('menuUsersBtn', dir, 'flex');
+            setDisplay('schedAdminBtn', dir, 'inline-flex');
             setDisplay('menuGuestbookBtn', isAuthenticated, 'flex');
             setDisplay('guestbookQuickBtn', visitor, 'flex');
             applyMapsVisibility();
@@ -3693,7 +3712,7 @@
             'مشرف أسطول السيارات': 'Fleet supervisor', 'إداري (إحصائيات)': 'Admin (statistics)', 'زائر (اطلاع فقط)': 'Visitor (view only)',
             'الرمز السري:': 'PIN:', 'إنشاء المستخدم': 'Create user',
             'الاسم الكامل': 'Full name', 'الإدارة التي يتبع لها': 'Department', 'المسمى الوظيفي': 'Job title',
-            'حظر': 'Block', 'إصدار أرقام ورموز جديدة لجميع الحسابات': 'Issue new numbers & PINs for all accounts', 'نسخ الكل': 'Copy all', 'تنزيل البطاقات للطباعة': 'Download printable cards', 'رقم ورمز جديد': 'New number & PIN', 'نسخ البيانات': 'Copy details', 'رفع الحظر': 'Unblock', 'إيقاف مؤقت': 'Suspend', 'إلغاء الإيقاف': 'End suspension', 'حذف نهائي': 'Delete permanently',
+            'حظر': 'Block', 'إدارة الجداول والإجازات': 'Manage schedules & leaves', 'للمدير ومساعده — تظهر التعديلات لجميع المستخدمين': 'Director & Assistant only — changes apply to everyone', 'جداول المناوبات المعتمدة — تتجدد تلقائياً': 'Approved duty schedules — auto-renewing', 'إصدار أرقام ورموز جديدة لجميع الحسابات': 'Issue new numbers & PINs for all accounts', 'نسخ الكل': 'Copy all', 'تنزيل البطاقات للطباعة': 'Download printable cards', 'رقم ورمز جديد': 'New number & PIN', 'نسخ البيانات': 'Copy details', 'رفع الحظر': 'Unblock', 'إيقاف مؤقت': 'Suspend', 'إلغاء الإيقاف': 'End suspension', 'حذف نهائي': 'Delete permanently',
             'حساب إدارة — محمي': 'Management account — protected', 'نشط': 'Active', 'محظور': 'Blocked', 'مدة الإيقاف:': 'Suspension period:',
             'يوم': 'Day', '3 أيام': '3 days', 'أسبوع': 'Week', 'إلغاء': 'Cancel',
             'لا يوجد مستخدمون.': 'No users.', 'جارٍ التحميل…': 'Loading…',
@@ -3911,7 +3930,7 @@
             const doSignOut = () => { try { if (firebaseAuth) firebaseAuth.signOut().catch(() => {}); } catch (e) {} };
             if (offlineP && offlineP.then) { offlineP.then(doSignOut, doSignOut); setTimeout(doSignOut, 3000); } else { doSignOut(); }
             presenceDocs = {}; feedbackDocs = []; fleetHealth = {};
-            ['presenceModal', 'guestbookModal', 'guideModal', 'usersModal'].forEach(id => setDisplay(id, false));
+            ['presenceModal', 'guestbookModal', 'guideModal', 'usersModal', 'scheduleAdminModal'].forEach(id => setDisplay(id, false));
             const mp = document.getElementById('moreMenuPanel'); if (mp) mp.classList.add('hidden');
             // لا تبقى أي بيانات طلبات أو أرقام في الذاكرة بعد الخروج
             requests = [];
@@ -4416,168 +4435,201 @@
             renderSchedulesView();
         }
 
+        // ===== جداول المناوبات الديناميكية + الإجازات (تتجدد تلقائياً) =====
+        const LEAVE_TYPES = [
+            ['annual', 'اعتيادية', 'Annual'], ['emergency', 'اضطرارية', 'Emergency'], ['sick', 'مرضية', 'Sick'],
+            ['comp', 'تعويضية', 'Compensatory'], ['unpaid', 'بدون راتب', 'Unpaid'], ['exceptional', 'استثنائية', 'Exceptional'],
+            ['maternity', 'أمومة', 'Maternity'], ['newborn', 'مولود', 'Newborn'], ['marriage', 'زواج', 'Marriage'],
+            ['bereavement', 'وفاة قريب', 'Bereavement'], ['hajj', 'حج', 'Hajj'], ['escort', 'مرافقة مريض', 'Patient escort'],
+            ['study', 'دراسية', 'Study'], ['mission', 'انتداب / مهمة رسمية', 'Official assignment'], ['other', 'أخرى', 'Other']
+        ];
+        const SHIFT_META = {
+            morning: { ar: 'الوردية الأولى (الصباح)', en: '1st Shift (Morning)', time: '08:00 - 16:00' },
+            evening: { ar: 'الوردية الثانية (المساء)', en: '2nd Shift (Evening)', time: '16:00 - 00:00' },
+            night: { ar: 'الوردية الثالثة (الليلية)', en: '3rd Shift (Night)', time: '00:00 - 08:00' }
+        };
+        const DEFAULT_SCHEDULE = (() => {
+            const K = 'خالد الزهراني', M = 'محمد المشعلي', Z = 'عبد العزيز المالكي', A = 'علي القرشي';
+            const S = 'سعد الغامدي', Am = 'عبد العزيز العامري', Ay = 'عايض القرني';
+            const F = 'فهد القرشي', Y = 'ياسين البارقي', H = 'حسن حداد';
+            return { epoch: '2026-11-08', shifts: {
+                morning: { weeks: 3, staff: [{ n: K, p: '0550384868' }, { n: M, p: '0533480065' }, { n: Z, p: '0504776027' }, { n: A, p: '0502185615' }],
+                    pattern: [K, K, K, K, K, A, A, M, M, M, M, M, A, A, Z, Z, Z, Z, Z, A, A] },
+                evening: { weeks: 3, staff: [{ n: S, p: '0561461002' }, { n: Am, p: '0537898803' }, { n: Ay, p: '0504908689' }],
+                    pattern: [S, S, S, S, S, Am, Am, Am, Ay, Ay, S, S, Am, Am, Ay, Ay, Ay, Ay, Ay, Am, Am] },
+                night: { weeks: 3, staff: [{ n: F, p: '0500654949' }, { n: Y, p: '0507033637' }, { n: H, p: '0564865763' }],
+                    pattern: [F, F, F, F, F, Y, Y, Y, H, H, F, F, Y, Y, H, H, H, H, H, Y, Y] }
+            } };
+        })();
+        let scheduleConfig = JSON.parse(JSON.stringify(DEFAULT_SCHEDULE));
+        let scheduleLeaves = [];
+        function dayNum(iso) { const p = String(iso).split('-').map(Number); return Math.round(Date.UTC(p[0], p[1] - 1, p[2]) / 864e5); }
+        function todayNum() { const d = new Date(); return Math.round(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 864e5); }
+        function numToIso(n) { const d = new Date(n * 864e5); return d.getUTCFullYear() + '-' + pad2(d.getUTCMonth() + 1) + '-' + pad2(d.getUTCDate()); }
+        function numToDm(n) { const d = new Date(n * 864e5); return pad2(d.getUTCDate()) + '/' + pad2(d.getUTCMonth() + 1); }
+        function leaveLabel(t) { const x = LEAVE_TYPES.find(l => l[0] === t); return x ? (currentLang === 'ar' ? x[1] : x[2]) : t; }
+        function allScheduleStaff() {
+            const m = {};
+            Object.values(scheduleConfig.shifts || {}).forEach(sh => (sh.staff || []).forEach(s => { if (s && s.n && !m[s.n]) m[s.n] = s.p || ''; }));
+            return m;
+        }
+        function leaveFor(name, n) { return scheduleLeaves.find(l => l.name === name && dayNum(l.from) <= n && n <= dayNum(l.to)); }
+        function assigneeFor(shiftKey, n) {
+            const sh = (scheduleConfig.shifts || {})[shiftKey]; if (!sh || !sh.pattern || !sh.pattern.length) return '';
+            const len = sh.pattern.length; const idx = (((n - dayNum(scheduleConfig.epoch || '2026-11-08')) % len) + len) % len;
+            return sh.pattern[idx] || '';
+        }
         function renderSchedulesView() {
             const container = document.getElementById('scheduleShiftContainer');
             if (!container) return;
-
-            if (activeScheduleShift === 'morning') {
-                // PDF 1: 1st Shift (Morning 08:00 - 16:00)
-                const weeks = [
-                    { label: 'الأسبوع الأول (08/11 - 14/11)', days: [
-                        { d: '08/11', n: 'خالد الزهراني', p: '0550384868' },
-                        { d: '09/11', n: 'خالد الزهراني', p: '0550384868' },
-                        { d: '10/11', n: 'خالد الزهراني', p: '0550384868' },
-                        { d: '11/11', n: 'خالد الزهراني', p: '0550384868' },
-                        { d: '12/11', n: 'خالد الزهراني', p: '0550384868' },
-                        { d: '13/11', n: 'علي القرشي', p: '0502185615' },
-                        { d: '14/11', n: 'علي القرشي', p: '0502185615' }
-                    ]},
-                    { label: 'الأسبوع الثاني (15/11 - 21/11)', days: [
-                        { d: '15/11', n: 'محمد المشعلي', p: '0533480065' },
-                        { d: '16/11', n: 'محمد المشعلي', p: '0533480065' },
-                        { d: '17/11', n: 'محمد المشعلي', p: '0533480065' },
-                        { d: '18/11', n: 'محمد المشعلي', p: '0533480065' },
-                        { d: '19/11', n: 'محمد المشعلي', p: '0533480065' },
-                        { d: '20/11', n: 'علي القرشي', p: '0502185615' },
-                        { d: '21/11', n: 'علي القرشي', p: '0502185615' }
-                    ]},
-                    { label: 'الأسبوع الثالث (22/11 - 28/11)', days: [
-                        { d: '22/11', n: 'عبد العزيز المالكي', p: '0504776027' },
-                        { d: '23/11', n: 'عبد العزيز المالكي', p: '0504776027' },
-                        { d: '24/11', n: 'عبد العزيز المالكي', p: '0504776027' },
-                        { d: '25/11', n: 'عبد العزيز المالكي', p: '0504776027' },
-                        { d: '26/11', n: 'عبد العزيز المالكي', p: '0504776027' },
-                        { d: '27/11', n: 'علي القرشي', p: '0502185615' },
-                        { d: '28/11', n: 'علي القرشي', p: '0502185615' }
-                    ]},
-                    { label: 'الأسبوع الرابع — إعادة الدورة (29/11 - 05/12)', days: [
-                        { d: '29/11', n: 'خالد الزهراني', p: '0550384868' },
-                        { d: '30/11', n: 'خالد الزهراني', p: '0550384868' },
-                        { d: '01/12', n: 'خالد الزهراني', p: '0550384868' },
-                        { d: '02/12', n: 'خالد الزهراني', p: '0550384868' },
-                        { d: '03/12', n: 'خالد الزهراني', p: '0550384868' },
-                        { d: '04/12', n: 'علي القرشي', p: '0502185615' },
-                        { d: '05/12', n: 'علي القرشي', p: '0502185615' }
-                    ]}
-                ];
-                const staffSummary = [
-                    { n: 'خالد الزهراني (Khaled)', p: '0550384868' },
-                    { n: 'محمد المشعلي (Mohammed)', p: '0533480065' },
-                    { n: 'عبد العزيز المالكي (Abdulaziz)', p: '0504776027' },
-                    { n: 'علي القرشي (Ali)', p: '0502185615' }
-                ];
-                container.innerHTML = buildFullPdfScheduleHtml(
-                    'الوردية الأولى (الصباح) | 1st Shift (Morning) • 08:00 - 16:00 (08:00 AM - 04:00 PM)',
-                    'الجدول الرسمي للمناوبين المكلفين بإيصال العينات الطبية (مركز السموم ومستلزمات المستشفى) — بداية السريان: الأحد 8 نوفمبر 2026م',
-                    weeks,
-                    staffSummary,
-                    'إفادة وتوجيه للسادة المسؤولين، المديرين المناوبين، والكادر الطبي والتمريضي: الموظف الموضح اسمه ورقم جواله في كل تاريخ أعلاه هو المناوب الرسمي المستلم في الوردية الأولى (الصباح: 08:00 - 16:00) والمكلف بتأمين حركة المركبات وإيصال العينات الطبية الطارئة (مركز السموم والمختبرات المرجعية) ومستلزمات المستشفى.'
-                );
-            } else if (activeScheduleShift === 'evening') {
-                // PDF 2: 2nd Shift (Evening 16:00 - 00:00) - exact match including 16/11 & 17/11 Ayedh Al-Qarni
-                const weeks = [
-                    { label: 'الأسبوع الأول (08/11 - 14/11)', days: [
-                        { d: '08/11', n: 'سعد الغامدي', p: '0561461002' },
-                        { d: '09/11', n: 'سعد الغامدي', p: '0561461002' },
-                        { d: '10/11', n: 'سعد الغامدي', p: '0561461002' },
-                        { d: '11/11', n: 'سعد الغامدي', p: '0561461002' },
-                        { d: '12/11', n: 'سعد الغامدي', p: '0561461002' },
-                        { d: '13/11', n: 'عبد العزيز العامري', p: '0537898803' },
-                        { d: '14/11', n: 'عبد العزيز العامري', p: '0537898803' }
-                    ]},
-                    { label: 'الأسبوع الثاني (15/11 - 21/11)', days: [
-                        { d: '15/11', n: 'عبد العزيز العامري', p: '0537898803' },
-                        { d: '16/11', n: 'عايض القرني', p: '0504908689' },
-                        { d: '17/11', n: 'عايض القرني', p: '0504908689' },
-                        { d: '18/11', n: 'سعد الغامدي', p: '0561461002' },
-                        { d: '19/11', n: 'سعد الغامدي', p: '0561461002' },
-                        { d: '20/11', n: 'عبد العزيز العامري', p: '0537898803' },
-                        { d: '21/11', n: 'عبد العزيز العامري', p: '0537898803' }
-                    ]},
-                    { label: 'الأسبوع الثالث (22/11 - 28/11)', days: [
-                        { d: '22/11', n: 'عايض القرني', p: '0504908689' },
-                        { d: '23/11', n: 'عايض القرني', p: '0504908689' },
-                        { d: '24/11', n: 'عايض القرني', p: '0504908689' },
-                        { d: '25/11', n: 'عايض القرني', p: '0504908689' },
-                        { d: '26/11', n: 'عايض القرني', p: '0504908689' },
-                        { d: '27/11', n: 'عبد العزيز العامري', p: '0537898803' },
-                        { d: '28/11', n: 'عبد العزيز العامري', p: '0537898803' }
-                    ]},
-                    { label: 'الأسبوع الرابع — إعادة الدورة (29/11 - 05/12)', days: [
-                        { d: '29/11', n: 'سعد الغامدي', p: '0561461002' },
-                        { d: '30/11', n: 'سعد الغامدي', p: '0561461002' },
-                        { d: '01/12', n: 'سعد الغامدي', p: '0561461002' },
-                        { d: '02/12', n: 'سعد الغامدي', p: '0561461002' },
-                        { d: '03/12', n: 'سعد الغامدي', p: '0561461002' },
-                        { d: '04/12', n: 'عبد العزيز العامري', p: '0537898803' },
-                        { d: '05/12', n: 'عبد العزيز العامري', p: '0537898803' }
-                    ]}
-                ];
-                const staffSummary = [
-                    { n: 'سعد الغامدي (Saad)', p: '0561461002' },
-                    { n: 'عبد العزيز العامري (Abdulaziz)', p: '0537898803' },
-                    { n: 'عايض القرني (Ayedh)', p: '0504908689' }
-                ];
-                container.innerHTML = buildFullPdfScheduleHtml(
-                    'الوردية الثانية (المساء) | 2nd Shift (Evening) • 16:00 - 00:00 (04:00 PM - 12:00 AM)',
-                    'الجدول الرسمي للمناوبين المكلفين بإيصال العينات الطبية (مركز السموم ومستلزمات المستشفى) — بداية السريان: الأحد 8 نوفمبر 2026م',
-                    weeks,
-                    staffSummary,
-                    'إفادة وتوجيه للسادة المسؤولين، المديرين المناوبين، والكادر الطبي والتمريضي: الموظف الموضح اسمه ورقم جواله في كل تاريخ أعلاه هو المناوب الرسمي المستلم في الوردية الثانية (المساء: 16:00 - 00:00) والمكلف بتأمين حركة المركبات وإيصال العينات الطبية الطارئة ومستلزمات المستشفى.'
-                );
-            } else {
-                // PDF 3: 3rd Shift (Night 12:00 AM - 08:00 AM)
-                const weeks = [
-                    { label: 'الأسبوع الأول (08/11 - 14/11)', days: [
-                        { d: '08/11', n: 'فهد القرشي', p: '0500654949' },
-                        { d: '09/11', n: 'فهد القرشي', p: '0500654949' },
-                        { d: '10/11', n: 'فهد القرشي', p: '0500654949' },
-                        { d: '11/11', n: 'فهد القرشي', p: '0500654949' },
-                        { d: '12/11', n: 'فهد القرشي', p: '0500654949' },
-                        { d: '13/11', n: 'ياسين البارقي', p: '0507033637' },
-                        { d: '14/11', n: 'ياسين البارقي', p: '0507033637' }
-                    ]},
-                    { label: 'الأسبوع الثاني (15/11 - 21/11)', days: [
-                        { d: '15/11', n: 'ياسين البارقي', p: '0507033637' },
-                        { d: '16/11', n: 'ياسين البارقي', p: '0507033637' },
-                        { d: '17/11', n: 'ياسين البارقي', p: '0507033637' },
-                        { d: '18/11', n: 'فهد القرشي', p: '0500654949' },
-                        { d: '19/11', n: 'حسن حداد', p: '0564865763' },
-                        { d: '20/11', n: 'ياسين البارقي', p: '0507033637' },
-                        { d: '21/11', n: 'ياسين البارقي', p: '0507033637' }
-                    ]},
-                    { label: 'الأسبوع الثالث (22/11 - 28/11)', days: [
-                        { d: '22/11', n: 'حسن حداد', p: '0564865763' },
-                        { d: '23/11', n: 'حسن حداد', p: '0564865763' },
-                        { d: '24/11', n: 'حسن حداد', p: '0564865763' },
-                        { d: '25/11', n: 'حسن حداد', p: '0564865763' },
-                        { d: '26/11', n: 'حسن حداد', p: '0564865763' },
-                        { d: '27/11', n: 'ياسين البارقي', p: '0507033637' },
-                        { d: '28/11', n: 'ياسين البارقي', p: '0507033637' }
-                    ]},
-                    { label: 'الأسبوع الرابع — إعادة الدورة (29/11 - 05/12)', days: [
-                        { d: '29/11', n: 'فهد القرشي', p: '0500654949' },
-                        { d: '30/11', n: 'فهد القرشي', p: '0500654949' },
-                        { d: '01/12', n: 'فهد القرشي', p: '0500654949' },
-                        { d: '02/12', n: 'فهد القرشي', p: '0500654949' },
-                        { d: '03/12', n: 'فهد القرشي', p: '0500654949' },
-                        { d: '04/12', n: 'ياسين البارقي', p: '0507033637' },
-                        { d: '05/12', n: 'ياسين البارقي', p: '0507033637' }
-                    ]}
-                ];
-                const staffSummary = [
-                    { n: 'فهد القرشي (Fahad)', p: '0500654949' },
-                    { n: 'ياسين البارقي (Yassin)', p: '0507033637' },
-                    { n: 'حسن حداد (Hassan)', p: '0564865763' }
-                ];
-                container.innerHTML = buildFullPdfScheduleHtml(
-                    'الوردية الثالثة (الليلية) | Night Shift (3rd Shift) • 12:00 AM - 08:00 AM',
-                    'جدول المناوبات والتواصل لإيصال العينات (مركز السموم ومستلزمات المستشفى) — بداية العمل: الأحد 8 نوفمبر 2026م',
-                    weeks,
-                    staffSummary,
-                    'توجيه للمسؤولين والكادر الطبي والتمريضي: الموظف المدوّن اسمه ورقم جواله في كل تاريخ بالجدول التنفيذي أعلاه هو المناوب المستلم والمكلف رسمياً بإيصال العينات الطبية إلى مركز السموم والمختبرات المرجعية ونقل مستلزمات المستشفى خلال الوردية الثالثة (12:00 ص - 08:00 ص).'
-                );
+            const ar = currentLang === 'ar';
+            const key = activeScheduleShift in SHIFT_META ? activeScheduleShift : 'morning';
+            const meta = SHIFT_META[key];
+            const sh = scheduleConfig.shifts[key] || { staff: [], pattern: [] };
+            const phones = allScheduleStaff();
+            const t0 = todayNum(); const wd = new Date(t0 * 864e5).getUTCDay(); const start = t0 - wd;
+            const dir = isDirectorSession();
+            const weeks = [];
+            for (let w = 0; w < 4; w++) {
+                const days = [];
+                for (let i = 0; i < 7; i++) {
+                    const n = start + w * 7 + i; const base = assigneeFor(key, n); const lv = base ? leaveFor(base, n) : null;
+                    const shown = lv && lv.sub ? lv.sub : base;
+                    days.push({ d: numToDm(n), n: shown || '—', p: phones[shown] || '', today: n === t0, leave: lv ? { orig: base, type: lv.type, sub: lv.sub || '' } : null });
+                }
+                weeks.push({ label: (ar ? 'الأسبوع ' : 'Week ') + (w + 1) + ' (' + numToDm(start + w * 7) + ' - ' + numToDm(start + w * 7 + 6) + ')' + (w === 0 ? (ar ? ' — الحالي' : ' — current') : ''), days });
             }
+            const staffSummary = (sh.staff || []).map(s => {
+                const lv = leaveFor(s.n, t0);
+                return { n: s.n + (lv ? (ar ? ' — في إجازة' : ' — on leave') + (dir ? ' (' + leaveLabel(lv.type) + ')' : '') : ''), p: s.p || '' };
+            });
+            container.innerHTML = buildFullPdfScheduleHtml(
+                (ar ? meta.ar : meta.en) + ' • ' + meta.time,
+                ar ? 'جدول المناوبين المكلفين بإيصال العينات الطبية ومستلزمات المستشفى — يتجدد تلقائياً بنفس دورة التوزيع' : 'On-duty staff for medical samples & hospital supplies — renews automatically on the same rotation',
+                weeks, staffSummary,
+                ar ? 'الموظف المدوّن في كل تاريخ هو المناوب الرسمي في هذه الوردية. عند وجود إجازة يظهر البديل إن حُدِّد، ويُحدِّث المدير ومساعده الجداول والإجازات من زر «إدارة الجداول والإجازات».' : 'The employee shown on each date is the official on-duty staff for this shift. During a leave the substitute (if set) is shown. The Director and Assistant manage schedules and leaves from “Manage schedules & leaves”.'
+            );
+        }
+        function startScheduleListeners() {
+            if (!firestoreDb) return;
+            try {
+                cloudUnsubs.push(firestoreDb.collection('kah_schedule').doc('config').onSnapshot(snap => {
+                    const d = snap && snap.exists ? snap.data() : null;
+                    if (d && d.shifts && d.shifts.morning && d.shifts.evening && d.shifts.night) scheduleConfig = { epoch: d.epoch || DEFAULT_SCHEDULE.epoch, shifts: d.shifts };
+                    else scheduleConfig = JSON.parse(JSON.stringify(DEFAULT_SCHEDULE));
+                    if (isAuthenticated) { renderSchedulesView(); if (schedAdminOpen()) renderSchedAdmin(); }
+                }, () => {}));
+                cloudUnsubs.push(firestoreDb.collection('kah_leaves').onSnapshot(snap => {
+                    const arr = []; snap.forEach(x => arr.push(x.data())); scheduleLeaves = arr.filter(l => l && l.name && l.from && l.to);
+                    if (isAuthenticated) { renderSchedulesView(); if (schedAdminOpen()) renderSchedAdmin(); }
+                }, () => {}));
+            } catch (e) {}
+        }
+        // ----- شاشة الإدارة (المدير ومساعده) -----
+        let schedDraft = null; let schedAdminTab = 'staff'; let schedAdminShift = 'morning';
+        function schedAdminOpen() { const m = document.getElementById('scheduleAdminModal'); return m && m.style.display !== 'none'; }
+        function openScheduleAdmin() {
+            if (!isDirectorSession()) return;
+            schedDraft = JSON.parse(JSON.stringify(scheduleConfig));
+            setDisplay('scheduleAdminModal', true, 'flex'); renderSchedAdmin();
+        }
+        function closeScheduleAdmin() { setDisplay('scheduleAdminModal', false); }
+        function schedTab(t) { schedAdminTab = t; renderSchedAdmin(); }
+        function schedShift(k) { schedAdminShift = k; renderSchedAdmin(); }
+        function renderSchedAdmin() {
+            const box = document.getElementById('schedAdminBody'); if (!box || !schedDraft) return;
+            const ar = currentLang === 'ar';
+            const tabBtn = (k, label) => `<button type="button" onclick="schedTab('${k}')" class="px-3 py-2 rounded-xl text-xs font-black cursor-pointer ${schedAdminTab === k ? 'bg-indigo-700 text-white' : 'bg-slate-100 text-slate-700'}">${label}</button>`;
+            let html = `<div class="flex gap-2 mb-3">${tabBtn('staff', ar ? '👥 الموظفون والتوزيع' : '👥 Staff & rotation')}${tabBtn('leaves', ar ? '🌴 الإجازات' : '🌴 Leaves')}</div>`;
+            if (schedAdminTab === 'staff') {
+                const sh = schedDraft.shifts[schedAdminShift];
+                const shiftBtn = k => `<button type="button" onclick="schedShift('${k}')" class="px-3 py-1.5 rounded-lg text-[11px] font-black cursor-pointer ${schedAdminShift === k ? 'bg-cyan-600 text-white' : 'bg-slate-100 text-slate-700'}">${ar ? SHIFT_META[k].ar : SHIFT_META[k].en}</button>`;
+                html += `<div class="flex flex-wrap gap-1.5 mb-3">${['morning', 'evening', 'night'].map(shiftBtn).join('')}</div>`;
+                html += `<div class="font-black text-slate-800 mb-1.5">${ar ? 'موظفو هذه الوردية' : 'Staff in this shift'}</div>`;
+                html += (sh.staff || []).map((s, i) => {
+                    const cnt = sh.pattern.filter(x => x === s.n).length;
+                    return `<div class="flex items-center justify-between gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 mb-1.5"><div><div class="font-black text-[12.5px]">${escHtml(s.n)}</div><div class="text-[10.5px] text-slate-500 font-mono" dir="ltr">${escHtml(s.p || '')}</div><div class="text-[10.5px] text-indigo-700 font-black">${ar ? 'عدد نوباته في الدورة: ' : 'Shifts per cycle: '}${cnt}</div></div><button type="button" onclick="schedRemoveStaff(${i})" class="px-2.5 py-1.5 rounded-lg bg-rose-600 text-white font-black text-[11px] cursor-pointer"><i class="fa-solid fa-user-minus"></i> ${ar ? 'إخراج' : 'Remove'}</button></div>`;
+                }).join('');
+                html += `<div class="rounded-xl border border-indigo-200 bg-indigo-50/60 p-2.5 my-2 space-y-2"><div class="font-black text-indigo-900 text-[12px]">${ar ? '➕ إدخال موظف لهذه الوردية' : '➕ Add an employee to this shift'}</div><input id="schedNewName" maxlength="40" placeholder="${ar ? 'اسم الموظف' : 'Employee name'}" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 font-bold"><input id="schedNewPhone" inputmode="numeric" maxlength="10" dir="ltr" placeholder="05xxxxxxxx" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 font-mono"><button type="button" onclick="schedAddStaff()" class="w-full py-2 rounded-lg bg-indigo-700 text-white font-black cursor-pointer">${ar ? 'إدخال' : 'Add'}</button></div>`;
+                html += `<div class="flex items-center gap-2 my-2"><span class="font-black text-slate-800">${ar ? 'مدة دورة التوزيع:' : 'Rotation length:'}</span><select onchange="schedSetWeeks(this.value)" class="rounded-lg border border-slate-300 px-2 py-1.5 font-bold">${[1, 2, 3, 4, 5, 6].map(w => `<option value="${w}" ${sh.weeks === w ? 'selected' : ''}>${w} ${ar ? 'أسابيع' : 'weeks'}</option>`).join('')}</select></div>`;
+                const daysAr = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'], daysEn = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                html += `<div class="text-[11px] text-slate-500 font-bold mb-1">${ar ? 'اختر المناوب لكل يوم في الدورة، وتتكرر الدورة تلقائياً بعد نهايتها.' : 'Pick the on-duty employee for each day; the rotation repeats automatically.'}</div><div class="overflow-x-auto"><table class="w-full text-[11px] border-collapse"><tbody>`;
+                for (let w = 0; w < sh.weeks; w++) {
+                    html += `<tr><td class="font-black bg-slate-100 border border-slate-200 px-1.5 py-1 whitespace-nowrap">${ar ? 'أسبوع ' : 'Week '}${w + 1}</td>`;
+                    for (let i = 0; i < 7; i++) {
+                        const idx = w * 7 + i; const v = sh.pattern[idx] || '';
+                        html += `<td class="border border-slate-200 p-1"><div class="text-[9.5px] text-slate-500 font-black">${ar ? daysAr[i] : daysEn[i]}</div><select onchange="schedSetDay(${idx}, this.value)" class="w-full min-w-[86px] rounded border border-slate-300 px-1 py-1 font-bold text-[11px]"><option value="">—</option>${(sh.staff || []).map(s => `<option value="${escHtml(s.n)}" ${v === s.n ? 'selected' : ''}>${escHtml(s.n)}</option>`).join('')}</select></td>`;
+                    }
+                    html += '</tr>';
+                }
+                html += `</tbody></table></div><button type="button" id="schedSaveBtn" onclick="saveScheduleConfig()" class="w-full mt-3 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black cursor-pointer"><i class="fa-solid fa-floppy-disk"></i> ${ar ? 'حفظ الجداول للجميع' : 'Save schedules for everyone'}</button>`;
+            } else {
+                const names = Object.keys(allScheduleStaff());
+                const opts = names.map(n => `<option value="${escHtml(n)}">${escHtml(n)}</option>`).join('');
+                const t = numToIso(todayNum());
+                html += `<div class="rounded-xl border border-emerald-200 bg-emerald-50/60 p-2.5 space-y-2"><div class="font-black text-emerald-900 text-[12px]">${ar ? '➕ تسجيل إجازة' : '➕ Record a leave'}</div>
+                    <select id="lvName" class="w-full rounded-lg border border-slate-300 bg-white px-2 py-2 font-bold">${opts}</select>
+                    <select id="lvType" class="w-full rounded-lg border border-slate-300 bg-white px-2 py-2 font-bold">${LEAVE_TYPES.map(l => `<option value="${l[0]}">${ar ? l[1] : l[2]}</option>`).join('')}</select>
+                    <div class="grid grid-cols-2 gap-2"><label class="text-[11px] font-black text-slate-600">${ar ? 'من' : 'From'}<input id="lvFrom" type="date" value="${t}" class="w-full rounded-lg border border-slate-300 bg-white px-2 py-2 font-bold"></label><label class="text-[11px] font-black text-slate-600">${ar ? 'إلى' : 'To'}<input id="lvTo" type="date" value="${t}" class="w-full rounded-lg border border-slate-300 bg-white px-2 py-2 font-bold"></label></div>
+                    <label class="block text-[11px] font-black text-slate-600">${ar ? 'البديل خلال الإجازة (اختياري)' : 'Substitute during the leave (optional)'}<select id="lvSub" class="w-full rounded-lg border border-slate-300 bg-white px-2 py-2 font-bold"><option value="">—</option>${opts}</select></label>
+                    <button type="button" onclick="saveLeave()" class="w-full py-2 rounded-lg bg-emerald-600 text-white font-black cursor-pointer">${ar ? 'حفظ الإجازة' : 'Save leave'}</button></div>`;
+                const cur = scheduleLeaves.filter(l => dayNum(l.to) >= todayNum()).sort((a, b) => dayNum(a.from) - dayNum(b.from));
+                html += `<div class="font-black text-slate-800 mt-3 mb-1.5">${ar ? 'الإجازات الحالية والقادمة' : 'Current & upcoming leaves'} (${cur.length})</div>`;
+                html += cur.map(l => `<div class="flex items-center justify-between gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 mb-1.5"><div><div class="font-black text-[12.5px]">${escHtml(l.name)} <span class="text-[10.5px] bg-amber-100 text-amber-900 px-1.5 rounded">${escHtml(leaveLabel(l.type))}</span></div><div class="text-[11px] text-slate-600 font-bold" dir="ltr">${escHtml(l.from)} → ${escHtml(l.to)}</div>${l.sub ? `<div class="text-[11px] text-indigo-700 font-black">${ar ? 'البديل: ' : 'Substitute: '}${escHtml(l.sub)}</div>` : ''}</div><button type="button" onclick="deleteLeave('${escHtml(l.id)}')" class="px-2.5 py-1.5 rounded-lg bg-rose-600 text-white font-black text-[11px] cursor-pointer"><i class="fa-solid fa-trash"></i></button></div>`).join('') || `<div class="text-[11.5px] text-slate-400 font-bold">${ar ? 'لا توجد إجازات مسجلة.' : 'No leaves recorded.'}</div>`;
+            }
+            box.innerHTML = html;
+        }
+        function schedAddStaff() {
+            const sh = schedDraft.shifts[schedAdminShift];
+            const n = (document.getElementById('schedNewName').value || '').trim().replace(/\s+/g, ' ').slice(0, 40);
+            const p = normDigits(document.getElementById('schedNewPhone').value || '').replace(/\D/g, '');
+            if (n.length < 3) { showToast(currentLang === 'ar' ? 'اكتب اسم الموظف' : 'Enter the employee name', '', 'fa-triangle-exclamation', 'amber'); return; }
+            if (p && !/^05\d{8}$/.test(p)) { showToast(currentLang === 'ar' ? 'رقم الجوال يجب أن يبدأ بـ 05 ويتكون من 10 أرقام' : 'Phone must be 10 digits starting with 05', '', 'fa-triangle-exclamation', 'amber'); return; }
+            if ((sh.staff || []).some(s => s.n === n)) { showToast(currentLang === 'ar' ? 'الموظف موجود في هذه الوردية' : 'Already in this shift', '', 'fa-circle-info', 'amber'); return; }
+            sh.staff.push({ n, p }); renderSchedAdmin();
+        }
+        function schedRemoveStaff(i) {
+            const sh = schedDraft.shifts[schedAdminShift]; const s = sh.staff[i]; if (!s) return;
+            if (!confirm((currentLang === 'ar' ? 'إخراج «' : 'Remove “') + s.n + (currentLang === 'ar' ? '» من هذه الوردية؟ ستصبح أيامه فارغة لتوزيعها على غيره.' : '” from this shift? Their days become empty.'))) return;
+            sh.staff.splice(i, 1); sh.pattern = sh.pattern.map(x => x === s.n ? '' : x); renderSchedAdmin();
+        }
+        function schedSetWeeks(w) {
+            w = Math.max(1, Math.min(6, Number(w) || 3)); const sh = schedDraft.shifts[schedAdminShift];
+            const pat = sh.pattern.slice(0, w * 7); while (pat.length < w * 7) pat.push(sh.pattern[pat.length % Math.max(1, sh.pattern.length)] || '');
+            sh.weeks = w; sh.pattern = pat; renderSchedAdmin();
+        }
+        function schedSetDay(idx, v) { schedDraft.shifts[schedAdminShift].pattern[idx] = v; renderSchedAdmin(); }
+        async function saveScheduleConfig() {
+            if (!isDirectorSession() || !firestoreDb) return;
+            const btn = document.getElementById('schedSaveBtn'); if (btn) btn.disabled = true;
+            try {
+                const clean = {};
+                ['morning', 'evening', 'night'].forEach(k => { const sh = schedDraft.shifts[k]; clean[k] = { weeks: sh.weeks, staff: sh.staff.map(s => ({ n: String(s.n).slice(0, 40), p: String(s.p || '').slice(0, 10) })), pattern: sh.pattern.map(x => String(x || '').slice(0, 40)) }; });
+                await firestoreDb.collection('kah_schedule').doc('config').set({ epoch: schedDraft.epoch || DEFAULT_SCHEDULE.epoch, shifts: clean, updatedBy: activeStaffMember ? activeStaffMember.arName : '', updatedAtMs: Date.now() });
+                scheduleConfig = { epoch: schedDraft.epoch || DEFAULT_SCHEDULE.epoch, shifts: clean };
+                logCyberEvent('تحديث جداول المناوبات');
+                showToast(currentLang === 'ar' ? 'تم حفظ الجداول وتظهر للجميع ✓' : 'Schedules saved for everyone ✓', '', 'fa-calendar-check', 'teal');
+                renderSchedulesView();
+            } catch (e) { showToast(currentLang === 'ar' ? 'تعذّر الحفظ — تأكد من نشر القواعد الجديدة' : 'Save failed — publish the new rules', (e && e.code) || '', 'fa-triangle-exclamation', 'rose'); }
+            if (btn) btn.disabled = false;
+        }
+        async function saveLeave() {
+            if (!isDirectorSession() || !firestoreDb) return;
+            const g = id => (document.getElementById(id) || {}).value || '';
+            const name = g('lvName'), type = g('lvType'), from = g('lvFrom'), to = g('lvTo'), sub = g('lvSub');
+            if (!name || !from || !to || dayNum(to) < dayNum(from)) { showToast(currentLang === 'ar' ? 'تحقق من الاسم والتواريخ' : 'Check the name and dates', '', 'fa-triangle-exclamation', 'amber'); return; }
+            if (sub && sub === name) { showToast(currentLang === 'ar' ? 'البديل لا يكون نفس الموظف' : 'Substitute must differ', '', 'fa-triangle-exclamation', 'amber'); return; }
+            const id = 'lv' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+            try {
+                await firestoreDb.collection('kah_leaves').doc(id).set({ id, name, type, from, to, sub, by: activeStaffMember ? activeStaffMember.arName : '', atMs: Date.now() });
+                logCyberEvent('تسجيل إجازة ' + leaveLabel(type) + ' للموظف: ' + name);
+                showToast(currentLang === 'ar' ? 'تم تسجيل الإجازة ✓' : 'Leave recorded ✓', name, 'fa-umbrella-beach', 'teal');
+            } catch (e) { showToast(currentLang === 'ar' ? 'تعذّر الحفظ — تأكد من نشر القواعد الجديدة' : 'Save failed — publish the new rules', (e && e.code) || '', 'fa-triangle-exclamation', 'rose'); }
+        }
+        async function deleteLeave(id) {
+            if (!isDirectorSession() || !firestoreDb) return;
+            if (!confirm(currentLang === 'ar' ? 'حذف هذه الإجازة؟' : 'Delete this leave?')) return;
+            try { await firestoreDb.collection('kah_leaves').doc(id).delete(); } catch (e) {}
         }
 
         function buildFullPdfScheduleHtml(badgeTitle, subTitle, weeks, staffSummary, officialNotice) {
@@ -4592,14 +4644,14 @@
                 <!-- Quick Direct Contact Cards (Fix #6: Masked for Visitor 8090) -->
                 <div class="px-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                     ${staffSummary.map(s => {
-                        const displayPhone = isVisitor ? '05•••••••• (محمي للزائر)' : s.p;
+                        const displayPhone = isVisitor ? '05•••••••• (محمي للزائر)' : (s.p || '—');
                         return `
                         <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-2">
                             <div>
-                                <div class="font-black text-slate-900 text-xs sm:text-sm">${s.n}</div>
+                                <div class="font-black text-slate-900 text-xs sm:text-sm">${escHtml(s.n)}</div>
                                 <div class="font-mono font-bold text-cyan-700 text-xs mt-0.5" dir="ltr">${displayPhone}</div>
                             </div>
-                            ${!isVisitor ? `
+                            ${(!isVisitor && s.p) ? `
                             <div class="flex items-center gap-1.5">
                                 <a href="tel:${s.p}" class="w-8 h-8 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white flex items-center justify-center shadow" title="اتصال مباشر"><i class="fa-solid fa-phone text-xs"></i></a>
                                 <a href="https://wa.me/966${s.p.substring(1)}" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center shadow" title="واتساب مباشر"><i class="fa-brands fa-whatsapp text-sm"></i></a>
@@ -4628,10 +4680,11 @@
                                 <tr class="hover:bg-cyan-50/40">
                                     <td class="py-3 px-2 border border-slate-200 font-black bg-slate-100 text-slate-900">${w.label}</td>
                                     ${w.days.map(day => `
-                                        <td class="py-2.5 px-1.5 border border-slate-200">
-                                            <div class="font-mono text-[11px] font-black text-cyan-800 bg-cyan-50 inline-block px-1.5 rounded">${day.d}</div>
-                                            <div class="font-black text-slate-900 my-1">${day.n}</div>
-                                            ${!isVisitor ? `
+                                        <td class="py-2.5 px-1.5 border border-slate-200 ${day.today ? 'bg-amber-50 ring-2 ring-amber-400 ring-inset' : ''}">
+                                            <div class="font-mono text-[11px] font-black ${day.today ? 'text-amber-900 bg-amber-200' : 'text-cyan-800 bg-cyan-50'} inline-block px-1.5 rounded">${day.d}${day.today ? (currentLang === 'ar' ? ' • اليوم' : ' • today') : ''}</div>
+                                            ${day.leave ? `<div class="text-[10px] text-rose-700 font-black mt-1"><s>${escHtml(day.leave.orig)}</s> — ${currentLang === 'ar' ? 'إجازة' : 'leave'}${isDirectorSession() ? ' ' + escHtml(leaveLabel(day.leave.type)) : ''}</div>${day.leave.sub ? `<div class="text-[10px] text-indigo-700 font-black">${currentLang === 'ar' ? 'البديل:' : 'Substitute:'}</div>` : `<div class="text-[10px] text-amber-700 font-black">${currentLang === 'ar' ? 'بدون بديل محدد' : 'No substitute set'}</div>`}` : ''}
+                                            <div class="font-black text-slate-900 my-1">${escHtml(day.n)}</div>
+                                            ${(!isVisitor && day.p) ? `
                                             <div class="flex items-center justify-center gap-1 mt-1">
                                                 <a href="tel:${day.p}" class="bg-slate-100 hover:bg-cyan-100 text-slate-800 border border-slate-300 px-1.5 py-0.5 rounded text-[10px] font-mono font-bold" dir="ltr">${day.p}</a>
                                                 <a href="https://wa.me/966${day.p.substring(1)}" target="_blank" rel="noopener noreferrer" class="text-emerald-600 hover:text-emerald-700 text-sm"><i class="fa-brands fa-whatsapp"></i></a>
