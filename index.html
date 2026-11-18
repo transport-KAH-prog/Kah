@@ -291,6 +291,13 @@
         body.theme-sugar .kah-tribute{color:#5b3d00;background:linear-gradient(145deg,#fff7df,#fffdf5 55%,#fff7df);border-color:#e0b24a}
         body.theme-sugar .kah-tribute .kt-title{color:#9a6a00}
         body.theme-sugar .kah-tribute .kt-text{color:#6b5320}
+
+        body.portal-mode #tab-admin, body.portal-mode #menuPresenceBtn, body.portal-mode #menuUsersBtn, body.portal-mode #menuMapBtn,
+        body.portal-mode #menuGuestbookBtn, body.portal-mode #guestbookQuickBtn, body.portal-mode #menuArchiveBtn, body.portal-mode #headerInboxBtn,
+        body.portal-mode #schedAdminBtn, body.portal-mode #schedViewBtn-roster, body.portal-driver #tab-requester, body.portal-req #tab-driver { display: none !important; }
+        #securityLockGate.gate-portal #gatePortalBtn { background: linear-gradient(135deg,#f59e0b,#fbbf24) !important; }
+        #securityLockGate.gate-portal #gatePortalBtnTitle, #securityLockGate.gate-portal #gatePortalBtnArrow { color: #1c1303 !important; }
+        #securityLockGate.gate-portal #gatePortalBtnSub { color: #3b2a05 !important; }
 </style>
 </head>
 <body id="appBodyThemeRoot" class="antialiased min-h-screen flex flex-col justify-between">
@@ -366,7 +373,12 @@
             </div>
 
             <h1 id="uiLockMainTitle" class="text-base sm:text-lg font-black text-white tracking-tight">منصة الحركة والمواصلات الذكية</h1>
-            <p id="uiLockSubTitle" class="text-[11px] text-slate-400 font-semibold mt-0.5 mb-3.5">الرجاء إدخال الرمز السري المخصص لصلاحيتك للبدء</p>
+            <p id="uiLockSubTitle" class="text-[11px] text-slate-400 font-semibold mt-0.5 mb-3.5">أدخل رقم المستخدم والرمز السري للبدء</p>
+            <button type="button" id="gatePortalBtn" onclick="setGatePortal(!gatePortal)" class="w-full mb-3 rounded-2xl px-3 py-2.5 flex items-center gap-3 text-right cursor-pointer transition" style="background:linear-gradient(135deg,rgba(245,158,11,.18),rgba(14,116,144,.25));border:1.5px solid rgba(251,191,36,.6)">
+                <span class="w-10 h-10 shrink-0 rounded-xl flex items-center justify-center text-lg" style="background:#f59e0b;color:#1c1303"><i class="fa-solid fa-clipboard-check"></i></span>
+                <span class="flex flex-col leading-tight"><span id="gatePortalBtnTitle" class="font-black text-[13px] text-amber-300">بوابة إسناد المهمات</span><span id="gatePortalBtnSub" class="text-[10.5px] text-slate-300 font-bold">لطالبي الخدمة من خارج الإدارة والسائقين المكلفين</span></span>
+                <i id="gatePortalBtnArrow" class="fa-solid fa-chevron-left text-amber-300 mr-auto"></i>
+            </button>
 
             <!-- Brute-Force Lockout Warning Banner -->
             <div id="cyberLockoutBanner" class="hidden mb-3 bg-rose-950 border-2 border-rose-500 text-rose-200 rounded-2xl p-3 text-xs font-black space-y-1 animate-pulse">
@@ -538,6 +550,12 @@
                     <button type="button" id="menuGuideBtn" onclick="openGuideModal(); toggleMoreMenu(false)" class="flex items-center gap-1.5 bg-violet-700 hover:bg-violet-600 text-white px-2.5 py-1.5 rounded-xl text-[11px] font-black cursor-pointer transition shadow-sm">
                         <i class="fa-solid fa-circle-info"></i><span class="flex flex-col leading-tight text-right"><span>شرح النظام وطريقة التثبيت</span><span class="kah-desc text-[9px] opacity-75 font-semibold" data-ar="دليل الاستخدام وطريقة التثبيت" data-en="User guide & install steps">دليل الاستخدام وطريقة التثبيت</span></span>
                     </button>
+                    <button type="button" id="menuArchiveBtn" style="display:none" onclick="openArchiveModal(); toggleMoreMenu(false)" class="items-center gap-1.5 bg-stone-700 hover:bg-stone-600 text-white px-2.5 py-1.5 rounded-xl text-[11px] font-black cursor-pointer transition shadow-sm">
+                        <i class="fa-solid fa-box-archive"></i><span class="flex flex-col leading-tight text-right"><span>الأرشيف</span><span class="kah-desc text-[9.5px] font-bold opacity-80" data-ar="طلبات السنوات السابقة تُنقل إليه تلقائياً" data-en="Previous years' orders move here automatically">طلبات السنوات السابقة تُنقل إليه تلقائياً</span></span>
+                    </button>
+                    <button type="button" id="menuPolicyBtn" onclick="openPolicyModal(); toggleMoreMenu(false)" class="flex items-center gap-1.5 bg-sky-700 hover:bg-sky-600 text-white px-2.5 py-1.5 rounded-xl text-[11px] font-black cursor-pointer transition shadow-sm">
+                        <i class="fa-solid fa-scale-balanced"></i><span class="flex flex-col leading-tight text-right"><span>السياسات والهيكل التنظيمي</span><span class="kah-desc text-[9.5px] font-bold opacity-80" data-ar="سياسة القسم المعتمدة وهيكله" data-en="Approved section policy & structure">سياسة القسم المعتمدة وهيكله</span></span>
+                    </button>
                     <button type="button" id="menuUsersBtn" style="display:none" onclick="openUsersModal(); toggleMoreMenu(false)" class="items-center gap-1.5 bg-indigo-700 hover:bg-indigo-600 text-white px-2.5 py-1.5 rounded-xl text-[11px] font-black cursor-pointer transition shadow-sm">
                         <i class="fa-solid fa-users-gear"></i><span class="flex flex-col leading-tight text-right"><span>إدارة المستخدمين</span><span class="kah-desc text-[9px] opacity-75 font-semibold" data-ar="إنشاء وحظر وحذف الحسابات" data-en="Create, block or delete accounts">إنشاء وحظر وحذف الحسابات</span></span>
                     </button>
@@ -581,13 +599,6 @@
 
                 
                 <div class="flex items-center flex-wrap gap-2">
-                                        <!-- Director & Assistant Only: Wipe All Trial Data Before Production Launch -->
-                    <div id="directorResetBox" class="hidden flex flex-wrap items-center gap-2">
-                        <button type="button" onclick="resetAllRequestsByDirector()" class="bg-rose-600 hover:bg-rose-500 text-white text-xs font-black px-4 py-2.5 rounded-xl shadow cursor-pointer flex items-center gap-1.5 transition">
-                            <i class="fa-solid fa-trash-can"></i>
-                            <span id="uiBtnResetAll">مسح كل بيانات التجربة وتصفير الطلبات (0)</span>
-                        </button>
-                    </div>
                 
                 </div>
                 <div class="text-[10.5px] text-slate-300"><span id="uiPrivacyNoPatientBadge" class="text-cyan-300 font-bold">
@@ -749,17 +760,21 @@
         <!-- VIEW 3: OFFICIAL DUTY SCHEDULES (ALL 3 PDFS NOV - DEC 2026)   -->
         <!-- ============================================================= -->
         <section id="view-schedules" class="hidden space-y-5">
-            <div class="premium-card rounded-3xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="premium-card rounded-3xl p-5 space-y-3">
                 <div>
                     <h2 id="uiSchedMainTitle" class="text-base sm:text-lg font-black">جداول المناوبات المعتمدة — تتجدد تلقائياً</h2>
-                    <p id="uiSchedSubTitle" class="text-xs text-slate-500 mt-0.5">إيصال العينات الطبية (مركز السموم والمختبرات المرجعية) ومستلزمات المستشفى — تواصل مباشر اتصال أو واتساب</p>
+                    <p class="text-xs text-slate-500 mt-0.5">جدول الموظفين بالقسم (أيام العمل والراحة) وجدول إسناد المهمات (المناوب المكلف بإيصال العينات والمستلزمات)</p>
                 </div>
-                <div class="flex flex-wrap items-center gap-2">
+                <div class="flex gap-2">
+                    <button type="button" id="schedViewBtn-roster" onclick="switchSchedView('roster')" class="flex-1 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-black cursor-pointer transition bg-slate-900 text-white shadow"><i class="fa-solid fa-users"></i> جدول الموظفين بالقسم</button>
+                    <button type="button" id="schedViewBtn-assign" onclick="switchSchedView('assign')" class="flex-1 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-black cursor-pointer transition bg-slate-100 text-slate-700"><i class="fa-solid fa-clipboard-list"></i> جدول إسناد المهمات</button>
+                </div>
+                <div id="schedShiftBtns" class="flex flex-wrap items-center gap-2" style="display:none">
                     <button type="button" onclick="switchScheduleShift('morning')" id="shiftTab-morning" class="px-4 py-2 rounded-xl text-xs font-black transition bg-cyan-600 text-white shadow cursor-pointer">☀️ الوردية الأولى (الصباح)</button>
                     <button type="button" onclick="switchScheduleShift('evening')" id="shiftTab-evening" class="px-4 py-2 rounded-xl text-xs font-black transition bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">🌇 الوردية الثانية (المساء)</button>
                     <button type="button" onclick="switchScheduleShift('night')" id="shiftTab-night" class="px-4 py-2 rounded-xl text-xs font-black transition bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">🌙 الوردية الثالثة (الليلية)</button>
-                    <button type="button" id="schedAdminBtn" style="display:none" onclick="openScheduleAdmin()" class="w-full sm:w-auto justify-center items-center gap-1.5 px-4 py-2.5 mt-1 sm:mt-0 rounded-xl text-xs font-black bg-indigo-700 hover:bg-indigo-600 text-white shadow cursor-pointer"><i class="fa-solid fa-calendar-days"></i><span>إدارة الجداول والإجازات</span></button>
                 </div>
+                    <button type="button" id="schedAdminBtn" style="display:none" onclick="openScheduleAdmin()" class="w-full justify-center items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-black bg-indigo-700 hover:bg-indigo-600 text-white shadow cursor-pointer"><i class="fa-solid fa-calendar-days"></i><span>إدارة الجداول والإجازات</span></button>
             </div>
             <div id="scheduleShiftContainer" class="space-y-4"></div>
         </section>
@@ -882,6 +897,7 @@
                         <p id="uiFleetTableSub" class="text-xs text-slate-300 mt-0.5">لوحات المركبات الرسمية واضحة ومعتمدة لتأمين حركة نقل العينات والمستلزمات</p>
                     </div>
                 </div>
+                <div id="fleetSummaryBox"></div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-xs text-right">
                         <thead class="bg-slate-100 text-slate-700 font-black border-b border-slate-200">
@@ -892,6 +908,7 @@
                                 <th id="thVehicleType" class="py-3 px-4">النوع</th>
                                 <th id="thVehicleModel" class="py-3 px-4">الموديل</th>
                                 <th id="thVehiclePlate" class="py-3 px-4">رقم اللوحة الرسمي (واضح)</th>
+                                <th class="py-3 px-4">الجهة والتقرير الفني</th>
                                 <th id="thVehicleStatus" class="py-3 px-4">حالة المركبة</th>
                             </tr>
                         </thead>
@@ -925,6 +942,11 @@
                             <div class="font-black text-sm flex items-center gap-1.5" style="color:#9a6a00"><i class="fa-solid fa-landmark"></i><span>نبذة عن المنصة وكلمات القيادة</span></div>
                             <p class="leading-relaxed" style="color:#6b5320">مقدمة منظومة النقل الطبي واللوجستي الذكي، وكلمة مدير إدارة الحركة والمواصلات، وكلمة مؤسس المنصة.</p>
                             <button type="button" onclick="openIntroModal()" class="w-full py-2.5 rounded-xl text-slate-950 font-black flex items-center justify-center gap-2 shadow cursor-pointer" style="background:linear-gradient(90deg,#f59e0b,#fde68a,#f59e0b)"><i class="fa-solid fa-book-open-reader"></i><span>قراءة النبذة</span></button>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-sky-50/70 border border-sky-200 space-y-2">
+                            <div class="font-black text-sky-950 text-sm flex items-center gap-1.5"><i class="fa-solid fa-scale-balanced text-sky-600"></i><span>السياسات والهيكل التنظيمي</span></div>
+                            <p class="text-sky-900 leading-relaxed">السياسة العامة المعتمدة لقسم الحركة والمواصلات، والهيكل التنظيمي، وكيف تطبّقها المنصة.</p>
+                            <button type="button" onclick="openPolicyModal()" class="w-full py-2.5 rounded-xl bg-sky-700 hover:bg-sky-600 text-white font-black flex items-center justify-center gap-2 shadow cursor-pointer"><i class="fa-solid fa-book"></i><span>عرض السياسات</span></button>
                         </div>
                         <div class="p-4 rounded-2xl bg-cyan-50/70 border border-cyan-200 space-y-2">
                             <div class="font-black text-cyan-950 text-sm flex items-center gap-1.5">
@@ -1208,8 +1230,8 @@
                     <input id="nuDept" type="text" maxlength="60" placeholder="الإدارة التي يتبع لها" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 font-bold">
                     <input id="nuJob" type="text" maxlength="60" placeholder="المسمى الوظيفي" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 font-bold">
                     <select id="nuRole" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 font-bold">
-                        <option value="3040">المدير المناوب (بوابة الطوارئ)</option>
-                        <option value="4050">سائق</option>
+                        <option value="3040">طالب خدمة / مدير مناوب (بوابة إسناد المهمات)</option>
+                        <option value="4050">سائق (بوابة إسناد المهمات)</option>
                         <option value="5060">مشرف وحدة السائقين</option>
                         <option value="6070">مشرف أسطول السيارات</option>
                         <option value="7080">إداري (إحصائيات)</option>
@@ -1243,6 +1265,48 @@
                 <button type="button" onclick="closeScheduleAdmin()" class="text-slate-300 hover:text-white text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div id="schedAdminBody" class="p-4 text-xs max-h-[78vh] overflow-y-auto"></div>
+        </div>
+    </div>
+
+    <div id="vehicleInfoModal" style="display:none" class="fixed inset-0 z-[179] bg-slate-950/80 backdrop-blur-sm items-center justify-center p-3 overflow-y-auto no-print">
+        <div class="bg-white rounded-3xl max-w-md w-full shadow-2xl border border-slate-200 overflow-hidden my-auto text-slate-900">
+            <div class="luxury-Command-card text-white px-5 py-4 flex items-center justify-between">
+                <h3 id="vehicleInfoTitle" class="font-black text-sm sm:text-base"><i class="fa-solid fa-car"></i> بيانات المركبة</h3>
+                <button type="button" onclick="setDisplay('vehicleInfoModal', false)" class="text-slate-300 hover:text-white text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="vehicleInfoBody" class="p-4 text-xs"></div>
+        </div>
+    </div>
+
+    <div id="policyModal" style="display:none" class="fixed inset-0 z-[179] bg-slate-950/80 backdrop-blur-sm items-center justify-center p-3 overflow-y-auto no-print">
+        <div class="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-200 overflow-hidden my-auto text-slate-900">
+            <div class="luxury-Command-card text-white px-5 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-10 h-10 rounded-xl bg-sky-500/25 border border-sky-300/40 flex items-center justify-center text-sky-200"><i class="fa-solid fa-scale-balanced"></i></div>
+                    <div>
+                        <h3 class="font-black text-sm sm:text-base">السياسات العامة والهيكل التنظيمي</h3>
+                        <p class="text-[11px] text-slate-300">قسم الحركة والمواصلات — AD/Transportation/001</p>
+                    </div>
+                </div>
+                <button type="button" onclick="setDisplay('policyModal', false)" class="text-slate-300 hover:text-white text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="policyBody" class="p-4 text-xs max-h-[78vh] overflow-y-auto"></div>
+        </div>
+    </div>
+
+    <div id="archiveModal" style="display:none" class="fixed inset-0 z-[179] bg-slate-950/80 backdrop-blur-sm items-center justify-center p-3 overflow-y-auto no-print">
+        <div class="bg-white rounded-3xl max-w-3xl w-full shadow-2xl border border-slate-200 overflow-hidden my-auto text-slate-900">
+            <div class="luxury-Command-card text-white px-5 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-10 h-10 rounded-xl bg-stone-400/25 border border-stone-300/40 flex items-center justify-center text-stone-200"><i class="fa-solid fa-box-archive"></i></div>
+                    <div>
+                        <h3 class="font-black text-sm sm:text-base">الأرشيف</h3>
+                        <p class="text-[11px] text-slate-300">تُنقل طلبات كل سنة ميلادية إليه تلقائياً بعد نهايتها، وتبدأ التقارير السنة الجديدة من الصفر</p>
+                    </div>
+                </div>
+                <button type="button" onclick="setDisplay('archiveModal', false)" class="text-slate-300 hover:text-white text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="archiveBody" class="p-4 text-xs max-h-[78vh] overflow-y-auto"></div>
         </div>
     </div>
 
@@ -1323,6 +1387,10 @@
                             <option value="وحدات دم وبلازما (بنك الدم)">وحدات دم وبلازما (بنك الدم)</option>
                             <option value="مستلزمات طبية وجراحية عاجلة">مستلزمات طبية وجراحية عاجلة</option>
                             <option value="طلب نقل أفراد / مهمة رسمية">طلب نقل أفراد / مهمة رسمية</option>
+                            <option value="مراسلات خارجية رسمية">مراسلات خارجية رسمية</option>
+                            <option value="نقل فنيي عينات الدم">نقل فنيي عينات الدم</option>
+                            <option value="مواصلات للمطار (ساكنو سكن المستشفى)">مواصلات للمطار (ساكنو سكن المستشفى)</option>
+                            <option value="رحلة / برنامج لمنسوبي المستشفى">رحلة / برنامج لمنسوبي المستشفى</option>
                         </select>
                     </div>
                     <div>
@@ -1358,6 +1426,7 @@
                         <i id="optionalBoxChevron" class="fa-solid fa-chevron-down text-slate-400 transition-transform"></i>
                     </button>
                     <div id="preSendOptionalBoxBody" class="hidden p-3 border-t border-slate-200 bg-white">
+                        <input id="formMissionOrder" type="text" maxlength="30" placeholder="رقم أمر المهمة (إن وُجد)" class="w-full mb-2 rounded-xl border border-slate-300 px-3 py-2 text-xs font-bold focus:outline-none">
                         <textarea id="formOptionalNote" rows="2" placeholder="اكتب أي ملاحظة اختيارية أو توجيه للسائق قبل إرسال الطلب..." class="w-full rounded-xl border border-slate-300 p-2.5 text-xs font-bold text-slate-800 focus:outline-none"></textarea>
                     </div>
                 </div>
@@ -2310,7 +2379,7 @@
                 uiLockShieldStatus: 'الدخول الآمن مفعّل',
                 uiLockClusterBadge: 'تجمع جدة الصحي الأول • مستشفى الملك عبدالعزيز بجدة',
                 uiLockMainTitle: 'منصة الحركة والمواصلات الذكية',
-                uiLockSubTitle: 'الرجاء اختيار حسابك الفردي وإدخال الرمز السري للبدء',
+                uiLockSubTitle: 'أدخل رقم المستخدم والرمز السري للبدء',
                 uiLockBtnClear: 'مسح',
                 uiLockBtnEnter: '✓ دخول',
                 uiLockCopyright: 'جميع الحقوق محفوظة © 2026',
@@ -2396,7 +2465,7 @@
                 uiLockShieldStatus: 'Secure sign-in enabled',
                 uiLockClusterBadge: 'Jeddah First Health Cluster • King Abdulaziz Hospital',
                 uiLockMainTitle: 'Smart Transportation & Mobility Platform',
-                uiLockSubTitle: 'Select your individual account and enter your security PIN',
+                uiLockSubTitle: 'Enter your user number and PIN to start',
                 uiLockBtnClear: 'Clear',
                 uiLockBtnEnter: '✓ Enter',
                 uiLockCopyright: 'All Rights Reserved © 2026',
@@ -2497,6 +2566,7 @@
             document.querySelectorAll('.kah-desc').forEach(e => { e.textContent = e.getAttribute(currentLang === 'ar' ? 'data-ar' : 'data-en'); });
 
             renderAll();
+            try { applyGateMode(); if (isAuthenticated) applyPortalMode(); } catch (e) {}
             try { applyFullLanguage(); } catch (e) {}
             showToast(
                 currentLang === 'ar' ? 'تم التبديل إلى اللغة العربية ✓' : 'Switched to English Mode ✓',
@@ -2914,6 +2984,8 @@
 
         // ---------- شرح النظام وطريقة التثبيت ----------
         const GUIDE_AR = [
+            ['fa-clipboard-check', 'بوابة إسناد المهمات', 'بوابة مستقلة لطالبي الخدمة من خارج الإدارة (المدراء المناوبين والأقسام) وللسائقين. تظهر كأيقونة في شاشة الدخول، أو بالرابط المباشر:<br><b dir="ltr">transport-kah-prog.github.io/Kah/#portal</b><br><b>طالب الخدمة:</b> يرى نموذج الطلب وطلباته فقط ويتابعها ويقيّمها.<br><b>السائق:</b> يرى الطلبات الجديدة ومهامه هو فقط، وجدول إسناد المهمات.<br>حسابات الإدارة والمشرفين تعمل من منصة الإدارة.'],
+            ['fa-box-archive', 'الأرشيف السنوي', 'في نهاية كل سنة ميلادية تُنقل طلبات السنة كلها تلقائياً إلى «الأرشيف» في القائمة ☰، وتبدأ التقارير والإحصائيات السنة الجديدة من الصفر. لا يُحذف أي طلب، ويمكن تصدير أرشيف أي سنة إلى Excel. يراه المدير ومساعده والمشرفون والإداري.'],
             ['fa-route', 'مراحل الطلب والتقييم', '<b>1)</b> المرسل ينشئ الطلب فيرنّ بملء شاشة السائقين حتى يقبل أحدهم أو يرفض بسبب يصل لمشرف وحدة السائقين.<br><b>2)</b> السائق يضغط «الذهاب إلى جهة الاستلام» فتفتح الخريطة، ثم «تسجيل وصول» فيُشعَر طالب الخدمة ويبدأ عدّاد الانتظار.<br><b>3)</b> «الذهاب إلى جهة التسليم» تفتح الخريطة، وعند الوصول «وصول — انتهى الطلب».<br><b>4)</b> يقيّم السائق وطالب الخدمة بعضهما من 1 إلى 5 نجوم دون تعليق.'],
             ['fa-hospital', 'ما هو هذا النظام؟', 'منصة إدارة الحركة والمواصلات بمستشفى الملك عبدالعزيز بجدة (تجمع جدة الصحي الأول). تُنشأ فيها طلبات النقل (عينات، مستلزمات، مهام ميدانية)، فتصل فوراً لشاشات السائقين بنغمة تنبيه، ويتابعها المدير والمساعد لحظة بلحظة. الطلبات تحتوي المهمة والمكان فقط، دون أي بيانات مرضى.'],
             ['fa-users-gear', 'الأدوار والصلاحيات', '<b>المدير ومساعده:</b> صلاحية كاملة، رؤية كل ما يحدث، المتصلون والإحصائيات، اعتماد آراء الزوار، إخفاء الخريطة.<br><b>الطوارئ:</b> إنشاء ومتابعة وتقييم الطلبات.<br><b>السائق:</b> استقبال الطلب بملء الشاشة وقبوله.<br><b>مشرف السائقين / الأسطول:</b> متابعة السائقين والمركبات.<br><b>الإداري:</b> الإحصائيات والتقارير.<br><b>الزائر:</b> اطلاع فقط، ويكتب رأيه في سجل الزوار.'],
@@ -2927,6 +2999,8 @@
             ['fa-shield-halved', 'الأمان والخصوصية', 'الدخول يتم عبر خادم آمن، والصلاحيات تُفرض على مستوى قاعدة البيانات نفسها. لا تُحفظ بيانات الطلبات على الجهاز بعد الخروج. سجل الدخول والمتصلون يراهما المدير ومساعده فقط.']
         ];
         const GUIDE_EN = [
+            ['fa-clipboard-check', 'Task Assignment Portal', 'A separate portal for requesters outside the department (duty managers, departments) and drivers. Open it from the icon on the sign-in screen, or the direct link:<br><b dir="ltr">transport-kah-prog.github.io/Kah/#portal</b><br><b>Requester:</b> sees the request form and their own requests only.<br><b>Driver:</b> sees new requests, their own tasks and the task schedule.<br>Management and supervisor accounts use the management platform.'],
+            ['fa-box-archive', 'Yearly archive', 'At the end of each calendar year all orders move automatically to the “Archive” in the ☰ menu, and reports start the new year from zero. Nothing is deleted; any year can be exported to Excel. Visible to the Director, Assistant, supervisors and admin.'],
             ['fa-route', 'Order stages & rating', '<b>1)</b> The requester creates the order; it rings full-screen on drivers\' devices until one accepts, or declines with a reason sent to the drivers supervisor.<br><b>2)</b> The driver taps “Go to pickup” (opens maps), then “I have arrived” — the requester is notified and the waiting timer starts.<br><b>3)</b> “Go to destination” opens maps; on arrival tap “Arrived — order complete”.<br><b>4)</b> Driver and requester rate each other from 1 to 5 stars, no comments.'],
             ['fa-hospital', 'What is this system?', 'A transport & mobility platform for King Abdulaziz Hospital, Jeddah (Jeddah First Health Cluster). Requests (specimens, supplies, field tasks) reach drivers instantly with an alert tone while the Director and Assistant follow every step. Requests carry task and location only — no patient data.'],
             ['fa-users-gear', 'Roles', '<b>Director & Assistant:</b> full access, online users & stats, approve guest notes, hide map.<br><b>ER:</b> create/track/rate requests.<br><b>Driver:</b> receives full-screen alert and accepts.<br><b>Supervisors:</b> follow drivers and fleet.<br><b>Admin:</b> statistics.<br><b>Visitor:</b> read-only; can leave a note in the guestbook.'],
@@ -2956,6 +3030,7 @@
             setDisplay('menuPresenceBtn', dir, 'flex');
             setDisplay('menuMapBtn', dir, 'flex');
             setDisplay('menuUsersBtn', dir, 'flex');
+            setDisplay('menuArchiveBtn', isAuthenticated && ARCHIVE_ROLES.includes(String(activePermissionKey)), 'flex');
             setDisplay('schedAdminBtn', dir, 'inline-flex');
             setDisplay('menuGuestbookBtn', isAuthenticated, 'flex');
             setDisplay('guestbookQuickBtn', visitor, 'flex');
@@ -2984,7 +3059,7 @@
             return isAuthenticated && ['1020', '2030', '5060', '6070'].indexOf(String(activePermissionKey)) >= 0;
         }
         function fleetHealthCell(v) {
-            const cur = (fleetHealth[String(v.line)] || {}).status || 'good';
+            const cur = (fleetHealth[String(v.line)] || {}).status || (VEHICLE_INFO[v.line] || {}).base || 'good';
             const can = canEditFleetHealth();
             const opts = FLEET_HEALTH_OPTS.map(o => `<option value="${o[0]}" ${o[0] === cur ? 'selected' : ''}>${o[1]}</option>`).join('');
             return `<select ${can ? '' : 'disabled'} onchange="setFleetHealth(${v.line}, this.value)" class="rounded-xl border-2 px-2.5 py-1.5 text-xs font-black ${FLEET_HEALTH_CLS[cur] || FLEET_HEALTH_CLS.good} ${can ? 'cursor-pointer' : 'opacity-80 cursor-not-allowed'}">${opts}</select>`;
@@ -3570,15 +3645,20 @@
                 restoreMapsPreference();
                 startPresenceAndLogin().catch(() => {});
                 startSelfStatusWatch();
+                setTimeout(() => { try { runYearEndArchive(); } catch (e) {} }, 4000);
 
                 document.getElementById('securityLockGate').classList.add('hidden');
                 document.getElementById('appMainHeader').classList.remove('hidden');
                 document.getElementById('appMainWorkspace').classList.remove('hidden');
                 document.getElementById('appMainFooter').classList.remove('hidden');
 
-                switchRole(perm.defaultTab);
+                const wasPortalGate = gatePortal;
+                applyPortalMode();
+                switchRole(portalActive ? (resolvedRoleKey === '4050' ? 'driver' : 'requester') : perm.defaultTab);
                 renderAll();
                 playQuickSendConfirmationBeep();
+                if (portalActive && !wasPortalGate) setTimeout(() => showToast(currentLang === 'ar' ? 'تم تحويلك إلى بوابة إسناد المهمات' : 'Opened in the Task Assignment Portal', currentLang === 'ar' ? 'حسابك مخصص لتقديم الطلبات وتنفيذ المهام' : 'Your account is for requests and tasks', 'fa-clipboard-check', 'amber'), 900);
+                if (wasPortalGate && !portalActive) setTimeout(() => showToast(currentLang === 'ar' ? 'حسابك يعمل عبر منصة الإدارة' : 'Your account uses the management platform', '', 'fa-building', 'amber'), 900);
 
                 showToast(
                     currentLang === 'ar' ? `مرحباً، ${activeStaffMember.arName} ✓` : `Welcome, ${activeStaffMember.enName} ✓`,
@@ -3712,7 +3792,41 @@
             'مشرف أسطول السيارات': 'Fleet supervisor', 'إداري (إحصائيات)': 'Admin (statistics)', 'زائر (اطلاع فقط)': 'Visitor (view only)',
             'الرمز السري:': 'PIN:', 'إنشاء المستخدم': 'Create user',
             'الاسم الكامل': 'Full name', 'الإدارة التي يتبع لها': 'Department', 'المسمى الوظيفي': 'Job title',
-            'حظر': 'Block', 'إدارة الجداول والإجازات': 'Manage schedules & leaves', 'للمدير ومساعده — تظهر التعديلات لجميع المستخدمين': 'Director & Assistant only — changes apply to everyone', 'جداول المناوبات المعتمدة — تتجدد تلقائياً': 'Approved duty schedules — auto-renewing', 'إصدار أرقام ورموز جديدة لجميع الحسابات': 'Issue new numbers & PINs for all accounts', 'نسخ الكل': 'Copy all', 'تنزيل البطاقات للطباعة': 'Download printable cards', 'رقم ورمز جديد': 'New number & PIN', 'نسخ البيانات': 'Copy details', 'رفع الحظر': 'Unblock', 'إيقاف مؤقت': 'Suspend', 'إلغاء الإيقاف': 'End suspension', 'حذف نهائي': 'Delete permanently',
+            "جدول قسم الحركة والمواصلات — جمادى الأولى/الآخرة 1448هـ (نوفمبر 2026م)": "Transport & Mobility Section roster — Jumada I/II 1448 AH (November 2026)",
+            "من 1448/5/21هـ إلى 1448/6/29هـ": "From 21/5/1448 AH to 29/6/1448 AH",
+            "• يُمنع خروج أي سيارة إلا بمهمة عمل رسمية، وتُسجَّل في سجل الحركة وأمر المهمة.": "• No vehicle may leave without an official work mission, recorded in the movement log and mission order.",
+            "• الالتزام بنظام «حيّاك» لكل الورديات.": "• All shifts must comply with the “Hayyak” attendance system.",
+            "رئيس القسم: أ. يوسف محمد خيري": "Head of Section: Mr. Yousef Mohammed Khairi",
+            "يوسف محمد خيري": "Yousef Mohammed Khairi",
+            "خالد المولد": "Khaled Al-Mowalad",
+            "علي صالح القرني": "Ali Saleh Al-Qarni",
+            "عبدالعزيز المالكي": "Abdulaziz Al-Maliki",
+            "عبدالعزيز العامري": "Abdulaziz Al-Amri",
+            "عائض عوض القرني": "Ayedh Awad Al-Qarni",
+            "فهد عطاالله القرشي": "Fahad Atallah Al-Qurashi",
+            "أ. عائض عوض القرني": "Mr. Ayedh Awad Al-Qarni",
+            "أ. يوسف محمد خيري": "Mr. Yousef Mohammed Khairi",
+            "ص. ريم عبد الحفيظ محجوب": "Ph. Reem Abdulhafeez Mahjoub",
+            "أ. فهد سعد القرني": "Mr. Fahad Saad Al-Qarni",
+            "د. هاني سراج الجدلي": "Dr. Hani Siraj Al-Jadali",
+            "المسؤوليات 3.1–3.5": "Responsibilities 3.1–3.5",
+            "الإجراء 4.3–4.5": "Procedure 4.3–4.5",
+            "الإجراء 4.7": "Procedure 4.7",
+            "النموذج 5.1 وملاحظة الجدول": "Form 5.1 & roster note",
+            "الهدف 2.4": "Objective 2.4",
+            "الإجراء 4.10": "Procedure 4.10",
+            "لا يوجد ملاحظات": "No remarks",
+            "المركبة بحالة جيدة": "Vehicle in good condition",
+            "المركبة بحالة جيدة مع ملاحظات": "Good condition with remarks",
+            "بحاجة لإصلاحات متعددة: مقصات ومساعدات، تهريب بالمكينة، فلاتر، بطارية، ومقاعد": "Needs multiple repairs: suspension and shocks, engine leak, filters, battery and seats",
+            "يجب تكهين السيارة — أعطالها كثيرة وموديلها قديم": "Scrapping recommended — frequent faults and old model",
+            "الماكينة تالفة": "Engine damaged",
+            "المركبة لا تعمل": "Vehicle not working",
+            "كثيرة الأعطال": "Frequent faults",
+            "يجب تكهين السيارة — موديلها قديم": "Scrapping recommended — old model",
+            "السيارة لا تعمل: عطل بالجيربوكس والمكيف والكلتش والدركسون والكويلات والدينمو والبطارية": "Not working: gearbox, AC, clutch, steering, coils, alternator and battery faults",
+            "الأبواب الخلفية مكسورة، التكييف الخلفي عطلان، بطارية": "Rear doors broken, rear AC faulty, battery",
+            'حظر': 'Block', 'الأرشيف': 'Archive', 'طلبات السنوات السابقة تُنقل إليه تلقائياً': "Previous years' orders move here automatically", 'تُنقل طلبات كل سنة ميلادية إليه تلقائياً بعد نهايتها، وتبدأ التقارير السنة الجديدة من الصفر': 'Each calendar year’s orders move here automatically after it ends; reports start the new year from zero', 'بوابة إسناد المهمات': 'Task Assignment Portal', 'لطالبي الخدمة من خارج الإدارة والسائقين المكلفين': 'For requesters outside the department and assigned drivers', 'طالب خدمة / مدير مناوب (بوابة إسناد المهمات)': 'Requester / duty manager (Task portal)', 'سائق (بوابة إسناد المهمات)': 'Driver (Task portal)', 'أدخل رقم المستخدم والرمز السري للبدء': 'Enter your user number and PIN to start', 'السياسة العامة المعتمدة لقسم الحركة والمواصلات، والهيكل التنظيمي، وكيف تطبّقها المنصة.': 'The approved general policy of the Transport & Mobility Section, its org structure, and how the platform applies it.', 'عرض السياسات': 'View policy', 'جدول الموظفين بالقسم': 'Section staff roster', 'جدول إسناد المهمات': 'Task assignment schedule', 'جدول الموظفين بالقسم (أيام العمل والراحة) وجدول إسناد المهمات (المناوب المكلف بإيصال العينات والمستلزمات)': 'Section staff roster (work/off days) and task assignment schedule (on-duty staff for samples & supplies)', 'السياسات والهيكل التنظيمي': 'Policy & org structure', 'السياسات العامة والهيكل التنظيمي': 'General policy & org structure', 'قسم الحركة والمواصلات — AD/Transportation/001': 'Transport & Mobility Section — AD/Transportation/001', 'سياسة القسم المعتمدة وهيكله': 'Approved section policy & structure', 'الجهة والتقرير الفني': 'Unit & technical report', 'بيانات المركبة': 'Vehicle data', 'مراسلات خارجية رسمية': 'Official external correspondence', 'نقل فنيي عينات الدم': 'Blood-sample technicians transport', 'مواصلات للمطار (ساكنو سكن المستشفى)': 'Airport transport (hospital housing residents)', 'رحلة / برنامج لمنسوبي المستشفى': 'Staff trip / program', 'رقم أمر المهمة (إن وُجد)': 'Mission order number (if any)', 'الحركة والمواصلات': 'Transport & Mobility', 'مركز الفضيلة': 'Al-Fadeela Center', 'الأمن': 'Security', 'نبذة المنصة • السياسات • الأيقونة • المشاركة': 'About • Policy • Icon • Share', 'إدارة الجداول والإجازات': 'Manage schedules & leaves', 'للمدير ومساعده — تظهر التعديلات لجميع المستخدمين': 'Director & Assistant only — changes apply to everyone', 'جداول المناوبات المعتمدة — تتجدد تلقائياً': 'Approved duty schedules — auto-renewing', 'إصدار أرقام ورموز جديدة لجميع الحسابات': 'Issue new numbers & PINs for all accounts', 'نسخ الكل': 'Copy all', 'تنزيل البطاقات للطباعة': 'Download printable cards', 'رقم ورمز جديد': 'New number & PIN', 'نسخ البيانات': 'Copy details', 'رفع الحظر': 'Unblock', 'إيقاف مؤقت': 'Suspend', 'إلغاء الإيقاف': 'End suspension', 'حذف نهائي': 'Delete permanently',
             'حساب إدارة — محمي': 'Management account — protected', 'نشط': 'Active', 'محظور': 'Blocked', 'مدة الإيقاف:': 'Suspension period:',
             'يوم': 'Day', '3 أيام': '3 days', 'أسبوع': 'Week', 'إلغاء': 'Cancel',
             'لا يوجد مستخدمون.': 'No users.', 'جارٍ التحميل…': 'Loading…',
@@ -3820,6 +3934,7 @@
         const EN_PATTERNS = [
             [/^(\d+) طلبات$/, (m) => m[1] + ' orders'], [/^(\d+) طلب$/, (m) => m[1] + ' orders'],
             [/^(\d+) د$/, (m) => m[1] + ' min'], [/^(\d+:\d+) دقائق$/, (m) => m[1] + ' min'], [/^(\d+) دقيقة$/, (m) => m[1] + ' min'],
+            [/^(\d+)\. (.+)$/, (m) => { const r = enTranslate(m[2]); return m[1] + '. ' + (r == null ? m[2] : r.trim()); }],
             [/^محاولات خاطئة: (\d+)$/, (m) => 'Failed attempts: ' + m[1]],
             [/^رقم الدخول: (.*)$/, (m) => 'Login number: ' + m[1]],
             [/^موقوف حتى (.*)$/, (m) => 'Suspended until ' + m[1]],
@@ -3902,6 +4017,115 @@
             } catch (e) {}
         })();
 
+
+        // ===== بوابة إسناد المهمات (لطالبي الخدمة من خارج الإدارة والسائقين) =====
+        const PORTAL_ROLES = ['3040', '4050'];
+        let gatePortal = false; let portalActive = false;
+        try { gatePortal = /portal/i.test(location.hash) || localStorage.getItem('kah_gate_portal') === '1'; } catch (e) {}
+        function setGatePortal(on) { gatePortal = !!on; try { localStorage.setItem('kah_gate_portal', gatePortal ? '1' : '0'); } catch (e) {} applyGateMode(); }
+        function applyGateMode() {
+            const ar = currentLang === 'ar'; const g = document.getElementById('securityLockGate'); if (!g) return;
+            g.classList.toggle('gate-portal', gatePortal);
+            const set = (id, t) => { const el = document.getElementById(id); if (el) el.textContent = t; };
+            if (gatePortal) {
+                set('uiLockMainTitle', ar ? 'بوابة إسناد المهمات' : 'Task Assignment Portal');
+                set('uiLockSubTitle', ar ? 'لطالبي الخدمة من خارج الإدارة والسائقين — أدخل رقم المستخدم والرمز' : 'For requesters outside the department and drivers — enter your number and PIN');
+                set('gatePortalBtnTitle', ar ? 'أنت في بوابة إسناد المهمات ✓' : 'You are in the Task Assignment Portal ✓');
+                set('gatePortalBtnSub', ar ? 'اضغط للعودة إلى منصة الإدارة' : 'Tap to return to the management platform');
+            } else {
+                set('uiLockMainTitle', ar ? 'منصة الحركة والمواصلات الذكية' : 'Smart Transportation & Mobility Platform');
+                set('uiLockSubTitle', ar ? 'أدخل رقم المستخدم والرمز السري للبدء' : 'Enter your user number and PIN to start');
+                set('gatePortalBtnTitle', ar ? 'بوابة إسناد المهمات' : 'Task Assignment Portal');
+                set('gatePortalBtnSub', ar ? 'لطالبي الخدمة من خارج الإدارة والسائقين المكلفين' : 'For requesters outside the department and assigned drivers');
+            }
+        }
+        function applyPortalMode() {
+            const rk = String(activePermissionKey || ''); const ar = currentLang === 'ar';
+            portalActive = isAuthenticated && (PORTAL_ROLES.includes(rk) || (gatePortal && isDirectorRoleKey(rk)));
+            document.body.classList.toggle('portal-mode', portalActive);
+            document.body.classList.toggle('portal-driver', portalActive && rk === '4050');
+            document.body.classList.toggle('portal-req', portalActive && rk === '3040');
+            const t = document.getElementById('uiAppTitle');
+            if (t) t.textContent = portalActive ? (ar ? 'بوابة إسناد المهمات' : 'Task Assignment Portal') : (ar ? 'إدارة الحركة والمواصلات' : 'Transportation & Mobility Management');
+            if (portalActive && typeof activeSchedView !== 'undefined') activeSchedView = 'assign';
+        }
+        function clearPortalMode() { portalActive = false; ['portal-mode', 'portal-driver', 'portal-req'].forEach(c => document.body.classList.remove(c)); }
+        function myRosterDriverName() {
+            try { const id = activeStaffMember && activeStaffMember.driverId; const d = id ? driversRoster.find(x => x.id === id) : null; return d ? d.name : ''; } catch (e) { return ''; }
+        }
+        function viewRequestsForDriverList() {
+            if (String(activePermissionKey) !== '4050') return requests;
+            const me = activeStaffMember ? activeStaffMember.arName : ''; const dn = myRosterDriverName();
+            return requests.filter(r => r.status === 'pending' || r.status === 'declined_needs_supervisor' || (me && r.acceptedByActor === me) || (dn && r.driver === dn));
+        }
+        function viewRequestsForRequester() {
+            if (String(activePermissionKey) !== '3040') return requests;
+            const me = activeStaffMember ? activeStaffMember.arName : '';
+            return requests.filter(r => r.createdByActor === me);
+        }
+
+
+        // ===== الأرشيف السنوي التلقائي (إعادة ضبط تقارير الطلبات كل نهاية سنة ميلادية) =====
+        const ARCHIVE_ROLES = ['1020', '2030', '5060', '6070', '7080'];
+        const ARCHIVE_FIRST_YEAR = 2026;
+        let archiveRunning = false; let archiveRows = []; let archiveYearSel = null;
+        function startOfYearMs(y) { return new Date(y, 0, 1, 0, 0, 0, 0).getTime(); }
+        async function runYearEndArchive() {
+            if (archiveRunning || !isDirectorSession() || !firestoreDb || !isFirebaseCloudActive) return;
+            archiveRunning = true;
+            try {
+                const cutoff = startOfYearMs(new Date().getFullYear());
+                const snap = await firestoreDb.collection('kah_requests').where('createdAtMs', '<', cutoff).limit(200).get();
+                const docs = []; snap.forEach(d => docs.push({ id: d.id, data: d.data() }));
+                let moved = 0;
+                for (const d of docs) {
+                    if (d.data.status !== 'delivered' && Date.now() - (Number(d.data.createdAtMs) || 0) < 3 * 864e5) continue;
+                    const y = new Date(Number(d.data.createdAtMs) || cutoff - 1).getFullYear();
+                    const rec = Object.assign({}, d.data, { archivedYear: y, archivedAtMs: Date.now(), archivedBy: activeStaffMember ? activeStaffMember.arName : '' });
+                    let ok = false;
+                    try { await firestoreDb.collection('kah_archive').doc(d.id).set(rec); ok = true; }
+                    catch (e) { try { const ex = await firestoreDb.collection('kah_archive').doc(d.id).get(); ok = !!(ex && ex.exists); } catch (e2) {} }
+                    if (ok) { try { await firestoreDb.collection('kah_requests').doc(d.id).delete(); moved++; } catch (e) {} }
+                }
+                if (moved) {
+                    logCyberEvent('أرشفة تلقائية لنهاية السنة: نُقل ' + moved + ' طلب إلى الأرشيف.');
+                    showToast(currentLang === 'ar' ? '📦 أرشفة نهاية السنة' : '📦 Year-end archive', (currentLang === 'ar' ? 'نُقل ' + moved + ' طلب من السنة السابقة إلى الأرشيف، وبدأت تقارير السنة الجديدة.' : moved + ' orders moved to the archive; new-year reports started.'), 'fa-box-archive', 'teal');
+                }
+            } catch (e) {}
+            archiveRunning = false;
+        }
+        setInterval(() => { try { runYearEndArchive(); } catch (e) {} }, 60 * 60 * 1000);
+        function archiveYears() { const out = []; for (let y = new Date().getFullYear() - 1; y >= ARCHIVE_FIRST_YEAR; y--) out.push(y); return out; }
+        function openArchiveModal() {
+            if (!ARCHIVE_ROLES.includes(String(activePermissionKey))) return;
+            const years = archiveYears(); archiveYearSel = archiveYearSel || years[0] || null;
+            setDisplay('archiveModal', true, 'flex'); renderArchive(true);
+        }
+        async function renderArchive(load) {
+            const box = document.getElementById('archiveBody'); if (!box) return; const ar = currentLang === 'ar';
+            const years = archiveYears();
+            if (!years.length) {
+                box.innerHTML = `<div class="text-center py-8 space-y-2"><div class="text-4xl">📦</div><div class="font-black text-sm">${ar ? 'لا يوجد أرشيف بعد' : 'No archive yet'}</div><div class="text-slate-500 font-bold leading-6">${ar ? 'في أول دخول للمدير أو مساعده بعد 1 يناير ' + (new Date().getFullYear() + 1) + ' تُنقل طلبات سنة ' + new Date().getFullYear() + ' كلها إلى هنا تلقائياً، وتبدأ التقارير والإحصائيات السنة الجديدة من الصفر. لا يُحذف أي طلب.' : 'On the first Director/Assistant sign-in after 1 January ' + (new Date().getFullYear() + 1) + ', all ' + new Date().getFullYear() + ' orders move here automatically and reports start the new year from zero. Nothing is deleted.'}</div></div>`;
+                return;
+            }
+            box.innerHTML = `<div class="flex flex-wrap items-center gap-2 mb-3"><span class="font-black">${ar ? 'السنة:' : 'Year:'}</span>${years.map(y => `<button type="button" onclick="archiveYearSel=${y}; renderArchive(true)" class="px-3 py-1.5 rounded-lg font-black cursor-pointer ${y === archiveYearSel ? 'bg-stone-700 text-white' : 'bg-slate-100 text-slate-700'}">${y}</button>`).join('')}<button type="button" onclick="exportArchiveCsv()" class="mr-auto px-3 py-1.5 rounded-lg bg-emerald-600 text-white font-black cursor-pointer"><i class="fa-solid fa-file-excel"></i> ${ar ? 'تصدير Excel' : 'Export Excel'}</button></div><div id="archiveTable" class="text-center text-slate-500 font-bold py-6">${ar ? 'جارٍ التحميل…' : 'Loading…'}</div>`;
+            if (load) {
+                try { const snap = await firestoreDb.collection('kah_archive').where('archivedYear', '==', archiveYearSel).get(); archiveRows = []; snap.forEach(d => archiveRows.push(d.data())); archiveRows.sort((a, b) => (b.createdAtMs || 0) - (a.createdAtMs || 0)); }
+                catch (e) { archiveRows = []; const t = document.getElementById('archiveTable'); if (t) t.textContent = ar ? 'تعذّر تحميل الأرشيف — تأكد من نشر القواعد الجديدة.' : 'Could not load the archive — publish the new rules.'; return; }
+            }
+            const rated = archiveRows.filter(r => r.ratingStars > 0); const avg = rated.length ? (rated.reduce((a, r) => a + r.ratingStars, 0) / rated.length).toFixed(1) : '—';
+            const t = document.getElementById('archiveTable'); if (!t) return;
+            t.innerHTML = `<div class="grid grid-cols-3 gap-2 mb-3 text-slate-900">${[[archiveRows.length, ar ? 'إجمالي الطلبات' : 'Total orders'], [archiveRows.filter(r => r.status === 'delivered').length, ar ? 'تم تسليمها' : 'Delivered'], [avg, ar ? 'متوسط التقييم' : 'Avg rating']].map(c => `<div class="rounded-2xl bg-stone-50 border border-stone-200 p-2.5"><div class="text-lg font-black">${c[0]}</div><div class="text-[11px] font-black text-stone-600">${c[1]}</div></div>`).join('')}</div>
+                ${archiveRows.length ? `<div class="overflow-x-auto"><table class="w-full text-[11px] text-right border-collapse"><thead class="bg-slate-100 font-black"><tr><th class="p-2 border border-slate-200">#</th><th class="p-2 border border-slate-200">${ar ? 'التاريخ' : 'Date'}</th><th class="p-2 border border-slate-200">${ar ? 'المهمة' : 'Task'}</th><th class="p-2 border border-slate-200">${ar ? 'من ⬅️ إلى' : 'From ⬅️ To'}</th><th class="p-2 border border-slate-200">${ar ? 'السائق' : 'Driver'}</th><th class="p-2 border border-slate-200">${ar ? 'الحالة' : 'Status'}</th></tr></thead><tbody>${archiveRows.map(r => `<tr><td class="p-2 border border-slate-200 font-mono">${escHtml(r.id || '')}</td><td class="p-2 border border-slate-200 whitespace-nowrap">${escHtml(r.requestedAt24 || fmtDateTime(r.createdAtMs))}</td><td class="p-2 border border-slate-200">${escHtml(r.title || '')}</td><td class="p-2 border border-slate-200">${escHtml((r.pickup || '') + ' ⬅️ ' + (r.destination || ''))}</td><td class="p-2 border border-slate-200">${escHtml(r.driver || '')}</td><td class="p-2 border border-slate-200 whitespace-nowrap">${escHtml(statusLabel(r.status))}${r.ratingStars > 0 ? ' ' + '★'.repeat(r.ratingStars) : ''}</td></tr>`).join('')}</tbody></table></div>` : `<div class="py-4">${ar ? 'لا توجد طلبات مؤرشفة لهذه السنة.' : 'No archived orders for this year.'}</div>`}`;
+        }
+        function exportArchiveCsv() {
+            if (!archiveRows.length) return;
+            const head = ['رقم الطلب', 'التاريخ', 'المهمة', 'من', 'إلى', 'السائق', 'المركبة', 'الحالة', 'التقييم', 'رقم أمر المهمة'];
+            const q = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+            const rows = archiveRows.map(r => [r.id, r.requestedAt24 || fmtDateTime(r.createdAtMs), r.title, r.pickup, r.destination, r.driver, r.vehicleLine, statusLabel(r.status).replace(/^[^\p{L}]+/u, ''), r.ratingStars || '', r.missionOrderNo || ''].map(q).join(','));
+            try { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['\ufeff' + [head.map(q).join(',')].concat(rows).join('\n')], { type: 'text/csv;charset=utf-8' })); a.download = 'أرشيف_الطلبات_' + archiveYearSel + '.csv'; document.body.appendChild(a); a.click(); a.remove(); } catch (e) {}
+        }
+
         let selfWatchUnsub = null;
         function startSelfStatusWatch() {
             try { if (selfWatchUnsub) selfWatchUnsub(); } catch (e) {}
@@ -3921,6 +4145,7 @@
 
         function logoutAllUsers() {
             try { if (selfWatchUnsub) selfWatchUnsub(); } catch (e) {}
+            clearPortalMode();
             selfWatchUnsub = null;
             if (isAuthenticated && activeStaffMember) {
                 logCyberEvent(`تسجيل خروج آمن للموظف: ${activeStaffMember.arName}`);
@@ -3930,7 +4155,7 @@
             const doSignOut = () => { try { if (firebaseAuth) firebaseAuth.signOut().catch(() => {}); } catch (e) {} };
             if (offlineP && offlineP.then) { offlineP.then(doSignOut, doSignOut); setTimeout(doSignOut, 3000); } else { doSignOut(); }
             presenceDocs = {}; feedbackDocs = []; fleetHealth = {};
-            ['presenceModal', 'guestbookModal', 'guideModal', 'usersModal', 'scheduleAdminModal'].forEach(id => setDisplay(id, false));
+            ['presenceModal', 'guestbookModal', 'guideModal', 'usersModal', 'scheduleAdminModal', 'vehicleInfoModal', 'policyModal', 'archiveModal'].forEach(id => setDisplay(id, false));
             const mp = document.getElementById('moreMenuPanel'); if (mp) mp.classList.add('hidden');
             // لا تبقى أي بيانات طلبات أو أرقام في الذاكرة بعد الخروج
             requests = [];
@@ -4009,6 +4234,7 @@
             const dutyManagerName = sanitizeHtmlInput(document.getElementById('formDutyManagerName').value.trim());
             const indivName = sanitizeHtmlInput(document.getElementById('formIndividualName').value.trim());
             const optionalNote = sanitizeHtmlInput(document.getElementById('formOptionalNote').value.trim());
+            const missionOrderNo = sanitizeHtmlInput(((document.getElementById('formMissionOrder') || {}).value || '').trim()).slice(0, 30);
 
             let senderFinal = senderType;
             if (senderType === 'الطوارئ - المدير المناوب' && dutyManagerName) {
@@ -4038,6 +4264,7 @@
                 pickup: senderFinal,
                 dutyManagerName,
                 optionalNote,
+                missionOrderNo,
                 destination,
                 status: 'pending',
                 etaMinutes,
@@ -4054,6 +4281,7 @@
             requests.unshift(newReq);
             selectedRequestId = newId;
             document.getElementById('formOptionalNote').value = '';
+            try { document.getElementById('formMissionOrder').value = ''; } catch (e) {}
             closeNewRequestModal();
             saveStateToLocal(newId);
             logCyberEvent(`إنشاء طلب نقل جديد (#${newId}) من ${senderFinal} إلى ${destination}.`);
@@ -4385,41 +4613,6 @@
             renderAll();
         }
 
-        function resetAllRequestsByDirector() {
-            const perm = permissionMatrix[activePermissionKey];
-            if (!perm || !perm.canResetRequests) {
-                showToast(
-                    currentLang === 'ar' ? 'صلاحية مقيدة 🔒' : 'Restricted Permission 🔒',
-                    currentLang === 'ar' ? 'تصفير مجموع الطلبات مخصص لمدير الإدارة ومساعده فقط.' : 'Only the Director and Assistant can reset total orders.',
-                    'fa-lock',
-                    'amber'
-                );
-                return;
-            }
-            const typed = prompt(currentLang === 'ar'
-                ? 'تحذير: سيُحذف كل الطلبات والسجل الدائم والبلاغات نهائياً من الخادم ولا يمكن استرجاعها.\nللتأكيد اكتب كلمة: حذف'
-                : 'Warning: all orders, the permanent log and tickets will be deleted permanently from the server.\nType DELETE to confirm');
-            if (!typed || !['حذف', 'delete'].includes(String(typed).trim().toLowerCase())) {
-                showToast(currentLang === 'ar' ? 'أُلغي الحذف ✓' : 'Deletion cancelled ✓', '', 'fa-shield-halved', 'teal');
-                return;
-            }
-            requests = [];
-            selectedRequestId = null;
-            supportTickets = [];
-            cloudSyncedJson = {};
-            if (isFirebaseCloudActive && firestoreDb) {
-                Promise.all([wipeCloudCollection('kah_requests'), wipeCloudCollection('kah_tickets')])
-                    .catch(err => reportCloudError(currentLang === 'ar' ? 'تصفير الطلبات من الخادم' : 'Server reset', err));
-            }
-            showToast(
-                currentLang === 'ar' ? 'تم تصفير مجموع الطلبات بالكامل (0 طلبات) ✓' : 'All Orders Reset to 0 ✓',
-                currentLang === 'ar' ? 'النظام جاهز تماماً للعمل الفعلي الميداني.' : 'System is clean and ready for live field operations.',
-                'fa-trash-can',
-                'teal'
-            );
-            renderAll();
-        }
-
         // =================================================================
         // 11. OFFICIAL 3 SHIFT SCHEDULES (EXACT MATCH TO THE 3 PDFS)
         // =================================================================
@@ -4433,6 +4626,165 @@
                     : 'px-4 py-2 rounded-xl text-xs font-black transition bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer';
             });
             renderSchedulesView();
+        }
+
+        // ===== بيانات المركبات التفصيلية (كشف القسم + تقرير الحالة الفنية من الورشة) =====
+        const VEHICLE_INFO = {
+            1: { dept: 'الحركة والمواصلات', vin: 'KMJWA37R3G4748218', note: 'لا يوجد ملاحظات', rec: 'المركبة بحالة جيدة', base: 'good', scrap: false, flag: 'رقم اللوحة في تقرير الورشة (ح ق س 2949) يختلف عن الكشف (4949) — يُرجى التحقق' },
+            2: { dept: 'الحركة والمواصلات', vin: 'JM7TB19A590113812', note: 'لا يوجد ملاحظات', rec: 'المركبة بحالة جيدة', base: 'good', scrap: false, flag: 'الموديل في كشف القسم 2019 وفي تقرير الورشة 2009 (رقم الشاسيه يشير إلى 2009) — يُرجى التحقق' },
+            3: { dept: 'الحركة والمواصلات', vin: '1FMJU1F51DEF10010', note: 'لا يوجد ملاحظات', rec: 'المركبة بحالة جيدة', base: 'good', scrap: false },
+            4: { dept: 'الحركة والمواصلات', vin: 'KL1PJ5C54DK012122', note: 'بحاجة لإصلاحات متعددة: مقصات ومساعدات، تهريب بالمكينة، فلاتر، بطارية، ومقاعد', rec: 'يجب تكهين السيارة — أعطالها كثيرة وموديلها قديم', base: 'fair', scrap: true },
+            5: { dept: 'الحركة والمواصلات', vin: 'MMBMG21H7DD015813', note: 'الماكينة تالفة', rec: 'المركبة لا تعمل', base: 'broken', scrap: false },
+            6: { dept: 'الحركة والمواصلات', vin: 'TMAJ28132JJ576825', note: 'لا يوجد ملاحظات', rec: 'المركبة بحالة جيدة', base: 'good', scrap: false },
+            7: { dept: 'الحركة والمواصلات', vin: 'MNYDN71V8AJ300513', note: 'لا يوجد ملاحظات', rec: 'المركبة بحالة جيدة', base: 'good', scrap: false, flag: 'رقم اللوحة في تقرير الورشة (ا د ق 3297) يختلف عن الكشف (أ و ق 3397) — يُرجى التحقق' },
+            8: { dept: 'مركز الفضيلة', vin: '', note: 'لا يوجد ملاحظات', rec: 'المركبة بحالة جيدة', base: 'good', scrap: false },
+            9: { dept: 'الحركة والمواصلات', vin: '1FMEU73E0QUA02956', note: 'لا يوجد ملاحظات', rec: 'المركبة بحالة جيدة', base: 'good', scrap: false },
+            10: { dept: 'الحركة والمواصلات', vin: 'JN6DW12576Z025106', note: 'لا يوجد ملاحظات', rec: 'المركبة بحالة جيدة', base: 'good', scrap: false },
+            11: { dept: 'الأمن', vin: 'JS3JB43V494101157', note: 'كثيرة الأعطال', rec: 'يجب تكهين السيارة — موديلها قديم', base: 'fair', scrap: true },
+            12: { dept: 'الأمن', vin: 'JS3JB43V394101151', note: 'السيارة لا تعمل: عطل بالجيربوكس والمكيف والكلتش والدركسون والكويلات والدينمو والبطارية', rec: 'يجب تكهين السيارة — موديلها قديم', base: 'broken', scrap: true },
+            13: { dept: 'الحركة والمواصلات', vin: 'KMFGA17C9DC214268', note: 'لا يوجد ملاحظات', rec: 'المركبة بحالة جيدة', base: 'good', scrap: false },
+            14: { dept: 'الحركة والمواصلات', vin: 'JL68CE6K84K001551', note: 'الأبواب الخلفية مكسورة، التكييف الخلفي عطلان، بطارية', rec: 'المركبة بحالة جيدة مع ملاحظات', base: 'fair', scrap: false },
+            15: { dept: 'الحركة والمواصلات', vin: 'JAMLP4452E7P25484', note: 'الأبواب الخلفية مكسورة، التكييف الخلفي عطلان، بطارية', rec: 'المركبة بحالة جيدة مع ملاحظات', base: 'fair', scrap: false },
+            16: { dept: 'الحركة والمواصلات', vin: 'JAMLP4457E7P26128', note: 'الأبواب الخلفية مكسورة، التكييف الخلفي عطلان، بطارية', rec: 'المركبة بحالة جيدة مع ملاحظات', base: 'fair', scrap: false }
+        };
+        function vehicleAge(v) { return Math.max(0, new Date().getFullYear() - (Number(v.model) || new Date().getFullYear())); }
+        function canSeeVin() { return ['1020', '2030', '5060', '6070'].includes(String(activePermissionKey)); }
+        function vehicleInfoCell(v) {
+            const info = VEHICLE_INFO[v.line] || {}; const age = vehicleAge(v); const ar = currentLang === 'ar';
+            return `<div class="flex flex-wrap gap-1 items-center">
+                <span class="px-2 py-0.5 rounded-lg text-[10.5px] font-black ${info.dept === 'الحركة والمواصلات' ? 'bg-cyan-50 text-cyan-800' : 'bg-violet-100 text-violet-800'}">${escHtml(info.dept || '')}</span>
+                <span class="px-2 py-0.5 rounded-lg text-[10.5px] font-black ${age >= 10 ? 'bg-amber-100 text-amber-900' : 'bg-slate-100 text-slate-700'}">${age} ${ar ? 'سنة' : 'yrs'}${age >= 10 ? (ar ? ' • ضمن خطة الإحلال' : ' • replacement plan') : ''}</span>
+                ${info.scrap ? `<span class="px-2 py-0.5 rounded-lg text-[10.5px] font-black bg-rose-100 text-rose-800">${ar ? 'توصية بالتكهين' : 'Scrap recommended'}</span>` : ''}
+                ${info.flag ? `<span class="px-2 py-0.5 rounded-lg text-[10.5px] font-black bg-orange-100 text-orange-800">⚠️ ${ar ? 'بيان يحتاج تحقق' : 'Needs verification'}</span>` : ''}
+                <button type="button" onclick="openVehicleInfo(${v.line})" class="px-2 py-0.5 rounded-lg text-[10.5px] font-black bg-slate-900 text-white cursor-pointer"><i class="fa-solid fa-file-lines"></i> ${ar ? 'التفاصيل' : 'Details'}</button>
+            </div>`;
+        }
+        function openVehicleInfo(line) {
+            const v = fleetVehicles.find(x => x.line === line); if (!v) return;
+            const info = VEHICLE_INFO[line] || {}; const ar = currentLang === 'ar';
+            const st = (fleetHealth[String(line)] || {});
+            const row = (k, val) => `<div class="flex justify-between gap-3 border-b border-slate-100 py-1.5"><span class="text-slate-500 font-bold">${k}</span><span class="font-black text-slate-900 text-left">${val}</span></div>`;
+            document.getElementById('vehicleInfoBody').innerHTML =
+                row(ar ? 'السطر' : 'Line', v.line) + row(ar ? 'المركبة' : 'Vehicle', escHtml(v.name + ' ' + v.type)) + row(ar ? 'الموديل' : 'Model', escHtml(v.model) + ' (' + vehicleAge(v) + (ar ? ' سنة)' : ' yrs)')) +
+                row(ar ? 'رقم اللوحة' : 'Plate', escHtml(v.plate)) + row(ar ? 'الجهة المستخدمة' : 'Used by', escHtml(info.dept || '')) +
+                row(ar ? 'رقم الشاسيه' : 'VIN', canSeeVin() ? `<span dir="ltr" class="font-mono">${escHtml(info.vin || '—')}</span>` : (ar ? 'للمدير والمشرفين فقط' : 'Supervisors only')) +
+                row(ar ? 'الحالة الفنية (تقرير الورشة)' : 'Technical condition (workshop)', escHtml(info.note || '—')) +
+                row(ar ? 'التوصية' : 'Recommendation', escHtml(info.rec || '—')) +
+                row(ar ? 'آخر تحديث للحالة' : 'Last status update', st.atMs ? escHtml((st.byName || '') + ' — ' + fmtDateTime(st.atMs)) : (ar ? 'من تقرير الورشة' : 'From workshop report')) +
+                (info.flag ? `<div class="mt-2 p-2 rounded-xl bg-orange-50 border border-orange-200 text-orange-900 font-bold">⚠️ ${escHtml(info.flag)}</div>` : '') +
+                (vehicleAge(v) >= 10 ? `<div class="mt-2 p-2 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 font-bold">${ar ? 'مضى عليها أكثر من 10 سنوات — تُدرج في خطة الإحلال السنوية (السياسة، بند 2.4).' : 'Over 10 years old — include in the annual replacement plan (policy 2.4).'}</div>` : '');
+            document.getElementById('vehicleInfoTitle').textContent = (ar ? 'بيانات المركبة — سطر ' : 'Vehicle data — line ') + line;
+            setDisplay('vehicleInfoModal', true, 'flex');
+        }
+        function fleetSummaryHtml() {
+            const ar = currentLang === 'ar'; const c = { good: 0, fair: 0, broken: 0 }; let old = 0, scrap = 0, ext = 0;
+            fleetVehicles.forEach(v => { const info = VEHICLE_INFO[v.line] || {}; const s = (fleetHealth[String(v.line)] || {}).status || info.base || 'good'; c[s] = (c[s] || 0) + 1; if (vehicleAge(v) >= 10) old++; if (info.scrap) scrap++; if (info.dept && info.dept !== 'الحركة والمواصلات') ext++; });
+            const card = (n, t, cls) => `<div class="rounded-2xl ${cls} p-3 text-center"><div class="text-xl font-black">${n}</div><div class="text-[11px] font-black">${t}</div></div>`;
+            return `<div class="p-4 grid grid-cols-2 sm:grid-cols-6 gap-2 bg-slate-50 border-b border-slate-200">
+                ${card(c.good || 0, ar ? 'جيدة' : 'Good', 'bg-emerald-50 text-emerald-800 border border-emerald-200')}
+                ${card(c.fair || 0, ar ? 'غير جيدة' : 'Fair', 'bg-amber-50 text-amber-800 border border-amber-200')}
+                ${card(c.broken || 0, ar ? 'عطلانة' : 'Out of order', 'bg-rose-50 text-rose-800 border border-rose-200')}
+                ${card(old, ar ? 'عمرها +10 سنوات' : '10+ years old', 'bg-orange-50 text-orange-800 border border-orange-200')}
+                ${card(scrap, ar ? 'توصية بالتكهين' : 'Scrap recommended', 'bg-slate-900 text-white')}
+                ${card(ext, ar ? 'لدى جهات أخرى' : 'With other units', 'bg-violet-50 text-violet-800 border border-violet-200')}
+            </div>`;
+        }
+
+        // ===== جدول الموظفين بالقسم (أيام العمل والراحة) =====
+        const DEFAULT_ROSTER = {
+            title: 'جدول قسم الحركة والمواصلات — جمادى الأولى/الآخرة 1448هـ (نوفمبر 2026م)',
+            period: 'من 1448/5/21هـ إلى 1448/6/29هـ',
+            shifts: {
+                morning: [{ n: 'يوسف محمد خيري', off: [5, 6] }, { n: 'علي القرشي', off: [3, 4] }, { n: 'خالد المولد', off: [5, 6] }, { n: 'خالد الزهراني', off: [5, 6] }, { n: 'محمد المشعلي', off: [5, 6] }, { n: 'علي صالح القرني', off: [5, 6] }, { n: 'عبدالعزيز المالكي', off: [5, 6] }],
+                evening: [{ n: 'سعد الغامدي', off: [5, 6] }, { n: 'عبدالعزيز العامري', off: [3, 4] }, { n: 'عائض عوض القرني', off: [5, 6] }],
+                night: [{ n: 'فهد عطاالله القرشي', off: [5, 6] }, { n: 'ياسين البارقي', off: [3, 4] }, { n: 'حسن حداد', off: [5, 6] }]
+            },
+            notes: ['يُمنع خروج أي سيارة إلا بمهمة عمل رسمية، وتُسجَّل في سجل الحركة وأمر المهمة.', 'الالتزام بنظام «حيّاك» لكل الورديات.'],
+            signedBy: 'رئيس القسم: أ. يوسف محمد خيري'
+        };
+        let activeSchedView = 'roster';
+        function getRoster() { return (scheduleConfig && scheduleConfig.roster && scheduleConfig.roster.shifts) ? scheduleConfig.roster : DEFAULT_ROSTER; }
+        function normName(s) { return String(s || '').replace(/\s+/g, '').replace(/[أإآ]/g, 'ا').replace(/ى/g, 'ي').replace(/ة/g, 'ه'); }
+        function switchSchedView(v) {
+            activeSchedView = v;
+            ['roster', 'assign'].forEach(k => { const b = document.getElementById('schedViewBtn-' + k); if (b) b.className = 'flex-1 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-black cursor-pointer transition ' + (k === v ? 'bg-slate-900 text-white shadow' : 'bg-slate-100 text-slate-700'); });
+            const sb = document.getElementById('schedShiftBtns'); if (sb) sb.style.display = v === 'assign' ? '' : 'none';
+            renderSchedulesView();
+        }
+        function renderRosterView(container) {
+            const ar = currentLang === 'ar'; const R = getRoster(); const t0 = todayNum(); const wdToday = new Date(t0 * 864e5).getUTCDay();
+            const daysAr = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'], daysEn = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const dir = isDirectorSession();
+            const tbl = key => {
+                const list = R.shifts[key] || []; const meta = SHIFT_META[key];
+                const onNow = list.filter(p => !(p.off || []).includes(wdToday) && !leaveFor(p.n, t0)).length;
+                return `<div class="premium-card rounded-3xl overflow-hidden">
+                    <div class="luxury-Command-card text-white px-4 py-3 flex flex-wrap items-center justify-between gap-2"><span class="font-black text-sm">${ar ? meta.ar : meta.en} • ${meta.time}</span><span class="text-[11px] bg-emerald-500/25 border border-emerald-300/40 px-2 py-0.5 rounded-full font-black">${ar ? 'على رأس العمل اليوم: ' : 'On duty today: '}${onNow} / ${list.length}</span></div>
+                    <div class="overflow-x-auto"><table class="w-full text-[11.5px] text-center border-collapse"><thead class="bg-slate-100 font-black text-slate-700"><tr><th class="py-2 px-2 border border-slate-200">${ar ? 'م' : '#'}</th><th class="py-2 px-2 border border-slate-200 text-right">${ar ? 'الاسم' : 'Name'}</th>${(ar ? daysAr : daysEn).map((d, i) => `<th class="py-2 px-1 border border-slate-200 ${i === wdToday ? 'bg-amber-200 text-amber-950' : ''}">${d}</th>`).join('')}</tr></thead><tbody>
+                    ${list.map((p, idx) => { const lv = leaveFor(p.n, t0); return `<tr class="${lv ? 'bg-rose-50/60' : ''}"><td class="py-2 px-2 border border-slate-200 font-black">${idx + 1}</td><td class="py-2 px-2 border border-slate-200 text-right font-black whitespace-nowrap">${escHtml(p.n)}${lv ? `<div class="text-[10px] text-rose-700">${ar ? 'في إجازة' : 'On leave'}${dir ? ' (' + escHtml(leaveLabel(lv.type)) + ')' : ''} ${ar ? 'حتى' : 'until'} ${escHtml(lv.to)}</div>` : ''}</td>${[0, 1, 2, 3, 4, 5, 6].map(i => { const off = (p.off || []).includes(i); return `<td class="py-2 px-1 border border-slate-200 ${i === wdToday ? 'ring-2 ring-inset ring-amber-400' : ''} ${off ? 'bg-slate-200 text-slate-500 font-black' : 'text-emerald-700 font-black'}">${off ? 'OFF' : '✓'}</td>`; }).join('')}</tr>`; }).join('') || `<tr><td colspan="9" class="py-3 text-slate-400 font-bold">${ar ? 'لا يوجد موظفون' : 'No staff'}</td></tr>`}
+                    </tbody></table></div></div>`;
+            };
+            container.innerHTML = `<div class="premium-card rounded-3xl p-4 text-center space-y-1"><div class="font-black text-sm sm:text-base">${escHtml(R.title || '')}</div><div class="text-xs text-slate-500 font-bold">${escHtml(R.period || '')}</div></div>
+                ${tbl('morning')}${tbl('evening')}${tbl('night')}
+                <div class="p-4 rounded-2xl bg-amber-50/90 border border-amber-300 text-xs font-bold text-amber-950 leading-7"><div class="font-black mb-1">${ar ? 'ملاحظات:' : 'Notes:'}</div>${(R.notes || []).map(x => '• ' + escHtml(x)).join('<br>')}<div class="mt-2 text-left">${escHtml(R.signedBy || '')}</div></div>`;
+        }
+
+        // ===== السياسات العامة والهيكل التنظيمي =====
+        const POLICY_DOC = {
+            meta: [['الإدارة', 'إدارة الخدمات الإدارية والتشغيل', 'Department', 'Administrative Services & Operations'], ['الرمز', 'AD/Transportation/001', 'Code', 'AD/Transportation/001'], ['رقم الإصدار', '2', 'Version', '2'], ['تاريخ الإصدار', '01/01/2026م', 'Issued', '01/01/2026'], ['تاريخ الاعتماد', '01/01/2026م', 'Approved', '01/01/2026'], ['تاريخ التفعيل', '01/02/2026م', 'Effective', '01/02/2026'], ['تاريخ المراجعة', '01/01/2029م', 'Review date', '01/01/2029'], ['الحالة', 'معتمد ومفعّل', 'Status', 'Approved & active']],
+            ar: [
+                ['1.0', 'السياسة', ['تحدد هذه السياسة أهم المهام والآليات الخاصة بعمل قسم الحركة والمواصلات بما يتوافق مع أعلى معايير الجودة والكفاءة التشغيلية بالمستشفى.']],
+                ['2.0', 'الأهداف', ['توفير خدمات الحركة والنقل لجميع العاملين بتوفير متطلبات النقل الجماعي والنقل الخاص حسب الأنظمة واللوائح.', 'دعم جميع المستشفيات في مدينة جدة في حالة عدم تواجد سيارة تابعة للمستشفيات الطرفية والمراكز الصحية، والمشاركة في المناسبات والمهرجانات الوطنية والرياضية والزيارات الرسمية.', 'إعداد تصور مستقبلي لاحتياج المستشفى من السيارات وفق خطة المستشفى العامة.', 'إعداد خطة إحلال سنوية للسيارات والمعدات حسب أعمارها الافتراضية ووفقاً للواقع الفعلي.']],
+                ['3.0', 'المسؤوليات', ['تقديم خدمات النقل لجميع المراسلات الخارجية داخل مدينة جدة وخارجها.', 'الدعم والمساندة لتوفير المواصلات للفنيين المختصين لنقل عينات الدم من وإلى المستشفى.', 'نقل منسوبي المستشفى من كادر طبي وإداري إلى المرافق الحكومية والخدمية الأخرى، وأن تكون بتوجيه رسمي.', 'توفير المواصلات للرحلات والبرامج الترفيهية والاجتماعية لمنسوبي المستشفى.', 'توفير النقل للرحلات الشهرية للموظفين والملاحظين الجدد (زيارة المسجد النبوي – أداء مناسك العمرة) بالتنسيق مع قسم التوعية الدينية.']],
+                ['4.0', 'الإجراءات التشغيلية', ['توفير المركبات والمعدات المطلوبة لتنفيذ المهام حسب التوجيهات الصادرة.', 'الإشراف على تجهيز لوازم وإمدادات حركة المركبات والسائقين، وتوفير مستلزماتهم.', 'فحص المركبات للتأكد من صلاحيتها وجاهزيتها قبل تسليمها للجهة المستفيدة.', 'متابعة صيانة سيارات الحركة ميكانيكياً وفنياً بشكل يومي، حيث يقوم الفني المختص بفحص السيارات وتعبئة نموذج الصيانة الخاص بكل سيارة على حدة.', 'يقوم المسؤول بتشغيل وتفقد جميع السيارات يومياً والتأكد من فاعليتها وطلب صيانتها عند الحاجة.', 'عند حدوث أي عطل في السيارات يتم تسليمها لورشة الصيانة التابعة للإدارة الهندسية وتعبئة النموذج الخاص بدخول السيارة للصيانة.', 'حصر وتسجيل بيانات ومعلومات متكاملة عن حركة المركبات والمعدات وأماكن وجودها.', 'التنسيق المستمر مع دائرة الخدمات لصيانة المركبات.', 'التنسيق مع إدارة الموارد البشرية بشأن توفير الاحتياج من السائقين.', 'إعداد تقرير سنوي شامل عن إنجازات الإدارة والمعوقات والحلول المقترحة لها.']],
+                ['5.0', 'النماذج المعتمدة', ['نموذج أمر المهمة الخاص بالقسم.', 'نموذج إدخال سيارة للورشة.', 'نموذج طلب مواصلات لمهمة عمل خاص بالأقسام.', 'نموذج طلب مواصلات للمطار خاص بالساكنين في سكن المستشفى.', 'نموذج فحص شامل للصيانة الدورية.', 'نموذج استلام سيارة خدمات.']],
+                ['6.0', 'المراجع', ['اللائحة التنظيمية للعمل بالمستشفيات.', 'دليل إجراءات إدارة المشتريات بوزارة الصحة.']],
+                ['7.0', 'دورية مراجعة السياسة', ['تتم مراجعة هذه السياسة كل ثلاث سنوات أو كلما دعت الحاجة لضمان استمرارية التطوير والمواكبة.']]
+            ],
+            en: [
+                ['1.0', 'Policy statement', ['This policy defines the main tasks and mechanisms of the Transport & Mobility Section in line with the highest quality and operational-efficiency standards of the hospital.']],
+                ['2.0', 'Objectives', ['Provide movement and transport services to all staff, covering group and private transport according to regulations.', 'Support all hospitals in Jeddah when peripheral hospitals and health centers have no vehicle, and take part in national and sports events and official visits.', 'Prepare a future view of the hospital’s vehicle needs according to the hospital’s general plan.', 'Prepare an annual replacement plan for vehicles and equipment according to their service life and actual condition.']],
+                ['3.0', 'Responsibilities', ['Provide transport for all external correspondence inside and outside Jeddah.', 'Support transport for specialist technicians moving blood samples to and from the hospital.', 'Transport medical and administrative staff to other government and service facilities, under an official directive.', 'Provide transport for staff recreational and social trips and programs.', 'Provide transport for monthly trips of new employees and observers (Prophet’s Mosque visit – Umrah) in coordination with the Religious Awareness Section.']],
+                ['4.0', 'Operating procedures', ['Provide the vehicles and equipment required for tasks according to issued directives.', 'Supervise preparation of vehicle-movement supplies and drivers, and provide their requirements.', 'Inspect vehicles for fitness and readiness before handing them to the requesting party.', 'Follow up daily mechanical and technical maintenance; the maintenance technician inspects each vehicle and fills in its maintenance form.', 'The officer runs and checks all vehicles daily, confirms they work and requests maintenance when needed.', 'When a fault occurs, the vehicle is handed to the Engineering Department workshop with the workshop-entry form.', 'Record complete data on vehicle and equipment movement and locations.', 'Coordinate continuously with the Services Department for vehicle maintenance.', 'Coordinate with Human Resources on driver requirements.', 'Prepare a comprehensive annual report on achievements, obstacles and proposed solutions.']],
+                ['5.0', 'Approved forms', ['Section mission order form.', 'Vehicle workshop entry form.', 'Transport request for a work mission (departments).', 'Airport transport request (hospital housing residents).', 'Comprehensive periodic maintenance inspection form.', 'Service vehicle handover form.']],
+                ['6.0', 'References', ['Hospitals’ organizational work regulations.', 'Ministry of Health procurement procedures manual.']],
+                ['7.0', 'Policy review', ['This policy is reviewed every three years or whenever needed to ensure continuous development.']]
+            ],
+            signoff: [['إعداد', 'أ. عائض عوض القرني', 'نائب رئيس قسم الحركة والمواصلات', 'Prepared', 'Deputy Head, Transport & Mobility'], ['إعداد', 'أ. يوسف محمد خيري', 'رئيس قسم الحركة والمواصلات', 'Prepared', 'Head, Transport & Mobility'], ['مراجعة', 'ص. ريم عبد الحفيظ محجوب', 'مدير إدارة الجودة وسلامة المرضى', 'Reviewed', 'Director, Quality & Patient Safety'], ['اعتماد', 'أ. فهد سعد القرني', 'مساعد المشرف العام للخدمات الإدارية والتشغيل', 'Approved', 'Assistant GS, Administrative Services & Operations'], ['اعتماد', 'د. هاني سراج الجدلي', 'المشرف العام على البرامج', 'Approved', 'General Supervisor of Programs']],
+            platform: [
+                ['المسؤوليات 3.1–3.5', 'أنواع الطلبات في المنصة تشمل المراسلات الخارجية، ونقل المنسوبين بتوجيه رسمي، ومواصلات المطار، والرحلات.', 'Request types cover external correspondence, official staff transport, airport transport and trips.'],
+                ['الإجراء 4.3–4.5', 'حالة السيارة (جيدة/غير جيدة/عطلانة) تُحدَّث يومياً من مشرف الأسطول وتظهر للجميع.', 'Vehicle condition is updated daily by the fleet supervisor and visible to all.'],
+                ['الإجراء 4.7', 'كل طلب يُسجَّل تلقائياً بالوقت والسائق والمركبة والجهات في السجل الدائم.', 'Every order is logged automatically with time, driver, vehicle and parties.'],
+                ['النموذج 5.1 وملاحظة الجدول', 'حقل «رقم أمر المهمة» في نموذج الطلب، تطبيقاً لمنع خروج أي سيارة إلا بمهمة رسمية.', 'A “mission order number” field enforces that no vehicle leaves without an official mission.'],
+                ['الهدف 2.4', 'المنصة تحسب عمر كل مركبة وتُبرز ما تجاوز 10 سنوات ضمن خطة الإحلال، مع توصيات التكهين من تقرير الورشة.', 'The platform flags vehicles over 10 years for the replacement plan, with workshop scrap recommendations.'],
+                ['الإجراء 4.10', 'تصدير تقارير Excel وPDF يدعم إعداد التقرير السنوي.', 'Excel/PDF exports support the annual report.']
+            ]
+        };
+        function openPolicyModal() {
+            const ar = currentLang === 'ar'; const secs = ar ? POLICY_DOC.ar : POLICY_DOC.en;
+            const meta = POLICY_DOC.meta.map(m => `<div class="rounded-xl bg-slate-50 border border-slate-200 p-2"><div class="text-[10px] text-slate-500 font-bold">${ar ? m[0] : m[2]}</div><div class="font-black text-[11.5px]" dir="auto">${escHtml(ar ? m[1] : m[3])}</div></div>`).join('');
+            const sec = s => `<details class="rounded-2xl border border-slate-200 bg-white overflow-hidden" ${s[0] === '1.0' ? 'open' : ''}><summary class="cursor-pointer list-none px-3.5 py-2.5 font-black text-sm text-sky-900 bg-sky-50/60">${s[0]} ${escHtml(s[1])}</summary><ol class="px-4 py-2.5 space-y-1.5 text-[12.5px] leading-7 font-semibold text-slate-700">${s[2].map((x, i) => `<li><b class="text-sky-700">${s[0].split('.')[0]}.${i + 1}</b> ${escHtml(x)}</li>`).join('')}</ol></details>`;
+            const org = (t, n, cls) => `<div class="mx-auto max-w-xs rounded-2xl px-3 py-2 text-center ${cls}"><div class="text-[10.5px] font-bold opacity-80">${t}</div><div class="font-black text-[12.5px]">${n}</div></div>`;
+            const arrow = '<div class="text-center text-slate-400 leading-none my-0.5">▼</div>';
+            const R = getRoster();
+            const shiftBox = k => `<div class="rounded-xl border border-cyan-200 bg-cyan-50/70 p-2 text-center"><div class="font-black text-[11px] text-cyan-900">${ar ? SHIFT_META[k].ar : SHIFT_META[k].en}</div><div class="text-[10.5px] font-bold text-slate-700">${(R.shifts[k] || []).length} ${ar ? 'موظفين' : 'staff'}</div></div>`;
+            const orgHtml = org(ar ? 'المشرف العام على البرامج' : 'General Supervisor of Programs', 'د. هاني سراج الجدلي', 'bg-slate-900 text-white') + arrow +
+                org(ar ? 'مساعد المشرف العام للخدمات الإدارية والتشغيل' : 'Assistant GS, Admin Services & Operations', 'أ. فهد سعد القرني', 'bg-slate-800 text-white') + arrow +
+                org(ar ? 'رئيس قسم الحركة والمواصلات' : 'Head of Transport & Mobility', 'أ. يوسف محمد خيري', 'bg-sky-700 text-white') + arrow +
+                org(ar ? 'نائب رئيس القسم' : 'Deputy Head', 'أ. عائض عوض القرني', 'bg-sky-100 text-sky-900 border border-sky-300') + arrow +
+                `<div class="grid grid-cols-3 gap-2">${shiftBox('morning')}${shiftBox('evening')}${shiftBox('night')}</div>
+                <div class="mt-3 text-[11px] font-bold text-slate-600 text-center">${ar ? 'جهات التنسيق: إدارة الجودة وسلامة المرضى • الإدارة الهندسية (ورشة الصيانة) • دائرة الخدمات • الموارد البشرية • قسم التوعية الدينية' : 'Coordination: Quality & Patient Safety • Engineering (workshop) • Services • HR • Religious Awareness'}</div>`;
+            document.getElementById('policyBody').innerHTML = `
+                <div class="flex gap-2 mb-3"><button type="button" onclick="policyTab('doc')" id="polTab-doc" class="flex-1 px-3 py-2 rounded-xl text-xs font-black bg-sky-700 text-white cursor-pointer">${ar ? '📘 السياسات العامة' : '📘 General policy'}</button><button type="button" onclick="policyTab('org')" id="polTab-org" class="flex-1 px-3 py-2 rounded-xl text-xs font-black bg-slate-100 text-slate-700 cursor-pointer">${ar ? '🏛️ الهيكل التنظيمي' : '🏛️ Org structure'}</button><button type="button" onclick="policyTab('app')" id="polTab-app" class="flex-1 px-3 py-2 rounded-xl text-xs font-black bg-slate-100 text-slate-700 cursor-pointer">${ar ? '⚙️ التطبيق في المنصة' : '⚙️ In the platform'}</button></div>
+                <div id="polPane-doc" class="space-y-2"><div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-2">${meta}</div>${secs.map(sec).join('')}
+                    <div class="rounded-2xl border border-slate-200 overflow-hidden"><div class="px-3.5 py-2.5 font-black text-sm text-sky-900 bg-sky-50/60">10.0 ${ar ? 'الاعتماد والتصديق' : 'Approval sign-off'}</div><div class="p-2 space-y-1.5">${POLICY_DOC.signoff.map(s => `<div class="flex justify-between gap-2 rounded-xl bg-slate-50 px-3 py-2 text-[12px]"><span class="font-black">${escHtml(s[1])}<div class="text-[10.5px] text-slate-500 font-bold">${escHtml(ar ? s[2] : s[4])}</div></span><span class="px-2 py-0.5 h-fit rounded-lg bg-sky-100 text-sky-900 font-black text-[10.5px]">${ar ? s[0] : s[3]}</span></div>`).join('')}</div></div>
+                    <div class="text-[10.5px] text-slate-500 font-bold text-center">${ar ? 'المصدر: وثيقة السياسات العامة لقسم الحركة والمواصلات (AD/Transportation/001) — للاطلاع. النسخة الموقّعة هي المرجع الرسمي.' : 'Source: Transport & Mobility General Policy (AD/Transportation/001) — for reference; the signed copy is the official document.'}</div></div>
+                <div id="polPane-org" class="hidden">${orgHtml}</div>
+                <div id="polPane-app" class="hidden space-y-2">${POLICY_DOC.platform.map(p => `<div class="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-3"><div class="font-black text-emerald-900 text-[12px]">${escHtml(p[0])}</div><div class="text-[12px] font-semibold text-slate-700 leading-6">${escHtml(ar ? p[1] : p[2])}</div></div>`).join('')}</div>`;
+            setDisplay('policyModal', true, 'flex');
+        }
+        function policyTab(t) {
+            ['doc', 'org', 'app'].forEach(k => { const p = document.getElementById('polPane-' + k); const b = document.getElementById('polTab-' + k); if (p) p.classList.toggle('hidden', k !== t); if (b) b.className = 'flex-1 px-3 py-2 rounded-xl text-xs font-black cursor-pointer ' + (k === t ? 'bg-sky-700 text-white' : 'bg-slate-100 text-slate-700'); });
         }
 
         // ===== جداول المناوبات الديناميكية + الإجازات (تتجدد تلقائياً) =====
@@ -4471,9 +4823,11 @@
         function allScheduleStaff() {
             const m = {};
             Object.values(scheduleConfig.shifts || {}).forEach(sh => (sh.staff || []).forEach(s => { if (s && s.n && !m[s.n]) m[s.n] = s.p || ''; }));
+            const seen = new Set(Object.keys(m).map(normName));
+            try { Object.values(getRoster().shifts || {}).forEach(list => (list || []).forEach(p => { if (p && p.n && !seen.has(normName(p.n))) { m[p.n] = ''; seen.add(normName(p.n)); } })); } catch (e) {}
             return m;
         }
-        function leaveFor(name, n) { return scheduleLeaves.find(l => l.name === name && dayNum(l.from) <= n && n <= dayNum(l.to)); }
+        function leaveFor(name, n) { const k = normName(name); return scheduleLeaves.find(l => normName(l.name) === k && dayNum(l.from) <= n && n <= dayNum(l.to)); }
         function assigneeFor(shiftKey, n) {
             const sh = (scheduleConfig.shifts || {})[shiftKey]; if (!sh || !sh.pattern || !sh.pattern.length) return '';
             const len = sh.pattern.length; const idx = (((n - dayNum(scheduleConfig.epoch || '2026-11-08')) % len) + len) % len;
@@ -4482,6 +4836,7 @@
         function renderSchedulesView() {
             const container = document.getElementById('scheduleShiftContainer');
             if (!container) return;
+            if (activeSchedView === 'roster') { renderRosterView(container); return; }
             const ar = currentLang === 'ar';
             const key = activeScheduleShift in SHIFT_META ? activeScheduleShift : 'morning';
             const meta = SHIFT_META[key];
@@ -4515,7 +4870,7 @@
             try {
                 cloudUnsubs.push(firestoreDb.collection('kah_schedule').doc('config').onSnapshot(snap => {
                     const d = snap && snap.exists ? snap.data() : null;
-                    if (d && d.shifts && d.shifts.morning && d.shifts.evening && d.shifts.night) scheduleConfig = { epoch: d.epoch || DEFAULT_SCHEDULE.epoch, shifts: d.shifts };
+                    if (d && d.shifts && d.shifts.morning && d.shifts.evening && d.shifts.night) scheduleConfig = { epoch: d.epoch || DEFAULT_SCHEDULE.epoch, shifts: d.shifts, roster: d.roster || null };
                     else scheduleConfig = JSON.parse(JSON.stringify(DEFAULT_SCHEDULE));
                     if (isAuthenticated) { renderSchedulesView(); if (schedAdminOpen()) renderSchedAdmin(); }
                 }, () => {}));
@@ -4526,22 +4881,34 @@
             } catch (e) {}
         }
         // ----- شاشة الإدارة (المدير ومساعده) -----
-        let schedDraft = null; let schedAdminTab = 'staff'; let schedAdminShift = 'morning';
+        let schedDraft = null; let schedAdminTab = 'roster'; let schedAdminShift = 'morning';
         function schedAdminOpen() { const m = document.getElementById('scheduleAdminModal'); return m && m.style.display !== 'none'; }
         function openScheduleAdmin() {
             if (!isDirectorSession()) return;
             schedDraft = JSON.parse(JSON.stringify(scheduleConfig));
+            if (!schedDraft.roster || !schedDraft.roster.shifts) schedDraft.roster = JSON.parse(JSON.stringify(DEFAULT_ROSTER));
             setDisplay('scheduleAdminModal', true, 'flex'); renderSchedAdmin();
         }
         function closeScheduleAdmin() { setDisplay('scheduleAdminModal', false); }
-        function schedTab(t) { schedAdminTab = t; renderSchedAdmin(); }
-        function schedShift(k) { schedAdminShift = k; renderSchedAdmin(); }
+        function schedTab(t) { if (schedAdminTab === 'roster') rosterSyncInputs(); schedAdminTab = t; renderSchedAdmin(); }
+        function schedShift(k) { if (schedAdminTab === 'roster') rosterSyncInputs(); schedAdminShift = k; renderSchedAdmin(); }
         function renderSchedAdmin() {
             const box = document.getElementById('schedAdminBody'); if (!box || !schedDraft) return;
             const ar = currentLang === 'ar';
             const tabBtn = (k, label) => `<button type="button" onclick="schedTab('${k}')" class="px-3 py-2 rounded-xl text-xs font-black cursor-pointer ${schedAdminTab === k ? 'bg-indigo-700 text-white' : 'bg-slate-100 text-slate-700'}">${label}</button>`;
-            let html = `<div class="flex gap-2 mb-3">${tabBtn('staff', ar ? '👥 الموظفون والتوزيع' : '👥 Staff & rotation')}${tabBtn('leaves', ar ? '🌴 الإجازات' : '🌴 Leaves')}</div>`;
-            if (schedAdminTab === 'staff') {
+            let html = `<div class="flex flex-wrap gap-2 mb-3">${tabBtn('roster', ar ? '📋 جدول الموظفين' : '📋 Staff roster')}${tabBtn('staff', ar ? '👥 إسناد المهمات' : '👥 Task assignment')}${tabBtn('leaves', ar ? '🌴 الإجازات' : '🌴 Leaves')}</div>`;
+            if (schedAdminTab === 'roster') {
+                const R = schedDraft.roster; const list = R.shifts[schedAdminShift] || (R.shifts[schedAdminShift] = []);
+                const daysAr = ['أحد', 'اثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة', 'سبت'], daysEn = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                const shiftBtn = k => `<button type="button" onclick="schedShift('${k}')" class="px-3 py-1.5 rounded-lg text-[11px] font-black cursor-pointer ${schedAdminShift === k ? 'bg-cyan-600 text-white' : 'bg-slate-100 text-slate-700'}">${ar ? SHIFT_META[k].ar : SHIFT_META[k].en}</button>`;
+                html += `<label class="block text-[11px] font-black text-slate-600 mb-1">${ar ? 'عنوان الجدول' : 'Roster title'}<input id="rosterTitleIn" value="${escHtml(R.title || '')}" maxlength="120" class="w-full rounded-lg border border-slate-300 px-2 py-2 font-bold"></label>
+                    <label class="block text-[11px] font-black text-slate-600 mb-2">${ar ? 'الفترة' : 'Period'}<input id="rosterPeriodIn" value="${escHtml(R.period || '')}" maxlength="80" class="w-full rounded-lg border border-slate-300 px-2 py-2 font-bold"></label>
+                    <div class="flex flex-wrap gap-1.5 mb-2">${['morning', 'evening', 'night'].map(shiftBtn).join('')}</div>
+                    <div class="text-[11px] text-slate-500 font-bold mb-1.5">${ar ? 'اضغط على اليوم لجعله راحة (OFF) أو عمل.' : 'Tap a day to toggle OFF / working.'}</div>`;
+                html += list.map((p, idx) => `<div class="rounded-xl border border-slate-200 bg-slate-50 p-2 mb-1.5"><div class="flex items-center justify-between gap-2 mb-1.5"><span class="font-black text-[12.5px]">${idx + 1}. ${escHtml(p.n)}</span><button type="button" onclick="rosterRemove(${idx})" class="px-2 py-1 rounded-lg bg-rose-600 text-white font-black text-[10.5px] cursor-pointer"><i class="fa-solid fa-user-minus"></i> ${ar ? 'إخراج' : 'Remove'}</button></div><div class="grid grid-cols-7 gap-1">${[0, 1, 2, 3, 4, 5, 6].map(i => { const off = (p.off || []).includes(i); return `<button type="button" onclick="rosterToggle(${idx},${i})" class="py-1 rounded-md text-[10px] font-black cursor-pointer ${off ? 'bg-slate-700 text-white' : 'bg-emerald-100 text-emerald-800'}">${ar ? daysAr[i] : daysEn[i]}<br>${off ? 'OFF' : '✓'}</button>`; }).join('')}</div></div>`).join('');
+                html += `<div class="rounded-xl border border-indigo-200 bg-indigo-50/60 p-2.5 my-2 flex gap-2"><input id="rosterNewName" maxlength="40" placeholder="${ar ? 'اسم الموظف الجديد' : 'New employee name'}" class="flex-1 rounded-lg border border-slate-300 bg-white px-3 py-2 font-bold"><button type="button" onclick="rosterAdd()" class="px-3 py-2 rounded-lg bg-indigo-700 text-white font-black cursor-pointer">${ar ? 'إدخال' : 'Add'}</button></div>
+                    <button type="button" id="schedSaveBtn" onclick="saveScheduleConfig()" class="w-full mt-2 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black cursor-pointer"><i class="fa-solid fa-floppy-disk"></i> ${ar ? 'حفظ الجداول للجميع' : 'Save schedules for everyone'}</button>`;
+            } else if (schedAdminTab === 'staff') {
                 const sh = schedDraft.shifts[schedAdminShift];
                 const shiftBtn = k => `<button type="button" onclick="schedShift('${k}')" class="px-3 py-1.5 rounded-lg text-[11px] font-black cursor-pointer ${schedAdminShift === k ? 'bg-cyan-600 text-white' : 'bg-slate-100 text-slate-700'}">${ar ? SHIFT_META[k].ar : SHIFT_META[k].en}</button>`;
                 html += `<div class="flex flex-wrap gap-1.5 mb-3">${['morning', 'evening', 'night'].map(shiftBtn).join('')}</div>`;
@@ -4579,6 +4946,10 @@
             }
             box.innerHTML = html;
         }
+        function rosterSyncInputs() { try { const t = document.getElementById('rosterTitleIn'); const pr = document.getElementById('rosterPeriodIn'); if (t) schedDraft.roster.title = t.value.slice(0, 120); if (pr) schedDraft.roster.period = pr.value.slice(0, 80); } catch (e) {} }
+        function rosterToggle(idx, d) { rosterSyncInputs(); const p = schedDraft.roster.shifts[schedAdminShift][idx]; if (!p) return; p.off = p.off || []; const k = p.off.indexOf(d); if (k >= 0) p.off.splice(k, 1); else p.off.push(d); p.off.sort(); renderSchedAdmin(); }
+        function rosterRemove(idx) { rosterSyncInputs(); const list = schedDraft.roster.shifts[schedAdminShift]; const p = list[idx]; if (!p) return; if (!confirm((currentLang === 'ar' ? 'إخراج «' : 'Remove “') + p.n + (currentLang === 'ar' ? '» من جدول الموظفين؟' : '” from the roster?'))) return; list.splice(idx, 1); renderSchedAdmin(); }
+        function rosterAdd() { rosterSyncInputs(); const n = (document.getElementById('rosterNewName').value || '').trim().replace(/\s+/g, ' ').slice(0, 40); if (n.length < 3) return; const list = schedDraft.roster.shifts[schedAdminShift]; if (list.some(p => normName(p.n) === normName(n))) return; list.push({ n, off: [5, 6] }); renderSchedAdmin(); }
         function schedAddStaff() {
             const sh = schedDraft.shifts[schedAdminShift];
             const n = (document.getElementById('schedNewName').value || '').trim().replace(/\s+/g, ' ').slice(0, 40);
@@ -4605,8 +4976,12 @@
             try {
                 const clean = {};
                 ['morning', 'evening', 'night'].forEach(k => { const sh = schedDraft.shifts[k]; clean[k] = { weeks: sh.weeks, staff: sh.staff.map(s => ({ n: String(s.n).slice(0, 40), p: String(s.p || '').slice(0, 10) })), pattern: sh.pattern.map(x => String(x || '').slice(0, 40)) }; });
-                await firestoreDb.collection('kah_schedule').doc('config').set({ epoch: schedDraft.epoch || DEFAULT_SCHEDULE.epoch, shifts: clean, updatedBy: activeStaffMember ? activeStaffMember.arName : '', updatedAtMs: Date.now() });
-                scheduleConfig = { epoch: schedDraft.epoch || DEFAULT_SCHEDULE.epoch, shifts: clean };
+                if (schedAdminTab === 'roster') rosterSyncInputs();
+                const R = schedDraft.roster || DEFAULT_ROSTER;
+                const roster = { title: String(R.title || '').slice(0, 120), period: String(R.period || '').slice(0, 80), notes: (R.notes || []).map(x => String(x).slice(0, 200)).slice(0, 6), signedBy: String(R.signedBy || '').slice(0, 80), shifts: {} };
+                ['morning', 'evening', 'night'].forEach(k => { roster.shifts[k] = (R.shifts[k] || []).map(p => ({ n: String(p.n).slice(0, 40), off: (p.off || []).filter(d => d >= 0 && d <= 6) })); });
+                await firestoreDb.collection('kah_schedule').doc('config').set({ epoch: schedDraft.epoch || DEFAULT_SCHEDULE.epoch, shifts: clean, roster, updatedBy: activeStaffMember ? activeStaffMember.arName : '', updatedAtMs: Date.now() });
+                scheduleConfig = { epoch: schedDraft.epoch || DEFAULT_SCHEDULE.epoch, shifts: clean, roster };
                 logCyberEvent('تحديث جداول المناوبات');
                 showToast(currentLang === 'ar' ? 'تم حفظ الجداول وتظهر للجميع ✓' : 'Schedules saved for everyone ✓', '', 'fa-calendar-check', 'teal');
                 renderSchedulesView();
@@ -4768,9 +5143,6 @@
             if (footerPhotoBtn) footerPhotoBtn.classList.toggle('hidden', isVisitor);
             if (supportBtn) supportBtn.classList.toggle('hidden', isVisitor);
 
-            const directorResetBox = document.getElementById('directorResetBox');
-            if (perm.canResetRequests) directorResetBox.classList.remove('hidden');
-            else directorResetBox.classList.add('hidden');
 
             const inboxBtn = document.getElementById('headerInboxBtn');
             if (perm.canViewInbox) {
@@ -4805,7 +5177,7 @@
             const listEl = document.getElementById('driverRequestsList');
             if (!listEl) return;
 
-            if (requests.length === 0) {
+            if (viewRequestsForDriverList().length === 0) {
                 listEl.innerHTML = `
                 <div class="premium-card rounded-3xl p-8 text-center space-y-2">
                     <div class="w-14 h-14 rounded-2xl bg-cyan-50 text-cyan-600 flex items-center justify-center text-2xl mx-auto shadow-inner">
@@ -4817,7 +5189,7 @@
                 return;
             }
 
-            listEl.innerHTML = supervisorBoxesHtml() + requests.map(req => {
+            listEl.innerHTML = supervisorBoxesHtml() + viewRequestsForDriverList().map(req => {
                 const statusBadge = `<span class="px-3 py-1 rounded-xl text-xs font-black ${statusColor(req.status)}">${statusLabel(req.status)}</span>`;
 
                 return `
@@ -4837,6 +5209,7 @@
                         <div><span class="text-slate-400 block text-[10px]">${currentLang === 'ar' ? 'من (المرسل):' : 'From:'}</span><strong>${req.pickup}</strong></div>
                         <div><span class="text-slate-400 block text-[10px]">${currentLang === 'ar' ? 'إلى (المستلم):' : 'To:'}</span><strong class="text-cyan-900">${req.destination}</strong></div>
                     </div>
+                    ${req.missionOrderNo ? `<div class="text-xs bg-sky-50 text-sky-900 p-2 rounded-xl border border-sky-200 font-black"><i class="fa-solid fa-file-signature ml-1"></i>${currentLang === 'ar' ? 'أمر المهمة رقم: ' : 'Mission order No.: '}${escHtml(req.missionOrderNo)}</div>` : ''}
                     ${req.optionalNote ? `<div class="text-xs bg-amber-50 text-amber-900 p-2.5 rounded-xl border border-amber-200 font-bold"><i class="fa-solid fa-comment-dots ml-1"></i>${req.optionalNote}</div>` : ''}
                     <div class="flex flex-wrap items-center justify-between gap-2 pt-2">
                         <div class="flex items-center gap-2.5 text-xs font-extrabold">
@@ -4873,7 +5246,8 @@
         function renderErRequesterView() {
             const card = document.getElementById('erActiveOrderCard');
             if (!card) return;
-            if (requests.length === 0) {
+            const ownReqs = viewRequestsForRequester();
+            if (ownReqs.length === 0) {
                 card.innerHTML = `
                 <div class="text-center py-8 space-y-2">
                     <div class="w-14 h-14 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center text-2xl mx-auto">
@@ -4884,7 +5258,7 @@
                 </div>`;
                 return;
             }
-            const req = requests.find(r => r.id === selectedRequestId) || requests[0];
+            const req = ownReqs.find(r => r.id === selectedRequestId) || ownReqs[0];
             const isVisitor = isVisitorReadOnly();
             card.innerHTML = `
                 <div class="space-y-4">
@@ -5068,6 +5442,7 @@
                 </tr>`;
             }).join('');
 
+            try { const fs = document.getElementById('fleetSummaryBox'); if (fs) fs.innerHTML = fleetSummaryHtml(); } catch (e) {}
             document.getElementById('fleetTableBody').innerHTML = fleetVehicles.map(v => `
                 <tr class="hover:bg-slate-50/80">
                     <td class="py-3 px-4 font-mono font-black text-cyan-800">${currentLang === 'ar' ? `سطر ${v.line}` : `Line ${v.line}`}</td>
@@ -5081,6 +5456,7 @@
                             <span class="font-mono font-black text-sm text-slate-950 tracking-wider">${v.plate}</span>
                         </div>
                     </td>
+                    <td class="py-3 px-4 min-w-[210px]">${vehicleInfoCell(v)}</td>
                     <td class="py-3 px-4">
                         <button type="button" ${(!canEditFleet || isVisitor) ? 'disabled' : ''} onclick="toggleFleetVehicleStatus(${v.line})" class="px-3 py-1.5 rounded-xl text-xs font-black ${(!canEditFleet || isVisitor) ? 'opacity-75 cursor-not-allowed' : 'cursor-pointer'} ${v.available ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
                             ${v.available ? (currentLang === 'ar' ? 'مركبة متاحة ✓' : 'Available ✓') : (currentLang === 'ar' ? 'صيانة / غير متاحة' : 'Maintenance')}
@@ -5441,6 +5817,7 @@
         }
 
         window.onload = function () {
+            try { applyGateMode(); } catch (e) {}
             try { applyInfoHints(); } catch (e) {}
             try { applyFullLanguage(); } catch (e) {}
             // 1. Initialize Official App Icon & PWA Manifest
