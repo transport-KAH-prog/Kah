@@ -292,12 +292,9 @@
         body.theme-sugar .kah-tribute .kt-title{color:#9a6a00}
         body.theme-sugar .kah-tribute .kt-text{color:#6b5320}
 
-        body.portal-mode #tab-admin, body.portal-mode #menuPresenceBtn, body.portal-mode #menuUsersBtn, body.portal-mode #menuMapBtn,
-        body.portal-mode #menuGuestbookBtn, body.portal-mode #guestbookQuickBtn, body.portal-mode #menuArchiveBtn, body.portal-mode #headerInboxBtn,
-        body.portal-mode #schedAdminBtn, body.portal-mode #schedViewBtn-roster, body.portal-driver #tab-requester, body.portal-req #tab-driver { display: none !important; }
-        #securityLockGate.gate-portal #gatePortalBtn { background: linear-gradient(135deg,#f59e0b,#fbbf24) !important; }
-        #securityLockGate.gate-portal #gatePortalBtnTitle, #securityLockGate.gate-portal #gatePortalBtnArrow { color: #1c1303 !important; }
-        #securityLockGate.gate-portal #gatePortalBtnSub { color: #3b2a05 !important; }
+
+        #newReqForm[data-cat="vehicle"] .assign-only { display: none !important; }
+        #newReqForm[data-cat="assign"] .vehicle-only { display: none !important; }
 </style>
 </head>
 <body id="appBodyThemeRoot" class="antialiased min-h-screen flex flex-col justify-between">
@@ -374,11 +371,6 @@
 
             <h1 id="uiLockMainTitle" class="text-base sm:text-lg font-black text-white tracking-tight">منصة الحركة والمواصلات الذكية</h1>
             <p id="uiLockSubTitle" class="text-[11px] text-slate-400 font-semibold mt-0.5 mb-3.5">أدخل رقم المستخدم والرمز السري للبدء</p>
-            <button type="button" id="gatePortalBtn" onclick="setGatePortal(!gatePortal)" class="w-full mb-3 rounded-2xl px-3 py-2.5 flex items-center gap-3 text-right cursor-pointer transition" style="background:linear-gradient(135deg,rgba(245,158,11,.18),rgba(14,116,144,.25));border:1.5px solid rgba(251,191,36,.6)">
-                <span class="w-10 h-10 shrink-0 rounded-xl flex items-center justify-center text-lg" style="background:#f59e0b;color:#1c1303"><i class="fa-solid fa-clipboard-check"></i></span>
-                <span class="flex flex-col leading-tight"><span id="gatePortalBtnTitle" class="font-black text-[13px] text-amber-300">بوابة إسناد المهمات</span><span id="gatePortalBtnSub" class="text-[10.5px] text-slate-300 font-bold">لتقديم طلبات إسناد مهمة وللسائق المسندة إليه</span></span>
-                <i id="gatePortalBtnArrow" class="fa-solid fa-chevron-left text-amber-300 mr-auto"></i>
-            </button>
 
             <!-- Brute-Force Lockout Warning Banner -->
             <div id="cyberLockoutBanner" class="hidden mb-3 bg-rose-950 border-2 border-rose-500 text-rose-200 rounded-2xl p-3 text-xs font-black space-y-1 animate-pulse">
@@ -617,7 +609,7 @@
                     </button>
                     <button type="button" onclick="switchRole('requester')" id="tab-requester" class="role-tab px-3 py-1.5 rounded-lg text-xs font-extrabold text-slate-300 hover:text-white cursor-pointer whitespace-nowrap flex items-center gap-1.5">
                         <i class="fa-solid fa-hospital-user"></i>
-                        <span id="uiTabRequester">بوابة الطوارئ والطلبات</span>
+                        <span id="uiTabRequester">بوابة الطلبات</span>
                     </button>
                     <button type="button" onclick="switchRole('schedules')" id="tab-schedules" class="role-tab px-3 py-1.5 rounded-lg text-xs font-extrabold text-slate-300 hover:text-white cursor-pointer whitespace-nowrap flex items-center gap-1.5">
                         <i class="fa-solid fa-calendar-days"></i>
@@ -754,6 +746,7 @@
                     </div>
                 </div>
             </div>
+            <div id="myVehicleRequestsBox"></div>
         </section>
 
         <!-- ============================================================= -->
@@ -890,6 +883,7 @@
             </div>
 
             <!-- Official 16 Vehicles Fleet Table with Clear Saudi License Plates -->
+            <div id="fleetRequestsBox" class="mb-5"></div>
             <div id="fleetManagementSection" class="premium-card rounded-3xl overflow-hidden">
                 <div class="p-4 sm:p-5 luxury-Command-card text-white flex flex-wrap items-center justify-between gap-2">
                     <div>
@@ -1230,8 +1224,8 @@
                     <input id="nuDept" type="text" maxlength="60" placeholder="الإدارة التي يتبع لها" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 font-bold">
                     <input id="nuJob" type="text" maxlength="60" placeholder="المسمى الوظيفي" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 font-bold">
                     <select id="nuRole" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 font-bold">
-                        <option value="3040">طالب خدمة / مدير مناوب (بوابة إسناد المهمات)</option>
-                        <option value="4050">سائق (بوابة إسناد المهمات)</option>
+                        <option value="3040">طالب خدمة / مدير مناوب (بوابة الطلبات)</option>
+                        <option value="4050">سائق</option>
                         <option value="5060">مشرف وحدة السائقين</option>
                         <option value="6070">مشرف أسطول السيارات</option>
                         <option value="7080">إداري (إحصائيات)</option>
@@ -1345,8 +1339,32 @@
                 <button type="button" onclick="closeNewRequestModal()" class="text-slate-400 hover:text-white text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
-            <form onsubmit="submitNewRequest(event)" class="p-5 space-y-3.5 text-xs sm:text-sm text-slate-800">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <form id="newReqForm" data-cat="assign" onsubmit="submitNewRequest(event)" class="p-5 space-y-3.5 text-xs sm:text-sm text-slate-800">
+                <div class="flex gap-2">
+                    <button type="button" id="reqCatBtn-assign" onclick="setReqCategory('assign')" class="flex-1 px-3 py-2.5 rounded-xl text-xs font-black cursor-pointer transition bg-slate-900 text-white shadow"><i class="fa-solid fa-right-left"></i> طلبات الإسناد</button>
+                    <button type="button" id="reqCatBtn-vehicle" onclick="setReqCategory('vehicle')" class="flex-1 px-3 py-2.5 rounded-xl text-xs font-black cursor-pointer transition bg-slate-100 text-slate-700"><i class="fa-solid fa-car-side"></i> طلبات تأمين المركبات</button>
+                </div>
+                <div class="assign-only">
+                    <label class="block text-xs font-black text-slate-700 mb-1">نوع الإسناد:</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <label class="flex items-center justify-center gap-2 rounded-xl border-2 border-cyan-500 bg-cyan-50/50 px-3 py-2 font-black cursor-pointer"><input type="radio" name="assignKind" value="إسناد استلام" checked> إسناد استلام</label>
+                        <label class="flex items-center justify-center gap-2 rounded-xl border-2 border-emerald-500 bg-emerald-50/50 px-3 py-2 font-black cursor-pointer"><input type="radio" name="assignKind" value="إسناد تسليم"> إسناد تسليم</label>
+                    </div>
+                </div>
+                <div class="vehicle-only space-y-2.5 rounded-2xl border-2 border-violet-300 bg-violet-50/40 p-3">
+                    <div class="text-[11px] font-black text-violet-900"><i class="fa-solid fa-circle-info"></i> يصل هذا الطلب إلى مشرف وحدة أسطول السيارات لاعتماده وتأمين المركبة.</div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <label class="block text-xs font-black text-slate-700">الإدارة / الجهة الطالبة:<input id="vqDept" maxlength="60" class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 font-bold"></label>
+                        <label class="block text-xs font-black text-slate-700">الغرض:<select id="vqPurpose" class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 font-bold"><option value="mission">مهمة عمل رسمية</option><option value="staff">نقل منسوبين</option><option value="mail">مراسلات</option><option value="event">مناسبة / زيارة رسمية</option><option value="trip">رحلة / برنامج</option><option value="airport">مطار</option><option value="other">أخرى</option></select></label>
+                        <label class="block text-xs font-black text-slate-700 sm:col-span-2">الوجهة:<input id="vqDest" maxlength="80" class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 font-bold"></label>
+                        <label class="block text-xs font-black text-slate-700">التاريخ:<input id="vqDate" type="date" class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 font-bold"></label>
+                        <div class="grid grid-cols-2 gap-2"><label class="block text-xs font-black text-slate-700">من الساعة:<input id="vqFrom" type="time" class="mt-1 w-full rounded-xl border border-slate-300 px-2 py-2 font-bold"></label><label class="block text-xs font-black text-slate-700">إلى الساعة:<input id="vqTo" type="time" class="mt-1 w-full rounded-xl border border-slate-300 px-2 py-2 font-bold"></label></div>
+                        <label class="block text-xs font-black text-slate-700">عدد الركاب:<input id="vqPax" type="number" min="0" max="99" inputmode="numeric" class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 font-bold"></label>
+                        <label class="block text-xs font-black text-slate-700">نوع المركبة:<select id="vqType" class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 font-bold"><option value="any">أي مركبة متاحة</option><option value="car">سيارة صغيرة</option><option value="suv">جيب</option><option value="van">فان</option><option value="bus">باص</option><option value="pickup">بكب / ثلاجة</option></select></label>
+                        <label class="block text-xs font-black text-slate-700">المسؤول ورقم التواصل:<input id="vqContact" maxlength="60" class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 font-bold"></label>
+                    </div>
+                </div>
+                <div class="assign-only grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                     <div>
                         <label id="uiLblSender" class="block text-xs font-black text-cyan-900 mb-1">من (جهة الطلب / المرسل):</label>
                         <select id="formSenderType" onchange="onSenderTypeChange(this.value)" class="w-full rounded-xl border-2 border-cyan-500 bg-cyan-50/30 px-3 py-2.5 text-xs font-black text-slate-900 focus:outline-none">
@@ -1367,17 +1385,17 @@
                 </div>
 
                 <!-- Duty Manager Name Field when ER is chosen -->
-                <div id="dutyManagerNameBox" class="bg-cyan-50/70 p-3 rounded-xl border border-cyan-300">
+                <div id="dutyManagerNameBox" class="assign-only bg-cyan-50/70 p-3 rounded-xl border border-cyan-300">
                     <label id="uiLblDutyManagerName" class="block text-xs font-black text-cyan-950 mb-1">👤 اسم المدير المناوب (قسم الطوارئ):</label>
                     <input id="formDutyManagerName" type="text" placeholder="اكتب اسم المدير المناوب في قسم الطوارئ..." class="w-full rounded-xl border border-cyan-300 bg-white px-3 py-2 text-xs font-extrabold text-slate-900 focus:outline-none">
                 </div>
 
-                <div id="individualRequesterBox" class="hidden bg-amber-50/80 p-3 rounded-xl border border-amber-300">
+                <div id="individualRequesterBox" class="assign-only hidden bg-amber-50/80 p-3 rounded-xl border border-amber-300">
                     <label id="individualRequesterLabel" class="block text-xs font-black text-amber-950 mb-1">تفاصيل جهة الاستلام / اسم صاحب الطلب:</label>
                     <input id="formIndividualName" type="text" placeholder="اكتب اسم الموظف أو القسم..." class="w-full rounded-xl border border-amber-300 bg-white px-3 py-2 text-xs font-bold">
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <div class="assign-only grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                     <div>
                         <label id="uiLblSampleType" class="block text-xs font-black text-slate-700 mb-1">نوع العينة أو المستلزم / الطلب:</label>
                         <select id="formType" class="w-full rounded-xl border border-slate-300 px-3 py-2.5 text-xs font-bold focus:outline-none">
@@ -1930,6 +1948,7 @@
             if (isFirebaseCloudActive && firestoreDb) startFeedbackListener(roleKey);
             if (isFirebaseCloudActive && firestoreDb) startFleetListener();
             if (isFirebaseCloudActive && firestoreDb) startScheduleListeners();
+            if (isFirebaseCloudActive && firestoreDb) startVehicleRequestsListener();
             if (!isFirebaseCloudActive || !firestoreDb || roleKey === '8090') return;
 
             cloudUnsubs.push(firestoreDb.collection('kah_requests').orderBy('createdAtMs', 'desc').limit(100)
@@ -2394,7 +2413,7 @@
                 uiThemeBtnText: 'سمة الألوان',
                 uiBtnLogout: 'خروج',
                 uiTabDriver: 'مركز التحكم والسائقين',
-                uiTabRequester: 'بوابة الطوارئ والطلبات',
+                uiTabRequester: 'بوابة الطلبات',
                 uiTabSchedules: 'جداول المناوبات المعتمدة',
                 uiTabAdmin: 'الأسطول (16) والسائقين والإحصائيات',
                 uiTone1Label: 'نغمة 1',
@@ -2480,7 +2499,7 @@
                 uiThemeBtnText: 'Color Theme',
                 uiBtnLogout: 'Logout',
                 uiTabDriver: 'Control Center & Drivers',
-                uiTabRequester: 'ER & Orders Portal',
+                uiTabRequester: 'Requests Portal',
                 uiTabSchedules: 'Official Duty Schedules',
                 uiTabAdmin: 'Fleet (16), Drivers & Stats',
                 uiTone1Label: 'Tone 1',
@@ -2984,7 +3003,6 @@
 
         // ---------- شرح النظام وطريقة التثبيت ----------
         const GUIDE_AR = [
-            ['fa-clipboard-check', 'بوابة إسناد المهمات', 'بوابة مستقلة لتقديم طلبات إسناد مهمة، وللسائق المسندة إليه المهمة. تظهر كأيقونة في شاشة الدخول، أو بالرابط المباشر:<br><b dir="ltr">transport-kah-prog.github.io/Kah/#portal</b><br><b>طالب الخدمة:</b> يرى نموذج الطلب وطلباته فقط ويتابعها ويقيّمها.<br><b>السائق:</b> يرى الطلبات الجديدة ومهامه هو فقط، وجدول إسناد المهمات.<br>حسابات الإدارة والمشرفين تعمل من منصة الإدارة.'],
             ['fa-box-archive', 'الأرشيف السنوي', 'في نهاية كل سنة ميلادية تُنقل طلبات السنة كلها تلقائياً إلى «الأرشيف» في القائمة ☰، وتبدأ التقارير والإحصائيات السنة الجديدة من الصفر. لا يُحذف أي طلب، ويمكن تصدير أرشيف أي سنة إلى Excel. يراه المدير ومساعده والمشرفون والإداري.'],
             ['fa-route', 'مراحل الطلب والتقييم', '<b>1)</b> المرسل ينشئ الطلب فيرنّ بملء شاشة السائقين حتى يقبل أحدهم أو يرفض بسبب يصل لمشرف وحدة السائقين.<br><b>2)</b> السائق يضغط «الذهاب إلى جهة الاستلام» فتفتح الخريطة، ثم «تسجيل وصول» فيُشعَر طالب الخدمة ويبدأ عدّاد الانتظار.<br><b>3)</b> «الذهاب إلى جهة التسليم» تفتح الخريطة، وعند الوصول «وصول — انتهى الطلب».<br><b>4)</b> يقيّم السائق وطالب الخدمة بعضهما من 1 إلى 5 نجوم دون تعليق.'],
             ['fa-hospital', 'ما هو هذا النظام؟', 'منصة إدارة الحركة والمواصلات بمستشفى الملك عبدالعزيز بجدة (تجمع جدة الصحي الأول). تُنشأ فيها طلبات النقل (عينات، مستلزمات، مهام ميدانية)، فتصل فوراً لشاشات السائقين بنغمة تنبيه، ويتابعها المدير والمساعد لحظة بلحظة. الطلبات تحتوي المهمة والمكان فقط، دون أي بيانات مرضى.'],
@@ -2999,7 +3017,6 @@
             ['fa-shield-halved', 'الأمان والخصوصية', 'الدخول يتم عبر خادم آمن، والصلاحيات تُفرض على مستوى قاعدة البيانات نفسها. لا تُحفظ بيانات الطلبات على الجهاز بعد الخروج. سجل الدخول والمتصلون يراهما المدير ومساعده فقط.']
         ];
         const GUIDE_EN = [
-            ['fa-clipboard-check', 'Task Assignment Portal', 'A separate portal to submit task assignment requests, and for the driver the task is assigned to. Open it from the icon on the sign-in screen, or the direct link:<br><b dir="ltr">transport-kah-prog.github.io/Kah/#portal</b><br><b>Requester:</b> sees the request form and their own requests only.<br><b>Driver:</b> sees new requests, their own tasks and the task schedule.<br>Management and supervisor accounts use the management platform.'],
             ['fa-box-archive', 'Yearly archive', 'At the end of each calendar year all orders move automatically to the “Archive” in the ☰ menu, and reports start the new year from zero. Nothing is deleted; any year can be exported to Excel. Visible to the Director, Assistant, supervisors and admin.'],
             ['fa-route', 'Order stages & rating', '<b>1)</b> The requester creates the order; it rings full-screen on drivers\' devices until one accepts, or declines with a reason sent to the drivers supervisor.<br><b>2)</b> The driver taps “Go to pickup” (opens maps), then “I have arrived” — the requester is notified and the waiting timer starts.<br><b>3)</b> “Go to destination” opens maps; on arrival tap “Arrived — order complete”.<br><b>4)</b> Driver and requester rate each other from 1 to 5 stars, no comments.'],
             ['fa-hospital', 'What is this system?', 'A transport & mobility platform for King Abdulaziz Hospital, Jeddah (Jeddah First Health Cluster). Requests (specimens, supplies, field tasks) reach drivers instantly with an alert tone while the Director and Assistant follow every step. Requests carry task and location only — no patient data.'],
@@ -3654,11 +3671,9 @@
 
                 const wasPortalGate = gatePortal;
                 applyPortalMode();
-                switchRole(portalActive ? (resolvedRoleKey === '4050' ? 'driver' : 'requester') : perm.defaultTab);
+                switchRole(perm.defaultTab);
                 renderAll();
                 playQuickSendConfirmationBeep();
-                if (portalActive && !wasPortalGate) setTimeout(() => showToast(currentLang === 'ar' ? 'تم تحويلك إلى بوابة إسناد المهمات' : 'Opened in the Task Assignment Portal', currentLang === 'ar' ? 'حسابك مخصص لتقديم الطلبات وتنفيذ المهام' : 'Your account is for requests and tasks', 'fa-clipboard-check', 'amber'), 900);
-                if (wasPortalGate && !portalActive) setTimeout(() => showToast(currentLang === 'ar' ? 'حسابك يعمل عبر منصة الإدارة' : 'Your account uses the management platform', '', 'fa-building', 'amber'), 900);
 
                 showToast(
                     currentLang === 'ar' ? `مرحباً، ${activeStaffMember.arName} ✓` : `Welcome, ${activeStaffMember.enName} ✓`,
@@ -3826,7 +3841,38 @@
             "يجب تكهين السيارة — موديلها قديم": "Scrapping recommended — old model",
             "السيارة لا تعمل: عطل بالجيربوكس والمكيف والكلتش والدركسون والكويلات والدينمو والبطارية": "Not working: gearbox, AC, clutch, steering, coils, alternator and battery faults",
             "الأبواب الخلفية مكسورة، التكييف الخلفي عطلان، بطارية": "Rear doors broken, rear AC faulty, battery",
-            'حظر': 'Block', 'الأرشيف': 'Archive', 'طلبات السنوات السابقة تُنقل إليه تلقائياً': "Previous years' orders move here automatically", 'تُنقل طلبات كل سنة ميلادية إليه تلقائياً بعد نهايتها، وتبدأ التقارير السنة الجديدة من الصفر': 'Each calendar year’s orders move here automatically after it ends; reports start the new year from zero', 'بوابة إسناد المهمات': 'Task Assignment Portal', 'لتقديم طلبات إسناد مهمة وللسائق المسندة إليه': 'To submit task assignment requests, and for the assigned driver', 'طالب خدمة / مدير مناوب (بوابة إسناد المهمات)': 'Requester / duty manager (Task portal)', 'سائق (بوابة إسناد المهمات)': 'Driver (Task portal)', 'أدخل رقم المستخدم والرمز السري للبدء': 'Enter your user number and PIN to start', 'السياسة العامة المعتمدة لقسم الحركة والمواصلات، والهيكل التنظيمي، وكيف تطبّقها المنصة.': 'The approved general policy of the Transport & Mobility Section, its org structure, and how the platform applies it.', 'عرض السياسات': 'View policy', 'جدول الموظفين بالقسم': 'Section staff roster', 'جدول إسناد المهمات': 'Task assignment schedule', 'جدول الموظفين بالقسم (أيام العمل والراحة) وجدول إسناد المهمات (المناوب المكلف بإيصال العينات والمستلزمات)': 'Section staff roster (work/off days) and task assignment schedule (on-duty staff for samples & supplies)', 'السياسات والهيكل التنظيمي': 'Policy & org structure', 'السياسات العامة والهيكل التنظيمي': 'General policy & org structure', 'قسم الحركة والمواصلات — AD/Transportation/001': 'Transport & Mobility Section — AD/Transportation/001', 'سياسة القسم المعتمدة وهيكله': 'Approved section policy & structure', 'الجهة والتقرير الفني': 'Unit & technical report', 'بيانات المركبة': 'Vehicle data', 'مراسلات خارجية رسمية': 'Official external correspondence', 'نقل فنيي عينات الدم': 'Blood-sample technicians transport', 'مواصلات للمطار (ساكنو سكن المستشفى)': 'Airport transport (hospital housing residents)', 'رحلة / برنامج لمنسوبي المستشفى': 'Staff trip / program', 'رقم أمر المهمة (إن وُجد)': 'Mission order number (if any)', 'الحركة والمواصلات': 'Transport & Mobility', 'مركز الفضيلة': 'Al-Fadeela Center', 'الأمن': 'Security', 'نبذة المنصة • السياسات • الأيقونة • المشاركة': 'About • Policy • Icon • Share', 'إدارة الجداول والإجازات': 'Manage schedules & leaves', 'للمدير ومساعده — تظهر التعديلات لجميع المستخدمين': 'Director & Assistant only — changes apply to everyone', 'جداول المناوبات المعتمدة — تتجدد تلقائياً': 'Approved duty schedules — auto-renewing', 'إصدار أرقام ورموز جديدة لجميع الحسابات': 'Issue new numbers & PINs for all accounts', 'نسخ الكل': 'Copy all', 'تنزيل البطاقات للطباعة': 'Download printable cards', 'رقم ورمز جديد': 'New number & PIN', 'نسخ البيانات': 'Copy details', 'رفع الحظر': 'Unblock', 'إيقاف مؤقت': 'Suspend', 'إلغاء الإيقاف': 'End suspension', 'حذف نهائي': 'Delete permanently',
+            "بوابة الطلبات": "Requests Portal",
+            "طلبات الإسناد": "Assignment requests",
+            "طلبات تأمين المركبات": "Vehicle requests",
+            "نوع الإسناد:": "Assignment type:",
+            "إسناد استلام": "Pickup assignment",
+            "إسناد تسليم": "Delivery assignment",
+            "يصل هذا الطلب إلى مشرف وحدة أسطول السيارات لاعتماده وتأمين المركبة.": "This request goes to the fleet supervisor for approval and vehicle assignment.",
+            "الإدارة / الجهة الطالبة:": "Requesting department / unit:",
+            "الغرض:": "Purpose:",
+            "الوجهة:": "Destination:",
+            "التاريخ:": "Date:",
+            "من الساعة:": "From:",
+            "إلى الساعة:": "To:",
+            "عدد الركاب:": "Passengers:",
+            "نوع المركبة:": "Vehicle type:",
+            "السائق:": "Driver:",
+            "المسؤول ورقم التواصل:": "Contact person & phone:",
+            "مهمة عمل رسمية": "Official work mission",
+            "نقل منسوبين": "Staff transport",
+            "مراسلات": "Correspondence",
+            "مناسبة / زيارة رسمية": "Event / official visit",
+            "رحلة / برنامج": "Trip / program",
+            "مطار": "Airport",
+            "أي مركبة متاحة": "Any available",
+            "سيارة صغيرة": "Small car",
+            "جيب": "SUV",
+            "فان": "Van",
+            "باص": "Bus",
+            "بكب / ثلاجة": "Pickup / refrigerated",
+            "مع سائق من الإدارة": "With a department driver",
+            "بدون سائق (يستلمها موظف الجهة)": "Without driver (unit employee drives)",
+            'حظر': 'Block', 'الأرشيف': 'Archive', 'طلبات السنوات السابقة تُنقل إليه تلقائياً': "Previous years' orders move here automatically", 'تُنقل طلبات كل سنة ميلادية إليه تلقائياً بعد نهايتها، وتبدأ التقارير السنة الجديدة من الصفر': 'Each calendar year’s orders move here automatically after it ends; reports start the new year from zero', 'بوابة إسناد المهمات': 'Task Assignment Portal', 'لتقديم طلبات إسناد مهمة وللسائق المسندة إليه': 'To submit task assignment requests, and for the assigned driver', 'طالب خدمة / مدير مناوب (بوابة الطلبات)': 'Requester / duty manager (Requests portal)', 'أدخل رقم المستخدم والرمز السري للبدء': 'Enter your user number and PIN to start', 'السياسة العامة المعتمدة لقسم الحركة والمواصلات، والهيكل التنظيمي، وكيف تطبّقها المنصة.': 'The approved general policy of the Transport & Mobility Section, its org structure, and how the platform applies it.', 'عرض السياسات': 'View policy', 'جدول الموظفين بالقسم': 'Section staff roster', 'جدول إسناد المهمات': 'Task assignment schedule', 'جدول الموظفين بالقسم (أيام العمل والراحة) وجدول إسناد المهمات (المناوب المكلف بإيصال العينات والمستلزمات)': 'Section staff roster (work/off days) and task assignment schedule (on-duty staff for samples & supplies)', 'السياسات والهيكل التنظيمي': 'Policy & org structure', 'السياسات العامة والهيكل التنظيمي': 'General policy & org structure', 'قسم الحركة والمواصلات — AD/Transportation/001': 'Transport & Mobility Section — AD/Transportation/001', 'سياسة القسم المعتمدة وهيكله': 'Approved section policy & structure', 'الجهة والتقرير الفني': 'Unit & technical report', 'بيانات المركبة': 'Vehicle data', 'مراسلات خارجية رسمية': 'Official external correspondence', 'نقل فنيي عينات الدم': 'Blood-sample technicians transport', 'مواصلات للمطار (ساكنو سكن المستشفى)': 'Airport transport (hospital housing residents)', 'رحلة / برنامج لمنسوبي المستشفى': 'Staff trip / program', 'رقم أمر المهمة (إن وُجد)': 'Mission order number (if any)', 'الحركة والمواصلات': 'Transport & Mobility', 'مركز الفضيلة': 'Al-Fadeela Center', 'الأمن': 'Security', 'نبذة المنصة • السياسات • الأيقونة • المشاركة': 'About • Policy • Icon • Share', 'إدارة الجداول والإجازات': 'Manage schedules & leaves', 'للمدير ومساعده — تظهر التعديلات لجميع المستخدمين': 'Director & Assistant only — changes apply to everyone', 'جداول المناوبات المعتمدة — تتجدد تلقائياً': 'Approved duty schedules — auto-renewing', 'إصدار أرقام ورموز جديدة لجميع الحسابات': 'Issue new numbers & PINs for all accounts', 'نسخ الكل': 'Copy all', 'تنزيل البطاقات للطباعة': 'Download printable cards', 'رقم ورمز جديد': 'New number & PIN', 'نسخ البيانات': 'Copy details', 'رفع الحظر': 'Unblock', 'إيقاف مؤقت': 'Suspend', 'إلغاء الإيقاف': 'End suspension', 'حذف نهائي': 'Delete permanently',
             'حساب إدارة — محمي': 'Management account — protected', 'نشط': 'Active', 'محظور': 'Blocked', 'مدة الإيقاف:': 'Suspension period:',
             'يوم': 'Day', '3 أيام': '3 days', 'أسبوع': 'Week', 'إلغاء': 'Cancel',
             'لا يوجد مستخدمون.': 'No users.', 'جارٍ التحميل…': 'Loading…',
@@ -4018,14 +4064,144 @@
         })();
 
 
+        // ===== طلبات تأمين المركبات للإدارات والجهات الأخرى (يستقبلها مشرف وحدة الأسطول) =====
+        const VREQ_PURPOSES = [['mission', 'مهمة عمل رسمية', 'Official work mission'], ['staff', 'نقل منسوبين', 'Staff transport'], ['mail', 'مراسلات', 'Correspondence'], ['event', 'مناسبة / زيارة رسمية', 'Event / official visit'], ['trip', 'رحلة / برنامج', 'Trip / program'], ['airport', 'مطار', 'Airport'], ['other', 'أخرى', 'Other']];
+        const VREQ_TYPES = [['any', 'أي مركبة متاحة', 'Any available'], ['car', 'سيارة صغيرة', 'Small car'], ['suv', 'جيب', 'SUV'], ['van', 'فان', 'Van'], ['bus', 'باص', 'Bus'], ['pickup', 'بكب / ثلاجة', 'Pickup / refrigerated']];
+        const VREQ_HANDLERS = ['6070', '1020', '2030'];
+        let vehicleRequests = []; let reqCategory = 'assign';
+        function vLabel(list, k) { const x = list.find(i => i[0] === k); return x ? (currentLang === 'ar' ? x[1] : x[2]) : (k || ''); }
+        function vStatus(st) {
+            const ar = currentLang === 'ar';
+            return st === 'approved' ? [ar ? '✓ تم قبول الطلب وتأمين المركبة' : '✓ Request accepted — vehicle assigned', 'bg-emerald-100 text-emerald-800'] : st === 'rejected' ? [ar ? '✗ تم رفض الطلب' : '✗ Request declined', 'bg-rose-100 text-rose-800'] : st === 'cancelled' ? [ar ? 'ملغى' : 'Cancelled', 'bg-slate-200 text-slate-600'] : st === 'done' ? [ar ? 'أُعيدت المركبة' : 'Vehicle returned', 'bg-sky-100 text-sky-800'] : [ar ? '⏳ بانتظار مشرف الأسطول' : '⏳ Awaiting fleet supervisor', 'bg-amber-100 text-amber-900'];
+        }
+        function setReqCategory(c) {
+            reqCategory = c === 'vehicle' ? 'vehicle' : 'assign';
+            const f = document.getElementById('newReqForm'); if (f) f.setAttribute('data-cat', reqCategory);
+            ['assign', 'vehicle'].forEach(k => { const b = document.getElementById('reqCatBtn-' + k); if (b) b.className = 'flex-1 px-3 py-2.5 rounded-xl text-xs font-black cursor-pointer transition ' + (k === reqCategory ? 'bg-slate-900 text-white shadow' : 'bg-slate-100 text-slate-700'); });
+            const vd = document.getElementById('vqDate'); if (vd && !vd.value) vd.value = numToIso(todayNum());
+            const dp = document.getElementById('vqDept'); if (dp && !dp.value) { try { dp.value = (scheduleConfig && activeStaffMember && activeStaffMember.dept) || ''; } catch (e) {} }
+        }
+        async function submitVehicleRequest() {
+            const g = id => sanitizeHtmlInput(((document.getElementById(id) || {}).value || '').trim());
+            const dept = g('vqDept').slice(0, 60), purpose = g('vqPurpose'), dest = g('vqDest').slice(0, 80), date = g('vqDate'), from = g('vqFrom'), to = g('vqTo');
+            const pax = Math.max(0, Math.min(99, parseInt(g('vqPax') || '0', 10) || 0)), vtype = g('vqType'), contact = g('vqContact').slice(0, 60);
+            const note = g('formOptionalNote').slice(0, 300), missionOrderNo = g('formMissionOrder').slice(0, 30);
+            if (dept.length < 2 || !date || !from) { showToast(currentLang === 'ar' ? 'أكمل اسم الإدارة/الجهة والتاريخ ووقت البداية' : 'Fill in the department, date and start time', '', 'fa-triangle-exclamation', 'amber'); return; }
+            const id = generateCollisionFreeId('VR');
+            const u = firebaseAuth && firebaseAuth.currentUser;
+            const rec = { id, kind: 'vehicle', dept, purpose, dest, date, from, to, pax, vtype, contact, note, missionOrderNo, status: 'pending',
+                createdByActor: activeStaffMember ? activeStaffMember.arName : '', createdByUid: u ? u.uid : '', createdAtMs: Date.now(), vehicleLine: 0, vehicleLabel: '', decidedBy: '', decidedAtMs: 0, reason: '' };
+            try {
+                if (firestoreDb) await firestoreDb.collection('kah_vehicle_requests').doc(id).set(rec);
+                vehicleRequests = [rec].concat(vehicleRequests.filter(x => x.id !== id));
+                ['vqDest', 'vqFrom', 'vqTo', 'vqPax', 'vqContact', 'formOptionalNote', 'formMissionOrder'].forEach(k => { const el = document.getElementById(k); if (el) el.value = ''; });
+                closeNewRequestModal();
+                logCyberEvent('طلب تأمين مركبة (#' + id + ') من ' + dept);
+                playQuickSendConfirmationBeep();
+                showToast(currentLang === 'ar' ? 'تم إرسال طلب تأمين المركبة ✓' : 'Vehicle request sent ✓', currentLang === 'ar' ? 'يصل إلى مشرف وحدة أسطول السيارات للاعتماد.' : 'Sent to the fleet supervisor for approval.', 'fa-car-side', 'teal');
+                renderAll();
+            } catch (e) { showToast(currentLang === 'ar' ? 'تعذّر الإرسال — تأكد من نشر القواعد الجديدة' : 'Failed — publish the new rules', (e && e.code) || '', 'fa-triangle-exclamation', 'rose'); }
+        }
+        function startVehicleRequestsListener() {
+            if (!firestoreDb || String(activePermissionKey) === '8090') return;
+            try {
+                cloudUnsubs.push(firestoreDb.collection('kah_vehicle_requests').orderBy('createdAtMs', 'desc').limit(80).onSnapshot(snap => {
+                    const prev = {}; vehicleRequests.forEach(r => { prev[r.id] = r.status; });
+                    const arr = []; snap.forEach(d => arr.push(d.data()));
+                    const first = !vehicleRequests.length && !window.__vreqLoaded; window.__vreqLoaded = true;
+                    vehicleRequests = arr;
+                    if (!first && VREQ_HANDLERS.includes(String(activePermissionKey))) {
+                        arr.filter(r => r.status === 'pending' && !prev[r.id]).forEach(r => {
+                            playQuickSendConfirmationBeep();
+                            showToast(currentLang === 'ar' ? '🚐 طلب تأمين مركبة جديد' : '🚐 New vehicle request', (r.dept || '') + ' — ' + (r.date || '') + ' ' + (r.from || ''), 'fa-car-side', 'amber');
+                            try { triggerNativeBackgroundNotification('🚐 طلب تأمين مركبة', (r.dept || '') + ' — ' + (r.date || '')); } catch (e) {}
+                        });
+                    }
+                    const me = activeStaffMember ? activeStaffMember.arName : '';
+                    arr.filter(r => r.createdByActor === me && prev[r.id] === 'pending' && r.status !== 'pending').forEach(r => {
+                        showToast(r.status === 'approved' ? (currentLang === 'ar' ? '✓ تم قبول طلب تأمين المركبة' : '✓ Your vehicle request was accepted') : (currentLang === 'ar' ? '✗ تم رفض طلب تأمين المركبة' : '✗ Your vehicle request was declined'), r.status === 'approved' ? (r.vehicleLabel || '') : (r.reason || ''), 'fa-car-side', r.status === 'approved' ? 'teal' : 'amber');
+                    });
+                    if (isAuthenticated) renderAll();
+                }, () => {}));
+            } catch (e) {}
+        }
+        function vreqCard(r, handler) {
+            const ar = currentLang === 'ar'; const [st, cls] = vStatus(r.status);
+            const line = (k, v) => v ? `<div><span class="text-slate-400">${k}</span> <b>${escHtml(v)}</b></div>` : '';
+            let acts = '';
+            if (handler && r.status === 'pending') {
+                const opts = fleetVehicles.map(v => { const s = (fleetHealth[String(v.line)] || {}).status || (VEHICLE_INFO[v.line] || {}).base || 'good'; return `<option value="${v.line}" ${s === 'broken' ? 'disabled' : ''}>${ar ? 'سطر' : 'Line'} ${v.line}: ${escHtml(v.name + ' ' + v.type)} (${escHtml(v.plate)})${s === 'broken' ? (ar ? ' — عطلانة' : ' — out of order') : s === 'fair' ? (ar ? ' — غير جيدة' : ' — fair') : ''}</option>`; }).join('');
+                acts = `<div class="mt-2 space-y-1.5 rounded-xl bg-slate-50 border border-slate-200 p-2">
+                    <select id="vqVeh_${r.id}" class="w-full rounded-lg border border-slate-300 px-2 py-1.5 font-bold text-[11.5px]">${opts}</select>
+                    <div class="flex gap-1.5"><button type="button" onclick="decideVehicleRequest('${r.id}','approved')" class="flex-1 py-1.5 rounded-lg bg-emerald-600 text-white font-black text-[11.5px] cursor-pointer">${ar ? '✓ قبول الطلب وتأمين المركبة' : '✓ Accept & assign vehicle'}</button><button type="button" onclick="decideVehicleRequest('${r.id}','rejected')" class="flex-1 py-1.5 rounded-lg bg-rose-600 text-white font-black text-[11.5px] cursor-pointer">${ar ? '✗ رفض مع ذكر السبب' : '✗ Decline with reason'}</button></div></div>`;
+            } else if (handler && r.status === 'approved') {
+                acts = `<button type="button" onclick="decideVehicleRequest('${r.id}','done')" class="mt-2 w-full py-1.5 rounded-lg bg-sky-700 text-white font-black text-[11.5px] cursor-pointer">${ar ? 'تسجيل إعادة المركبة' : 'Record vehicle return'}</button>`;
+            } else if (!handler && r.status === 'pending' && activeStaffMember && r.createdByActor === activeStaffMember.arName) {
+                acts = `<button type="button" onclick="decideVehicleRequest('${r.id}','cancelled')" class="mt-2 px-3 py-1.5 rounded-lg bg-slate-200 text-slate-800 font-black text-[11px] cursor-pointer">${ar ? 'إلغاء الطلب' : 'Cancel request'}</button>`;
+            }
+            return `<div class="rounded-2xl border border-slate-200 bg-white p-3 text-[11.5px] space-y-0.5">
+                <div class="flex items-center justify-between gap-2 mb-1"><span class="font-black text-slate-900">🚐 ${escHtml(r.dept || '')}</span><span class="px-2 py-0.5 rounded-lg text-[10.5px] font-black ${cls}">${st}</span></div>
+                ${line(ar ? 'الغرض:' : 'Purpose:', vLabel(VREQ_PURPOSES, r.purpose))}${line(ar ? 'الوجهة:' : 'Destination:', r.dest)}
+                ${line(ar ? 'الموعد:' : 'When:', (r.date || '') + ' ' + (r.from || '') + (r.to ? ' → ' + r.to : ''))}
+                ${line(ar ? 'الركاب / المركبة:' : 'Passengers / vehicle:', (r.pax ? r.pax + ' — ' : '') + vLabel(VREQ_TYPES, r.vtype))}
+                ${line(ar ? 'التواصل:' : 'Contact:', r.contact)}${line(ar ? 'أمر المهمة:' : 'Mission order:', r.missionOrderNo)}${line(ar ? 'ملاحظات:' : 'Notes:', r.note)}
+                ${line(ar ? 'مقدّم الطلب:' : 'Requested by:', r.createdByActor)}
+                ${r.status === 'approved' || r.status === 'done' ? line(ar ? 'المركبة المؤمّنة:' : 'Assigned vehicle:', r.vehicleLabel) : ''}
+                ${r.status === 'rejected' ? line(ar ? 'سبب الرفض:' : 'Reason:', r.reason) : ''}
+                ${r.decidedBy ? `<div class="text-[10.5px] text-slate-400">${escHtml(r.decidedBy)} — ${fmtDateTime(r.decidedAtMs)}</div>` : ''}
+                ${acts}</div>`;
+        }
+        async function decideVehicleRequest(id, status) {
+            const r = vehicleRequests.find(x => x.id === id); if (!r || !firestoreDb) return;
+            const handler = VREQ_HANDLERS.includes(String(activePermissionKey));
+            const patch = { status, decidedBy: activeStaffMember ? activeStaffMember.arName : '', decidedAtMs: Date.now() };
+            if (status === 'approved') {
+                if (!handler) return;
+                const line = Number((document.getElementById('vqVeh_' + id) || {}).value || 0); const v = fleetVehicles.find(x => x.line === line);
+                if (!v) return;
+                patch.vehicleLine = line; patch.vehicleLabel = (currentLang === 'ar' ? 'سطر ' : 'Line ') + line + ': ' + v.name + ' ' + v.type + ' (' + v.plate + ')';
+            } else if (status === 'rejected') {
+                if (!handler) return;
+                const reason = prompt(currentLang === 'ar' ? 'اكتب سبب الرفض باختصار (يظهر للجهة الطالبة):' : 'Briefly state the reason (shown to the requester):');
+                if (!reason || reason.trim().length < 3) return;
+                patch.reason = sanitizeHtmlInput(reason.trim()).slice(0, 200);
+            } else if (status === 'done') { if (!handler) return; }
+            else if (status === 'cancelled') { if (r.status !== 'pending' || !confirm(currentLang === 'ar' ? 'إلغاء هذا الطلب؟' : 'Cancel this request?')) return; }
+            try {
+                await firestoreDb.collection('kah_vehicle_requests').doc(id).update(patch);
+                Object.assign(r, patch); logCyberEvent('طلب تأمين مركبة (#' + id + '): ' + status);
+                renderAll();
+            } catch (e) { showToast(currentLang === 'ar' ? 'تعذّر تنفيذ الإجراء — تأكد من نشر القواعد' : 'Action failed — check the rules', (e && e.code) || '', 'fa-triangle-exclamation', 'rose'); }
+        }
+        function renderVehicleRequestBoxes() {
+            const ar = currentLang === 'ar';
+            const fb = document.getElementById('fleetRequestsBox');
+            if (fb) {
+                const handler = VREQ_HANDLERS.includes(String(activePermissionKey)) || String(activePermissionKey) === '5060';
+                if (!handler) { fb.innerHTML = ''; } else {
+                    const pend = vehicleRequests.filter(r => r.status === 'pending'), act = vehicleRequests.filter(r => r.status === 'approved'), rest = vehicleRequests.filter(r => !['pending', 'approved'].includes(r.status)).slice(0, 6);
+                    const canAct = VREQ_HANDLERS.includes(String(activePermissionKey));
+                    fb.innerHTML = `<div class="premium-card rounded-3xl overflow-hidden"><div class="luxury-Command-card text-white px-4 py-3 flex flex-wrap items-center justify-between gap-2"><span class="font-black text-sm">🚐 ${ar ? 'طلبات تأمين المركبات للإدارات والجهات الأخرى' : 'Vehicle requests from departments & other units'}</span><span class="text-[11px] bg-amber-400 text-slate-950 px-2 py-0.5 rounded-full font-black">${ar ? 'جديدة: ' : 'New: '}${pend.length}</span></div>
+                        <div class="p-3 space-y-2">${pend.map(r => vreqCard(r, canAct)).join('') || `<div class="text-[11.5px] text-slate-400 font-bold">${ar ? 'لا توجد طلبات جديدة.' : 'No new requests.'}</div>`}
+                        ${act.length ? `<div class="font-black text-slate-700 text-[12px] pt-1">${ar ? 'مركبات مؤمّنة حالياً' : 'Currently assigned'}</div>` + act.map(r => vreqCard(r, canAct)).join('') : ''}
+                        ${rest.length ? `<details class="rounded-xl border border-slate-200"><summary class="cursor-pointer px-3 py-2 font-black text-[12px] text-slate-600">${ar ? 'آخر الطلبات المغلقة' : 'Recently closed'}</summary><div class="p-2 space-y-2">${rest.map(r => vreqCard(r, false)).join('')}</div></details>` : ''}</div></div>`;
+                }
+            }
+            const rb = document.getElementById('myVehicleRequestsBox');
+            if (rb) {
+                const me = activeStaffMember ? activeStaffMember.arName : '';
+                const mine = vehicleRequests.filter(r => r.createdByActor === me).slice(0, 8);
+                rb.innerHTML = mine.length ? `<div class="premium-card rounded-3xl p-4 space-y-2"><div class="font-black text-sm">🚐 ${ar ? 'طلباتي لتأمين المركبات' : 'My vehicle requests'}</div>${mine.map(r => vreqCard(r, false)).join('')}</div>` : '';
+            }
+        }
+
         // ===== بوابة إسناد المهمات (لطالبي الخدمة من خارج الإدارة والسائقين) =====
         const PORTAL_ROLES = ['3040', '4050'];
         let gatePortal = false; let portalActive = false;
-        try { gatePortal = /portal/i.test(location.hash) || localStorage.getItem('kah_gate_portal') === '1'; } catch (e) {}
         function setGatePortal(on) { gatePortal = !!on; try { localStorage.setItem('kah_gate_portal', gatePortal ? '1' : '0'); } catch (e) {} applyGateMode(); }
         function applyGateMode() {
             const ar = currentLang === 'ar'; const g = document.getElementById('securityLockGate'); if (!g) return;
-            g.classList.toggle('gate-portal', gatePortal);
+            gatePortal = false; g.classList.remove('gate-portal');
             const set = (id, t) => { const el = document.getElementById(id); if (el) el.textContent = t; };
             if (gatePortal) {
                 set('uiLockMainTitle', ar ? 'بوابة إسناد المهمات' : 'Task Assignment Portal');
@@ -4041,7 +4217,7 @@
         }
         function applyPortalMode() {
             const rk = String(activePermissionKey || ''); const ar = currentLang === 'ar';
-            portalActive = isAuthenticated && (PORTAL_ROLES.includes(rk) || (gatePortal && isDirectorRoleKey(rk)));
+            portalActive = false;
             document.body.classList.toggle('portal-mode', portalActive);
             document.body.classList.toggle('portal-driver', portalActive && rk === '4050');
             document.body.classList.toggle('portal-req', portalActive && rk === '3040');
@@ -4054,14 +4230,12 @@
             try { const id = activeStaffMember && activeStaffMember.driverId; const d = id ? driversRoster.find(x => x.id === id) : null; return d ? d.name : ''; } catch (e) { return ''; }
         }
         function viewRequestsForDriverList() {
-            if (String(activePermissionKey) !== '4050') return requests;
+            return requests;
             const me = activeStaffMember ? activeStaffMember.arName : ''; const dn = myRosterDriverName();
             return requests.filter(r => r.status === 'pending' || r.status === 'declined_needs_supervisor' || (me && r.acceptedByActor === me) || (dn && r.driver === dn));
         }
         function viewRequestsForRequester() {
-            if (String(activePermissionKey) !== '3040') return requests;
-            const me = activeStaffMember ? activeStaffMember.arName : '';
-            return requests.filter(r => r.createdByActor === me);
+            return requests;
         }
 
 
@@ -4154,7 +4328,7 @@
             stopCloudListeners();
             const doSignOut = () => { try { if (firebaseAuth) firebaseAuth.signOut().catch(() => {}); } catch (e) {} };
             if (offlineP && offlineP.then) { offlineP.then(doSignOut, doSignOut); setTimeout(doSignOut, 3000); } else { doSignOut(); }
-            presenceDocs = {}; feedbackDocs = []; fleetHealth = {};
+            presenceDocs = {}; feedbackDocs = []; fleetHealth = {}; vehicleRequests = []; window.__vreqLoaded = false;
             ['presenceModal', 'guestbookModal', 'guideModal', 'usersModal', 'scheduleAdminModal', 'vehicleInfoModal', 'policyModal', 'archiveModal'].forEach(id => setDisplay(id, false));
             const mp = document.getElementById('moreMenuPanel'); if (mp) mp.classList.add('hidden');
             // لا تبقى أي بيانات طلبات أو أرقام في الذاكرة بعد الخروج
@@ -4211,6 +4385,7 @@
             }
             document.getElementById('newRequestModal').classList.remove('hidden');
             document.getElementById('newRequestModal').classList.add('flex');
+            try { setReqCategory(reqCategory); } catch (e) {}
             try {
                 const dm = document.getElementById('formDutyManagerName');
                 if (dm && !dm.value && activeStaffMember && String(activeStaffMember.id).indexOf('er_manager_') === 0) {
@@ -4230,6 +4405,8 @@
                 showVisitorReadOnlyAlert();
                 return;
             }
+            if (reqCategory === 'vehicle') { submitVehicleRequest(); return; }
+            const assignKind = ((document.querySelector('input[name="assignKind"]:checked') || {}).value) || 'إسناد استلام';
             const senderType = sanitizeHtmlInput(document.getElementById('formSenderType').value);
             const dutyManagerName = sanitizeHtmlInput(document.getElementById('formDutyManagerName').value.trim());
             const indivName = sanitizeHtmlInput(document.getElementById('formIndividualName').value.trim());
@@ -4244,7 +4421,7 @@
             }
 
             const etaMinutes = parseInt(document.getElementById('formDurationMinutes').value || '8', 10);
-            const title = sanitizeHtmlInput(document.getElementById('formType').value);
+            const title = sanitizeHtmlInput(assignKind + ' — ' + document.getElementById('formType').value);
             const destSelEl = document.getElementById('formDestSelect');
             const destRaw = (destSelEl && destSelEl.value === '__other__') ? document.getElementById('formDest').value.trim() : (destSelEl ? destSelEl.value : '');
             if (destSelEl && destSelEl.value === '__other__' && !destRaw) {
@@ -4265,6 +4442,7 @@
                 dutyManagerName,
                 optionalNote,
                 missionOrderNo,
+                assignKind,
                 destination,
                 status: 'pending',
                 etaMinutes,
@@ -5807,6 +5985,7 @@
         }
 
         function renderAll() {
+            try { renderVehicleRequestBoxes(); } catch (e) {}
             if (!isAuthenticated) return;
             renderHeaderState();
             renderDriverControlView();
