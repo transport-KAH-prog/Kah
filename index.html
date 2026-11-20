@@ -317,13 +317,8 @@
                 <!-- Network & Firebase Sync Status Indicator -->
                 <span id="liveNetStatusBadge" class="bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 px-2.5 py-0.5 rounded-full text-[10px] font-black flex items-center gap-1.5">
                     <span id="liveNetStatusDot" class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                    <span id="liveNetStatusText">متصل • مزامنة لحظية نشطة</span>
+                    <span id="liveNetStatusText">متصل الآن</span>
                 </span>
-                <!-- Push Notification Permission Button (Fix #14) -->
-                <button type="button" onclick="enablePushNotificationsAndWakeLock()" id="btnEnablePush" class="bg-cyan-600 hover:bg-cyan-500 text-white px-2.5 py-0.5 rounded-full text-[10px] font-black cursor-pointer transition flex items-center gap-1">
-                    <i class="fa-solid fa-bell"></i>
-                    <span id="uiBtnEnablePushText">تفعيل إشعارات الخلفية</span>
-                </button>
             </div>
         </div>
     </div>
@@ -527,6 +522,11 @@
                     </button>
 
                     
+                    <!-- Push Notification Permission Button (moved into settings menu) -->
+                    <button type="button" onclick="enablePushNotificationsAndWakeLock(); toggleMoreMenu(false)" id="btnEnablePush" class="bg-cyan-600 hover:bg-cyan-500 text-white px-2.5 py-1.5 rounded-xl text-[11px] font-black flex items-center gap-1.5 cursor-pointer transition shadow-sm">
+                        <i class="fa-solid fa-bell"></i>
+                        <span class="flex flex-col leading-tight text-right"><span id="uiBtnEnablePushText">تفعيل إشعارات الخلفية</span><span class="kah-desc text-[9px] opacity-75 font-semibold" data-ar="تنبيه الطلبات حتى والشاشة مقفلة" data-en="Order alerts even with the screen locked">تنبيه الطلبات حتى والشاشة مقفلة</span></span>
+                    </button>
                     <button type="button" id="menuPhotoBtn" onclick="openRolePhotoPicker(activePermissionKey); toggleMoreMenu(false)" class="bg-amber-400 hover:bg-amber-300 text-slate-950 px-2.5 py-1.5 rounded-xl text-[11px] font-black flex items-center gap-1.5 cursor-pointer transition shadow-sm">📷 <span class="flex flex-col leading-tight text-right"><span>صورة المستخدم</span><span class="kah-desc text-[9px] opacity-75 font-semibold" data-ar="صورتك الشخصية في النظام" data-en="Your profile photo">صورتك الشخصية في النظام</span></span></button>
                     <button type="button" id="menuPresenceBtn" style="display:none" onclick="openPresenceModal(); toggleMoreMenu(false)" class="items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white px-2.5 py-1.5 rounded-xl text-[11px] font-black cursor-pointer transition shadow-sm">
                         <i class="fa-solid fa-user-clock"></i><span class="flex flex-col leading-tight text-right"><span>المتصلون والإحصائيات</span><span class="kah-desc text-[9px] opacity-75 font-semibold" data-ar="من يستخدم النظام الآن وإحصائيات الدخول" data-en="Who is online + login stats">من يستخدم النظام الآن وإحصائيات الدخول</span></span>
@@ -3966,8 +3966,7 @@
             'ثانية.': 'seconds.',
             'نبذة عن المنصة وكلمات القيادة': 'About the platform & leadership messages', 'مقدمة منظومة النقل الطبي واللوجستي الذكي، وكلمة مدير إدارة الحركة والمواصلات، وكلمة مؤسس المنصة.': 'Introduction to the system, plus messages from the Transport & Mobility Director and the platform founder.', 'قراءة النبذة': 'Read more', 'مؤسس المنصة والمشرف العام: أ. فهد بن عطاالله القرشي': 'Platform founder & general supervisor: Mr. Fahad bin Atallah Al-Qurashi',
             'صورتك الشخصية في النظام': 'Your personal photo in the system', 'من يستخدم النظام الآن وإحصائيات الدخول': 'Who is using the system now + login stats', 'آراء الزوار المعتمدة': 'Approved visitor feedback', 'إظهار أو إخفاء الخريطة': 'Show or hide the tracking map', 'دليل الاستخدام وطريقة التثبيت': 'User guide & install steps', 'إنشاء وحظر وحذف الحسابات': 'Create, block or delete accounts', 'أرسل مشكلة أو اقتراحاً للمدير': 'Report an issue to the Director', 'رسائل الدعم الواردة': 'Incoming support messages', 'تغيير مظهر ألوان النظام': 'Change the app colors', 'حالة الحماية والتشفير': 'Security & encryption status', 'تبديل لغة الواجهة': 'Switch interface language',
-            'متصل بـ Firebase • مزامنة لحظية': 'Connected to Firebase • live sync',
-            'متصل • مزامنة لحظية نشطة': 'Connected • live sync active',
+            'متصل الآن': 'Online now',
             'عينات دم وغازات دم حرجة (STAT)': 'Critical blood & blood-gas samples (STAT)',
             'الطوارئ - المدير المناوب': 'ER - Duty Manager',
             'مركز السموم والكيمياء الطبية': 'Toxicology & Medical Chemistry Center',
@@ -5951,7 +5950,7 @@
                 badge.className = 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 px-2.5 py-0.5 rounded-full text-[10px] font-black flex items-center gap-1.5';
                 dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-ping';
                 txt.textContent = isFirebaseCloudActive
-                    ? (currentLang === 'ar' ? 'متصل بـ Firebase • مزامنة لحظية' : 'Firebase Cloud Connected')
+                    ? (currentLang === 'ar' ? 'متصل الآن' : 'Online now')
                     : (currentLang === 'ar' ? 'متصل • غير مرتبط بالخادم' : 'Online • Local & Tab Sync Active');
             } else {
                 badge.className = 'bg-rose-600 text-white border border-rose-300 px-2.5 py-0.5 rounded-full text-[10px] font-black flex items-center gap-1.5 offline-banner-pulse';
